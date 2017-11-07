@@ -1,3 +1,5 @@
+package Foorumi;
+
 import javax.sql.DataSource;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -11,9 +13,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
-@WebServlet(name = "Yhteys", urlPatterns = {"/Yhteys"})
-public class Yhteys extends HttpServlet {
+@WebServlet(name = "NaytaKeskustelu", urlPatterns = {"/NaytaKeskustelu"})
+public class NaytaKeskustelu extends HttpServlet {
 
     // import javax.annotation.Resource;
     // import javax.sql.DataSource;
@@ -30,6 +34,7 @@ public class Yhteys extends HttpServlet {
 
         ResultSet rsviestit = null;
         ResultSet rskeskustelu = null;
+        ResultSet rshenkilot = null;
 
         String keskustelunimi = "", keskustelukuvaus = "";
 
@@ -37,7 +42,8 @@ public class Yhteys extends HttpServlet {
 
             try (Connection con = ds.getConnection()) {
 
-                int keskusteluid = Integer.parseInt(req.getParameter("keskusteluid"));
+//                int keskusteluid = Integer.parseInt(req.getParameter("keskusteluid"));
+                int keskusteluid = 1;
 
                 String sql = "SELECT * FROM viesti WHERE keskusteluid = " + keskusteluid + " ORDER BY kirjoitettu ASC;";
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -54,6 +60,19 @@ public class Yhteys extends HttpServlet {
                     keskustelukuvaus = rskeskustelu.getString("kuvaus");
                 }
 
+                Map<Integer, String> kirjoittajat = new HashMap<>();
+
+                sql = "SELECT * FROM henkilo;";
+                ps = con.prepareStatement(sql);
+
+                rshenkilot = ps.executeQuery();
+
+                while(rshenkilot.next()) {
+                    kirjoittajat.put(
+                            rshenkilot.getInt("hloid"),
+                            rshenkilot.getString("nimimerkki")
+                    );
+                }
 // ...
                 res.setContentType("text/html");
 
@@ -71,7 +90,9 @@ public class Yhteys extends HttpServlet {
                 while (rsviestit.next()) {
                     out.println("<p>"
                             + rsviestit.getString("otsikko")
-                            + " - "
+                            + " \n"
+                            + "Kirjoittaja: " + kirjoittajat.get(rsviestit.getInt("kirjoittaja"))
+                            + "\n"
                             + rsviestit.getString("viesti")
                             + "</p>");
                 }

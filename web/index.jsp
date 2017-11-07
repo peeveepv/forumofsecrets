@@ -6,5 +6,7 @@
   </head>
   <body>
 
+  <p>Testaa yhteyttä, häytä kaikki viestit: <a href="/NaytaKeskustelu">Yhteys-servlet</a></p>
+
   </body>
 </html>
