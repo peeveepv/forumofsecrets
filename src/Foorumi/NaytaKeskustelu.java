@@ -38,75 +38,96 @@ public class NaytaKeskustelu extends HttpServlet {
 
         String keskustelunimi = "", keskustelukuvaus = "";
 
+        Map<Integer, String> kirjoittajat = new HashMap<>();
+
         try (PrintWriter out = res.getWriter()) {
 
             try (Connection con = ds.getConnection()) {
 
-//                int keskusteluid = Integer.parseInt(req.getParameter("keskusteluid"));
-                int keskusteluid = 1;
+                haeTiedot(con, rskeskustelu, rsviestit, rshenkilot, kirjoittajat, keskustelunimi, keskustelukuvaus);
 
-                String sql = "SELECT * FROM viesti WHERE keskusteluid = " + keskusteluid + " ORDER BY kirjoitettu ASC;";
-                PreparedStatement ps = con.prepareStatement(sql);
 
-                rsviestit = ps.executeQuery();
-
-                sql = "SELECT * FROM keskustelu WHERE keskusteluid = " + keskusteluid + ";";
-                ps = con.prepareStatement(sql);
-
-                rskeskustelu = ps.executeQuery();
-
-                while(rskeskustelu.next()) {
-                    keskustelunimi = rskeskustelu.getString("nimi");
-                    keskustelukuvaus = rskeskustelu.getString("kuvaus");
-                }
-
-                Map<Integer, String> kirjoittajat = new HashMap<>();
-
-                sql = "SELECT * FROM henkilo;";
-                ps = con.prepareStatement(sql);
-
-                rshenkilot = ps.executeQuery();
-
-                while(rshenkilot.next()) {
-                    kirjoittajat.put(
-                            rshenkilot.getInt("hloid"),
-                            rshenkilot.getString("nimimerkki")
-                    );
-                }
-// ...
                 res.setContentType("text/html");
 
                 out.println("<html>");
-
                 out.println("<head>");
                 out.println("<title>Kaikki viestit</title>");
                 out.println("</head>");
 
                 out.println("<body>");
 
-                out.println("<h1>Keskustelu: " + keskustelunimi + "</h1>");
-                out.println("<h3><i>" + keskustelukuvaus + "</i></h3>");
+                tulostaTiedot(out, rskeskustelu, rsviestit, rshenkilot, kirjoittajat, keskustelunimi, keskustelukuvaus);
 
-                while (rsviestit.next()) {
-                    out.println("<p>"
-                            + rsviestit.getString("otsikko")
-                            + " \n"
-                            + "Kirjoittaja: " + kirjoittajat.get(rsviestit.getInt("kirjoittaja"))
-                            + "\n"
-                            + rsviestit.getString("viesti")
-                            + "</p>");
-                }
+                out.println("</body>");
+                out.println("</html>");
 
-            } catch (SQLException e) {
+// ...
+
+
+            } catch (
+                    SQLException e)
+
+            {
                 out.println(e.getMessage());
             }
-
-            out.println("<p>Back to the <a href='index.jsp'>index</a></p>");
-
-            out.println("</body>");
-            out.println("</html>");
-
         }
     }
 
+    private void haeTiedot(Connection con, ResultSet rskeskustelu, ResultSet rsviestit, ResultSet rshenkilot, Map<Integer, String> kirjoittajat, String keskustelunimi, String keskustelukuvaus) throws SQLException {
+
+//                int keskusteluid = Integer.parseInt(req.getParameter("keskusteluid"));
+        int keskusteluid = 1;
+
+        String sql = "SELECT * FROM viesti WHERE keskusteluid = " + keskusteluid + " ORDER BY kirjoitettu ASC;";
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        rsviestit = ps.executeQuery();
+
+        sql = "SELECT * FROM keskustelu WHERE keskusteluid = " + keskusteluid + ";";
+        ps = con.prepareStatement(sql);
+
+        rskeskustelu = ps.executeQuery();
+
+        while (rskeskustelu.next()) {
+            keskustelunimi = rskeskustelu.getString("nimi");
+            keskustelukuvaus = rskeskustelu.getString("kuvaus");
+        }
+
+
+        sql = "SELECT * FROM henkilo;";
+        ps = con.prepareStatement(sql);
+
+        rshenkilot = ps.executeQuery();
+
+        while (rshenkilot.next()) {
+            kirjoittajat.put(
+                    rshenkilot.getInt("hloid"),
+                    rshenkilot.getString("nimimerkki")
+            );
+        }
+
+    }
+
+    private void tulostaTiedot(ResultSet rskeskustelu, ResultSet rsviestit, ResultSet rshenkilot, Map<Integer, String> kirjoittajat, String keskustelunimi, String keskustelukuvaus) {
+
+        out.println("<h1>Keskustelu: " + keskustelunimi + "</h1>");
+        out.println("<h3><i>" + keskustelukuvaus + "</i></h3>");
+
+        while (rsviestit.next()) {
+            out.println("<p>"
+                    + rsviestit.getString("otsikko")
+                    + " \n"
+                    + "Kirjoittaja: " + kirjoittajat.get(rsviestit.getInt("kirjoittaja"))
+                    + "\n"
+                    + rsviestit.getString("viesti")
+                    + "</p>");
+        }
+
+
+        out.println("<p>Back to the <a href='index.jsp'>index</a></p>");
+
+    }
 }
+
+            }
+
