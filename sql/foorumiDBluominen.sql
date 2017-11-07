@@ -20,7 +20,7 @@ INSERT INTO `keskustelu` VALUES(
 DROP TABLE IF EXISTS `henkilo`;
 CREATE TABLE `henkilo` (
 	`hloid` int NOT NULL AUTO_INCREMENT,
-	`kayttajanimi` varchar(128) NOT NULL,
+	`kayttajanimi` varchar(128) NOT NULL UNIQUE,
 	`salasana` varchar(128) NOT NULL,
 	`nimimerkki` varchar(128),
 	`kuvaus` text,
