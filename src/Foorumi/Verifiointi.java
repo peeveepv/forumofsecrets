@@ -1,7 +1,7 @@
 import java.sql.*;
 
 public class verifiointi {
-    
+
     public static boolean paasynHallinta(Connection con, String tunnus, String sala){
 
         boolean tulos = false;
