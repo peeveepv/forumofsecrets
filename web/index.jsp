@@ -5,6 +5,7 @@
     <title></title>
   </head>
   <body>
+  <p><a href="KeskustelujaViestitServlet">Keskusteluihin</a></p>
 
   </body>
 </html>
