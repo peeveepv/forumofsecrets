@@ -1,6 +1,8 @@
+package Foorumi;
+
 import java.sql.*;
 
-public class verifiointi {
+public class Verifiointi {
 
     public static boolean paasynHallinta(Connection con, String tunnus, String sala){
 
