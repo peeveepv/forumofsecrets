@@ -26,7 +26,7 @@ public class HakuServlet extends HttpServlet {
         try {
 
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/foorumi?useSSL=false",
-                    "root", "jaavakahvi");
+                    "root", "");
         } catch (SQLException e) {
             e.printStackTrace();
         }
