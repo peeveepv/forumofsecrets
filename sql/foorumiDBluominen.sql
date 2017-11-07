@@ -11,10 +11,10 @@ CREATE TABLE `keskustelu` (
 	`keskusteluid` int NOT NULL AUTO_INCREMENT,
 	`nimi` varchar(128) NOT NULL,
 	`kuvaus` text NOT NULL,
-	PRIMARY KEY (`alueid`)
+	PRIMARY KEY (`keskusteluid`)
 );
 
-INSERT INTO `alue` VALUES(
+INSERT INTO `keskustelu` VALUES(
 1, 'Yleinen', 'Yleistä keskustelua');
 
 DROP TABLE IF EXISTS `henkilo`;
@@ -42,14 +42,14 @@ DROP TABLE IF EXISTS `viesti`;
 CREATE TABLE `viesti` (
 	`id` int NOT NULL AUTO_INCREMENT,
 	`kirjoittaja` int NOT NULL,
-	`alueid` int NOT NULL,
+	`keskusteluid` int NOT NULL,
 	`otsikko` varchar(255),
 	`viesti` text NOT NULL,
 	`vastaus` int DEFAULT NULL,
 	`kirjoitettu` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`viimeksimuutettu` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	CONSTRAINT `viesti_henkilo_fk` FOREIGN KEY (`kirjoittaja`) REFERENCES `henkilo` (`hloid`),
-	CONSTRAINT `viesti_alue_fk` FOREIGN KEY (`alueid`) REFERENCES `alue` (`alueid`),
+	CONSTRAINT `viesti_keskustelu_fk` FOREIGN KEY (`keskusteluid`) REFERENCES `keskustelu` (`keskusteluid`),
 	PRIMARY KEY (`id`)
 );
 
