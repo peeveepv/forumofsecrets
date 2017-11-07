@@ -108,7 +108,7 @@ public class NaytaKeskustelu extends HttpServlet {
 
     }
 
-    private void tulostaTiedot(ResultSet rskeskustelu, ResultSet rsviestit, ResultSet rshenkilot, Map<Integer, String> kirjoittajat, String keskustelunimi, String keskustelukuvaus) {
+    private void tulostaTiedot(PrintWriter out, ResultSet rskeskustelu, ResultSet rsviestit, ResultSet rshenkilot, Map<Integer, String> kirjoittajat, String keskustelunimi, String keskustelukuvaus) throws SQLException {
 
         out.println("<h1>Keskustelu: " + keskustelunimi + "</h1>");
         out.println("<h3><i>" + keskustelukuvaus + "</i></h3>");
@@ -129,5 +129,4 @@ public class NaytaKeskustelu extends HttpServlet {
     }
 }
 
-            }
 
