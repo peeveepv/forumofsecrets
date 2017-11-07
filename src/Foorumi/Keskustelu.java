@@ -51,4 +51,3 @@ public class Keskustelu {
         return lista;
     }*/
 
->>>>>>> d483898210ba23563b82a9387783197e3c8374a7:src/Foorumi/Keskustelu.java
