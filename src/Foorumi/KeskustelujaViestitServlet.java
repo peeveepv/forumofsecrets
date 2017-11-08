@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -44,8 +45,66 @@ public class KeskustelujaViestitServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-              haeKeskustelut(request, response);
-        try (PrintWriter out = response.getWriter()) {
+        HttpSession session = request.getSession(false);
+        PrintWriter out = response.getWriter();
+        response.setContentType("text/html");
+
+//Tämä tulostaa keskustelualustan pohjan
+        out.println("<html>");
+        out.println("<head>");
+        out.println("<title>Keskustelut</title>");
+        out.println(
+                "<style> td {word-break: break-all; } " +
+                        "#content {position: relative; left: 260px; width: 80%;} " +
+                        "#content {position: relative; left: 260px; width: 80%;} " +
+                        "nav {position: fixed; top: 0; width: 240px; height: 100%; font-family: Georgia; " +
+                        "background-color: #333; float: left; clear: left; display: inline; } " +
+                        "nav a, nav span {display: block; padding: 14px 16px; color: antiquewhite; text-shadow: none; " +
+                        "text-decoration: none;} .active {background-color: dimgrey;} " +
+                        "nav a:active, nav a:visited {color: antiquewhite; text-shadow: none;} " +
+                        "nav a:hover {background-color: #111;} " +
+                        "</style>"
+        );
+        out.println("</head>");
+
+        out.println("<body>");
+        out.println(
+                "<nav> " +
+                        "<span></span>" +
+                        "<span style='font-size: 120%'><a href='index.jsp'><strong>Forum of Secrets</strong></a></span>" +
+                        "<span></span>" +
+                        "<a href='/KeskustelujaViestitServlet'>Keskustelut</a>" +
+                        "<span></span>"
+        );
+
+        if (session == null
+                || session.getAttribute("kayttajanimi") == null
+                || "anonymous".equals(session.getAttribute("kayttajanimi"))) {
+
+            out.println("<a href='/Login'>Kirjautuminen</a>");
+            out.println("<a href='/Kayttaja'>Rekisteröityminen</a>");
+
+        } else {
+
+            out.println("<span><i>Tällä hetkellä kirjautuneena:</i><span>");
+            out.println("<span>" + session.getAttribute("kayttajanimi") + "</span>");
+            out.println("<span></span>");
+
+            out.println("<a href='/Profiili'>Profiili</a>");
+            out.println("<a href='/Logout'>Uloskirjautuminen</a>");
+
+        }
+
+        out.println(
+                "<span></span>" +
+                        "<a href='/Hakukone'>Etsi viestejä</a>" +
+                        "<span></span>" +
+                        "</nav>" +
+                        "" +
+                        "<div id='content'>"
+        );
+
+        haeKeskustelut(request, response);
             out.println("<form method='post' >");
             out.println("<input type=text name=nimi value=nimi> </br>");
             out.println("<input type=text name=kuvaus value=kuvaus> </br>");
@@ -55,11 +114,10 @@ public class KeskustelujaViestitServlet extends HttpServlet {
             out.println("<p><p>");
             out.println("<p><p>");
             out.println("<p><a href=index.jsp>Takaisin etusivulle</a><p>");
-        }
     }
 
+
     protected void haeKeskustelut(HttpServletRequest request, HttpServletResponse response){
-        response.setContentType("text/html");
         PrintWriter out = null;
         Connection con = null;
         try {

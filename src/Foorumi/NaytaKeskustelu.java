@@ -59,6 +59,7 @@ public class NaytaKeskustelu extends HttpServlet {
 
 
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        HttpSession session = req.getSession(false);
 
         ResultSet rsviestit = null;
         ResultSet rskeskustelu = null;
@@ -69,14 +70,11 @@ public class NaytaKeskustelu extends HttpServlet {
         Map<Integer, String> kirjoittajat = new HashMap<>();
 
         try (PrintWriter out = res.getWriter()) {
-
             try (Connection con = ds.getConnection()) {
-
-                HttpSession session = req.getSession(false);
 
                 int keskusteluid;
 
-                if (req.getParameter("keskusteluid") != null) {
+                if (req.getParameter("KeskusteluId") != null) {
                     keskusteluid = Integer.parseInt(req.getParameter("KeskusteluId"));
                 } else {
                     keskusteluid = 1;
@@ -88,7 +86,9 @@ public class NaytaKeskustelu extends HttpServlet {
                 rsviestit = ps.executeQuery();
 
                 sql = "SELECT * FROM keskustelu WHERE keskusteluid = " + keskusteluid + ";";
+
                 ps = con.prepareStatement(sql);
+
                 rskeskustelu = ps.executeQuery();
 
                 while (rskeskustelu.next()) {
@@ -118,7 +118,8 @@ public class NaytaKeskustelu extends HttpServlet {
                 out.println("<title>Kaikki viestit</title>");
 
                 out.println(
-                    "<style> p {word-break: break-all;} " +
+                    "<style> td {word-break: break-all; } " +
+                            "#content {position: relative; left: 260px; width: 80%;} " +
                             "#content {position: relative; left: 260px; width: 80%;} " +
                             "nav {position: fixed; top: 0; width: 240px; height: 100%; font-family: Georgia; " +
                             "background-color: #333; float: left; clear: left; display: inline; } " +
@@ -133,14 +134,12 @@ public class NaytaKeskustelu extends HttpServlet {
 
                 out.println("<body>");
 
-
                 out.println(
                     "<nav> " +
                             "<span></span>" +
-                            "<span style='font-size: 120%'><strong>Forum of Secrets</strong></span>" +
+                            "<span style='font-size: 120%'><a href='index.jsp'><strong>Forum of Secrets</strong></a></span>" +
                             "<span></span>" +
-                            "<a href='/KeskustelujaViestitServlet'>Keskustelujen lista</a>" +
-                            "<a href='/NaytaKeskustelu'>Yksittäisen keskustelun sivu</a>" +
+                            "<a href='/KeskustelujaViestitServlet'>Keskustelut</a>" +
                             "<span></span>"
                 );
 
@@ -174,18 +173,16 @@ public class NaytaKeskustelu extends HttpServlet {
                 out.println("<h1>Keskustelu:<br> " + keskustelunimi + "</h1>");
                 out.println("<h3>Kuvaus: <i>" + keskustelukuvaus + "</i></h3>");
 
-                out.println("<table>");
+                out.println("<table style='border: 1px solid black'>");
 
                 //Tämä tulostaa viestit tulosjoukosta rsviestit
                 while (rsviestit.next()) {
                     out.println("<tr>");
-                        out.println("<td style='width: 80px'>Otsikko:</td><td style=wraparound>" + rsviestit.getString("otsikko") + "</td>");
+                    out.println("<td style='width: 200px'>"+ kirjoittajat.get(rsviestit.getInt("kirjoittaja")) +
+                            "</td><td style='rowspan: 2'; >"+ rsviestit.getString("viesti") + "</td>");
                     out.println("</tr>");
                     out.println("<tr>");
-                        out.println("<td style='width: 80px'>Kirjoittaja:</td><td style=wraparound>" + kirjoittajat.get(rsviestit.getInt("kirjoittaja")) + "</td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                        out.println("<td style='width: 80px'>Viesti:</td><td style=wraparound>" + rsviestit.getString("viesti") + "</td>");
+                    out.println("<td>"+ rsviestit.getString("otsikko") + "</td><td></td>");
                     out.println("</tr>");
                     out.println("<br>");
                 }
