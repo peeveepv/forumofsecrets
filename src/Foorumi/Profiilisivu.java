@@ -145,9 +145,9 @@ public class Profiilisivu extends HttpServlet{
                         "<h2> Profiilin tiedot </h2>" +
                         "<form method=\"post\">" +
                         "<p>Käyttäjänimi: " + kayttajanimi +
-                        "<br>Nimimerkki: " + "<input type=\"text\" name=\"nimimerkki\" value=" + nimimerkki + "></input>" +
-                        "<br>Kuvaus: " + "<input type=\"text\" name=\"kuvaus\" value=" + kuvaus + "></input>" +
-                        "<br><input type=\"submit\" value=\"Päivitä\"/>" +
+                        "<br>Nimimerkki: " + "<input type=\"text\" name=\"nimimerkki\" value='" + nimimerkki + "'></input>" +
+                        "<br>Kuvaus: " + "<input type=\"text\" name=\"kuvaus\" value='" + kuvaus + "'></input>" +
+                        "<br><input type=\"submit\" value=\"Päivitä\"/></form>" +
                         "</div>"+
                         "</body>" +
                         "</html>");
