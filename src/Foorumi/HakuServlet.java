@@ -205,9 +205,7 @@ public class HakuServlet extends HttpServlet {
     {
 
         out.println("<html>");
-        out.println("<head>");
-        out.println("<title>Haun tulos</title>");
-        out.println("</head>");
+        NaviPalkki.luoNaviPalkki(request, response, "Haun tulos");
         out.println("<body>");
         out.println(palauta1.toString());
         out.println("<br/>");
@@ -220,6 +218,7 @@ public class HakuServlet extends HttpServlet {
         out.println(palauta5.toString());
         out.println("<br/>");
         out.println(palauta6.toString());
+        out.println("</div>");
         out.println("</body>");
         out.println("</html>");
     }
@@ -233,9 +232,7 @@ public class HakuServlet extends HttpServlet {
 
         try (PrintWriter out = response.getWriter()) {
             out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Foorumin hakusivu</title>");
-            out.println("</head>");
+            NaviPalkki.luoNaviPalkki(request, response, "Foorumin hakusivu");
             out.println("<body>");
 
             // Koska Form-tagista puuttuu "action"-määre, niin toiminto kutsuu tätä samaa servlettiä,
@@ -246,7 +243,7 @@ public class HakuServlet extends HttpServlet {
             out.println("<input type='text' name='haettava'>");
             out.println("<input type='submit' value='Lähetä'>");
             out.println("</form>");
-
+            out.println("</div>");
             out.println("</body>");
             out.println("</html>");
         }
