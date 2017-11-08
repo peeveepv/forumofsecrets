@@ -62,7 +62,6 @@ public class LoginServlet extends HttpServlet {
                                 rs.getString("rooli")
                         ); */
 
-                        //Tämä tulostaa keskustelualustan pohjan
                         res.setContentType("text/html");
 
                         out.println("<html>");
