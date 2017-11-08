@@ -3,6 +3,7 @@ package Foorumi;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
@@ -13,8 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@WebServlet(name="Profiilisivu", urlPatterns = {"/Profiilisivu"})
-public class Profiilisivu {
+@WebServlet(name="Profiilisivu", urlPatterns = {"/Profiili"})
+public class Profiilisivu extends HttpServlet{
     @Resource(name = "jdbc/Foorumi")
     DataSource ds;
 
