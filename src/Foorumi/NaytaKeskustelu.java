@@ -198,13 +198,15 @@ public class NaytaKeskustelu extends HttpServlet {
                 out.println("<hr>");
                 out.println("<br>");
 
-                //String kirjoittajaID = (String) session.getAttribute("henkiloid");
-
+                int kirjoittajaID = (Integer)(session.getAttribute("hloid"));
+                //String kirjoittajaI = (String) session.getAttribute("hloid");
+                //out.print(kirjoittajaID);
+                ///out.print(kirjoittajaI);
                 //Tässä on lomake uuden viestin luomiseen
                 out.println("<form method='post' id=1>");
                 out.println("<input type=submit  value='Lisää uusi viesti'> <p></p>");
                 out.println("<input type=text name='otsikko' value='otsikko'><br>");
-                out.println("<input type=text name='kirjoittaja' value=1>");
+                out.println("<input type=text name='kirjoittaja' value=" +kirjoittajaID + ">");
                 out.println("<input type=text name='keskusteluid' value=" + keskusteluid + ">");
                 out.println("</form>");
                 out.println("<textarea form=1 name='viesti' value='viesti' row=5 column=10></textarea>");
