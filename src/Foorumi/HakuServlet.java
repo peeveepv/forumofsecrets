@@ -27,7 +27,7 @@ public class HakuServlet extends HttpServlet {
         }
 
 
-        String haettava = (String) request.getAttribute("haettava");
+        String haettava = (String) request.getParameter("haettava");
 
 
         StringBuilder palauta = new StringBuilder();
@@ -65,8 +65,6 @@ public class HakuServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-
-
         response.setContentType("text/html");
 
         try (PrintWriter out = response.getWriter()) {
@@ -79,7 +77,6 @@ public class HakuServlet extends HttpServlet {
             out.println("</body>");
             out.println("</html>");
         }
-
     }
 
 
