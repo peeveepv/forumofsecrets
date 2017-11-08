@@ -50,9 +50,13 @@ public class KeskustelujaViestitServlet extends HttpServlet {
         response.setContentType("text/html");
 
 //Tämä tulostaa keskustelualustan pohjan
+        response.setContentType("text/html");
+
         out.println("<html>");
         out.println("<head>");
-        out.println("<title>Keskustelut</title>");
+
+        out.println("<title>Profiili</title>");
+
         out.println(
                 "<style> td {word-break: break-all; } " +
                         "#content {position: relative; left: 260px; width: 80%;} " +
@@ -65,9 +69,11 @@ public class KeskustelujaViestitServlet extends HttpServlet {
                         "nav a:hover {background-color: #111;} " +
                         "</style>"
         );
+
         out.println("</head>");
 
         out.println("<body>");
+
         out.println(
                 "<nav> " +
                         "<span></span>" +
@@ -86,9 +92,15 @@ public class KeskustelujaViestitServlet extends HttpServlet {
 
         } else {
 
-            out.println("<span><i>Tällä hetkellä kirjautuneena:</i><span>");
-            out.println("<span>" + session.getAttribute("kayttajanimi") + "</span>");
-            out.println("<span></span>");
+            out.println("<span style='font-size: 80%'><i>Tällä hetkellä kirjautuneena:</i>");
+
+            if (session.getAttribute("nimimerkki") == null) {
+                out.println(session.getAttribute("kayttajanimi"));
+            } else {
+                out.println(session.getAttribute("nimimerkki"));
+            }
+
+            out.println("</span>");
 
             out.println("<a href='/Profiili'>Profiili</a>");
             out.println("<a href='/Logout'>Uloskirjautuminen</a>");
