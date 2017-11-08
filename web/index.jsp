@@ -57,11 +57,13 @@
     <nav>
 
         <span></span>
-        <span style="font-size: 120%"><strong>Forum of Secrets</strong></span>
+        <span style="font-size: 120%"><a href="index.jsp"><strong>Forum of Secrets</strong></a></span>
+        <span></span>
+
+        <a href="index.jsp">Pääsivu</a>
         <span></span>
 
         <a href="/KeskustelujaViestitServlet">Keskustelujen lista</a>
-        <a href="/NaytaKeskustelu">Yksittäisen keskustelun sivu</a>
         <span></span>
 
         <%
