@@ -105,9 +105,15 @@ public class LoginServlet extends HttpServlet {
 
                         } else {
 
-                            out.println("<span><i>Tällä hetkellä kirjautuneena:</i> "
-                                    + session.getAttribute("nimimerkki")
-                                    + "</span>");
+                            out.println("<span style='font-size: 80%'><i>Tällä hetkellä kirjautuneena:</i>");
+
+                            if (session.getAttribute("nimimerkki") == null) {
+                                out.println(session.getAttribute("kayttajanimi"));
+                            } else {
+                                out.println(session.getAttribute("nimimerkki"));
+                            }
+
+                            out.println("</span>");
 
                             out.println("<a href='/Profiili'>Profiili</a>");
                             out.println("<a href='/Logout'>Uloskirjautuminen</a>");
