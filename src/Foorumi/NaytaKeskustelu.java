@@ -152,9 +152,15 @@ public class NaytaKeskustelu extends HttpServlet {
 
                 } else {
 
-                    out.println("<span><i>Tällä hetkellä kirjautuneena:</i><span>");
-                    out.println("<span>" + session.getAttribute("kayttajanimi") + "</span>");
-                    out.println("<span></span>");
+                    out.println("<span style='font-size: 80%'><i>Tällä hetkellä kirjautuneena:</i>");
+
+                    if (session.getAttribute("nimimerkki") == null) {
+                        out.println(session.getAttribute("kayttajanimi"));
+                    } else {
+                        out.println(session.getAttribute("nimimerkki"));
+                    }
+
+                    out.println("</span>");
 
                     out.println("<a href='/Profiili'>Profiili</a>");
                     out.println("<a href='/Logout'>Uloskirjautuminen</a>");

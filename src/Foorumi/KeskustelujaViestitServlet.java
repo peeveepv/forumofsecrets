@@ -111,9 +111,7 @@ public class KeskustelujaViestitServlet extends HttpServlet {
             out.println("<input type=submit  value='Aloita uusi keskustelu'>");
             out.println("</form>");
 
-            out.println("<p><p>");
-            out.println("<p><p>");
-            out.println("<p><a href=index.jsp>Takaisin etusivulle</a><p>");
+            out.println("</div>");
     }
 
 

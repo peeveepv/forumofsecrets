@@ -67,10 +67,11 @@ public class LoginServlet extends HttpServlet {
                         out.println("<html>");
                         out.println("<head>");
 
-                        out.println("<title>Kaikki viestit</title>");
+                        out.println("<title>Kirjautuminen</title>");
 
                         out.println(
-                                "<style> p {word-break: break-all;} " +
+                                "<style> td {word-break: break-all; } " +
+                                        "#content {position: relative; left: 260px; width: 80%;} " +
                                         "#content {position: relative; left: 260px; width: 80%;} " +
                                         "nav {position: fixed; top: 0; width: 240px; height: 100%; font-family: Georgia; " +
                                         "background-color: #333; float: left; clear: left; display: inline; } " +
@@ -85,14 +86,12 @@ public class LoginServlet extends HttpServlet {
 
                         out.println("<body>");
 
-
                         out.println(
                                 "<nav> " +
                                         "<span></span>" +
-                                        "<span style='font-size: 120%'><strong>Forum of Secrets</strong></span>" +
+                                        "<span style='font-size: 120%'><a href='index.jsp'><strong>Forum of Secrets</strong></a></span>" +
                                         "<span></span>" +
-                                        "<a href='/KeskustelujaViestitServlet'>Keskustelujen lista</a>" +
-                                        "<a href='/NaytaKeskustelu'>Yksittäisen keskustelun sivu</a>" +
+                                        "<a href='/KeskustelujaViestitServlet'>Keskustelut</a>" +
                                         "<span></span>"
                         );
 
@@ -105,9 +104,15 @@ public class LoginServlet extends HttpServlet {
 
                         } else {
 
-                            out.println("<span><i>Tällä hetkellä kirjautuneena:</i> "
-                                    + session.getAttribute("nimimerkki")
-                                    + "</span>");
+                            out.println("<span style='font-size: 80%'><i>Tällä hetkellä kirjautuneena:</i>");
+
+                            if (session.getAttribute("nimimerkki") == null) {
+                                out.println(session.getAttribute("kayttajanimi"));
+                            } else {
+                                out.println(session.getAttribute("nimimerkki"));
+                            }
+
+                            out.println("</span>");
 
                             out.println("<a href='/Profiili'>Profiili</a>");
                             out.println("<a href='/Logout'>Uloskirjautuminen</a>");
@@ -161,10 +166,11 @@ public class LoginServlet extends HttpServlet {
             out.println("<html>");
             out.println("<head>");
 
-            out.println("<title>Kaikki viestit</title>");
+            out.println("<title>Kirjautuminen</title>");
 
             out.println(
-                    "<style> p {word-break: break-all;} " +
+                    "<style> td {word-break: break-all; } " +
+                            "#content {position: relative; left: 260px; width: 80%;} " +
                             "#content {position: relative; left: 260px; width: 80%;} " +
                             "nav {position: fixed; top: 0; width: 240px; height: 100%; font-family: Georgia; " +
                             "background-color: #333; float: left; clear: left; display: inline; } " +
@@ -179,14 +185,12 @@ public class LoginServlet extends HttpServlet {
 
             out.println("<body>");
 
-
             out.println(
                     "<nav> " +
                             "<span></span>" +
-                            "<span style='font-size: 120%'><strong>Forum of Secrets</strong></span>" +
+                            "<span style='font-size: 120%'><a href='index.jsp'><strong>Forum of Secrets</strong></a></span>" +
                             "<span></span>" +
-                            "<a href='/KeskustelujaViestitServlet'>Keskustelujen lista</a>" +
-                            "<a href='/NaytaKeskustelu'>Yksittäisen keskustelun sivu</a>" +
+                            "<a href='/KeskustelujaViestitServlet'>Keskustelut</a>" +
                             "<span></span>"
             );
 
@@ -199,10 +203,15 @@ public class LoginServlet extends HttpServlet {
 
             } else {
 
-                out.println("<span style='font-size: 80%'><i>Tällä hetkellä kirjautuneena:</i> "
-                        + session.getAttribute("nimimerkki")
-                        + "</span>");
-                out.println("<span></span>");
+                out.println("<span style='font-size: 80%'><i>Tällä hetkellä kirjautuneena:</i>");
+
+                if (session.getAttribute("nimimerkki") == null) {
+                    out.println(session.getAttribute("kayttajanimi"));
+                } else {
+                    out.println(session.getAttribute("nimimerkki"));
+                }
+
+                out.println("</span>");
 
                 out.println("<a href='/Profiili'>Profiili</a>");
                 out.println("<a href='/Logout'>Uloskirjautuminen</a>");

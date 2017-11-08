@@ -48,7 +48,7 @@ public class Profiilisivu extends HttpServlet{
         HttpSession istunto = req.getSession(false);
         if (istunto.getAttribute("kayttajanimi") == null){
             RequestDispatcher rd = req.getRequestDispatcher(
-                    "/login");
+                    "/Login");
             rd.forward(req, res);
         }
 
@@ -67,17 +67,88 @@ public class Profiilisivu extends HttpServlet{
             PrintWriter out = res.getWriter();
 //            String nimi = rs.getString("kayttajanimi");
             res.setContentType("text/html");
+
+            //Tämä tulostaa keskustelualustan pohjan
+            res.setContentType("text/html");
+
+            out.println("<html>");
+            out.println("<head>");
+
+            out.println("<title>Profiili</title>");
+
+            out.println(
+                    "<style> td {word-break: break-all; } " +
+                            "#content {position: relative; left: 260px; width: 80%;} " +
+                            "#content {position: relative; left: 260px; width: 80%;} " +
+                            "nav {position: fixed; top: 0; width: 240px; height: 100%; font-family: Georgia; " +
+                            "background-color: #333; float: left; clear: left; display: inline; } " +
+                            "nav a, nav span {display: block; padding: 14px 16px; color: antiquewhite; text-shadow: none; " +
+                            "text-decoration: none;} .active {background-color: dimgrey;} " +
+                            "nav a:active, nav a:visited {color: antiquewhite; text-shadow: none;} " +
+                            "nav a:hover {background-color: #111;} " +
+                            "</style>"
+            );
+
+            out.println("</head>");
+
+            out.println("<body>");
+
+            out.println(
+                    "<nav> " +
+                            "<span></span>" +
+                            "<span style='font-size: 120%'><a href='index.jsp'><strong>Forum of Secrets</strong></a></span>" +
+                            "<span></span>" +
+                            "<a href='/KeskustelujaViestitServlet'>Keskustelut</a>" +
+                            "<span></span>"
+            );
+
+            if (istunto == null
+                    || istunto.getAttribute("kayttajanimi") == null
+                    || "anonymous".equals(istunto.getAttribute("kayttajanimi"))) {
+
+                out.println("<a href='/Login'>Kirjautuminen</a>");
+                out.println("<a href='/Kayttaja'>Rekisteröityminen</a>");
+
+            } else {
+
+                out.println("<span style='font-size: 80%'><i>Tällä hetkellä kirjautuneena:</i>");
+
+                if (istunto.getAttribute("nimimerkki") == null) {
+                    out.println(istunto.getAttribute("kayttajanimi"));
+                } else {
+                    out.println(istunto.getAttribute("nimimerkki"));
+                }
+
+                out.println("</span>");
+
+                out.println("<a href='/Profiili'>Profiili</a>");
+                out.println("<a href='/Logout'>Uloskirjautuminen</a>");
+
+            }
+
+            out.println(
+                    "<span></span>" +
+                            "<a href='/Hakukone'>Etsi viestejä</a>" +
+                            "<span></span>" +
+                            "</nav>" +
+                            "" +
+                            "<div id='content'>"
+            );
+
+
+
             out.println("<html>" +
                         "<head>" +
                         "<title>Profiilisivu</title>" +
                         "</head>" +
+                        "<body>" +
                         "<h2> Profiilin tiedot </h2>" +
                         "<form method=\"post\">" +
                         "<p>Käyttäjänimi: " + kayttajanimi +
-                        "<br>Nimimerkki: " + "<input type=\"text\" name=\"nimimerkki\" value=" + nimimerkki + "></input>" +
-                        "<br>Kuvaus: " + "<input type=\"text\" name=\"kuvaus\" value=" + kuvaus + "></input>" +
-                        "<br><input type=\"submit\" value=\"Päivitä\"/>" +
-                        "<body>" +
+                        "<br>Nimimerkki: " + "<input type=\"text\" name=\"nimimerkki\" value='" + nimimerkki + "'></input>" +
+                        "<br>Kuvaus: " + "<input type=\"text\" name=\"kuvaus\" value='" + kuvaus + "'></input>" +
+                        "<br><input type=\"submit\" value=\"Päivitä\"/></form>" +
+                        "</div>"+
                         "</body>" +
                         "</html>");
 
