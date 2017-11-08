@@ -100,14 +100,7 @@
 
         <h1>Index sisältöä...</h1>
 
-        <p><a href="KeskustelujaViestitServlet">Keskusteluihin</a></p>
 
-        <p>Testaa yhteyttä, häytä kaikki viestit: <a href="NaytaKeskustelu">Yhteys-servlet</a></p>
-
-        <h3>Linkit:</h3>
-        <ul>
-            <li><a href="http://localhost:8080/hakukone">Hakukone</a></li>
-        </ul>
 
     </div>
 
