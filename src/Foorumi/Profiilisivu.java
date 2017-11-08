@@ -48,7 +48,7 @@ public class Profiilisivu extends HttpServlet{
         HttpSession istunto = req.getSession(false);
         if (istunto.getAttribute("kayttajanimi") == null){
             RequestDispatcher rd = req.getRequestDispatcher(
-                    "/login");
+                    "/Login");
             rd.forward(req, res);
         }
 
