@@ -24,6 +24,21 @@ public class Profiilisivu extends HttpServlet{
 
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
+        String apuNick = req.getParameter("nimimerkki");
+        String apuKuvaus = req.getParameter("kuvaus");
+        String sql = "UPDATE henkilo SET nimimerkki =?, kuvaus=? WHERE kayttajanimi=?;";
+        try {
+            Connection con = ds.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, apuNick);
+            ps.setString(2,apuKuvaus);
+            ps.setString(3,kayttajanimi);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        doGet(req,res);
     }
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 //        ResultSet rs = null;
@@ -61,8 +76,5 @@ public class Profiilisivu extends HttpServlet{
         }
 
     }
-//    private void haeTiedot(Connection con, ResultSet rs) throws SQLException {
-//
-//        }
     }
 
