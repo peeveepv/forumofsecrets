@@ -57,20 +57,34 @@
     <nav>
 
         <span></span>
-        <span style="font-size: 120%"><strong>KISSAFOORUMI</strong></span>
+        <span style="font-size: 120%"><strong>Forum of Secrets</strong></span>
         <span></span>
 
         <a href="/KeskustelujaViestitServlet">Keskustelujen lista</a>
         <a href="/NaytaKeskustelu">Yksittäisen keskustelun sivu</a>
         <span></span>
 
-        <a href="/Login">Kirjautuminen</a>
-        <a href="Kayttaja.jsp">Rekisteröityminen</a>
-        <a href="/Profiili">Profiili</a>
-        <a href="/Logout">Uloskirjautuminen</a>
+        <%
+            if ((session.getAttribute("kayttajanimi") == null)) {
+
+                out.println("<a href='/Login'>Kirjautuminen</a>");
+                out.println("<a href='Kayttaja.jsp'>Rekisteröityminen</a>");
+
+            } else {
+
+                out.println("<span><i>Tällä hetkellä kirjautuneena:</i><span>");
+                out.println("<span>" + session.getAttribute("kayttajanimi") + "</span>");
+                out.println("<span></span>");
+
+                out.println("<a href='/Profiili'>Profiili</a>");
+                out.println("<a href='/Logout'>Uloskirjautuminen</a>");
+
+            }
+        %>
+
         <span></span>
 
-        <a href="/Etsi">Etsi viestejä</a>
+        <a href="/Hakukone">Etsi viestejä</a>
         <span></span>
 
     </nav>
