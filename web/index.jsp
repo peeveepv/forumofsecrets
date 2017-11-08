@@ -4,7 +4,7 @@
 
 <head>
 
-    <title></title>
+    <title>Kotisivu</title>
 
     <style>
 
@@ -60,10 +60,7 @@
         <span style="font-size: 120%"><a href="index.jsp"><strong>Forum of Secrets</strong></a></span>
         <span></span>
 
-        <a href="index.jsp">Pääsivu</a>
-        <span></span>
-
-        <a href="/KeskustelujaViestitServlet">Keskustelujen lista</a>
+        <a href="/KeskustelujaViestitServlet">Keskustelut</a>
         <span></span>
 
         <%
@@ -76,9 +73,15 @@
 
             } else {
 
-                out.println("<span><i>Tällä hetkellä kirjautuneena:</i><span>");
-                out.println("<span>" + session.getAttribute("kayttajanimi") + "</span>");
-                out.println("<span></span>");
+                out.println("<span style='font-size: 80%'><i>Tällä hetkellä kirjautuneena:</i>");
+
+                if (session.getAttribute("nimimerkki") == null) {
+                    out.println(session.getAttribute("kayttajanimi"));
+                } else {
+                    out.println(session.getAttribute("nimimerkki"));
+                }
+
+                out.println("</span>");
 
                 out.println("<a href='/Profiili'>Profiili</a>");
                 out.println("<a href='/Logout'>Uloskirjautuminen</a>");
