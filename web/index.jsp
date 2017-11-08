@@ -87,7 +87,7 @@
             <li><a href="NaytaKeskustelu">Yksittäisen keskustelun sivu</a></li>
             <li><a href="http://localhost:8080/hakukone">Hakukone</a></li>
             <li><a href="Login">Kirjautuminen</a></li>
-            <li><a href="/Kayttaja">Rekisteröityminen</a></li>
+            <li><a href="Kayttaja.jsp">Rekisteröityminen</a></li>
             <li><a href="Profiili">Profiili</a></li>
             <li><a href="Logout">Uloskirjautuminen</a></li>
             <li></li>

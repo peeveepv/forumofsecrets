@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -19,11 +20,42 @@ public class KeskustelujaViestitServlet extends HttpServlet {
     DataSource ds;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = null;
+        Connection con = null;
+        String sql = "INSERT INTO keskustelu (nimi, kuvaus) VALUES (?, ?)";
+        String keskustelunNimi = request.getParameter("nimi");
+        String keskustelukuvaus = request.getParameter("kuvaus");
+        boolean moi = false;
+        try {
+            con = ds.getConnection();
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1,keskustelunNimi);
+            stmt.setString(2,keskustelukuvaus);
+            stmt.executeUpdate();
+            moi = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
 
+        }
+        if(moi)
+        doGet(request, response);
+        else out.println("<h2>update ei toiminut</h2>");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
               haeKeskustelut(request, response);
+        try (PrintWriter out = response.getWriter()) {
+            out.println("<form method='post' >");
+            out.println("<input type=text name=nimi value=nimi> </br>");
+            out.println("<input type=text name=kuvaus value=kuvaus> </br>");
+            out.println("<input type=submit  value='Aloita uusi keskustelu'>");
+            out.println("</form>");
+
+            out.println("<p><p>");
+            out.println("<p><p>");
+            out.println("<p><a href=index.jsp>Takaisin etusivulle</a><p>");
+        }
     }
 
     protected void haeKeskustelut(HttpServletRequest request, HttpServletResponse response){
@@ -40,13 +72,17 @@ public class KeskustelujaViestitServlet extends HttpServlet {
 
         try {
             out = response.getWriter();
+
+            out.print("<h2>Keskustelut</h2>");
+            out.print("<ul>");
+
             for (KeskusteluOlio olio: lista) {
-               // out.print("<p>"<a href="NaytaKeskustelu.java+olio.getNimi() + ": " + olio.getKuvaus()+ "</p>");
+                out.print("<li> <a href=NaytaKeskustelu?KeskusteluId="+olio.getKeskusteluId()+ ">"
+                        +olio.getNimi() +" </a><br> Keskustelualueen kuvaus: "  + olio.getKuvaus()+ "</li>");
             }
+            out.print("</ul>");
         } catch (IOException e) {
             out.print(e.getMessage());
     }
-
-
     }
 }
