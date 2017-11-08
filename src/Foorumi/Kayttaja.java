@@ -25,11 +25,23 @@ public class Kayttaja extends HttpServlet{
                         "<head>\n" +
                         "<title>Rekisteröityminen</title>\n" +
                         "</head>\n" +
-                        "<body>\n" +
-                        "<form method=\"post\">\n" +
-                        "<input type=\"text\" name=\"tunnus\"> Käyttäjätunnus</input><br>\n" +
-                        " <input type=\"password\" name=\"salasana\"> Salasana</input><br>\n" +
-                        " <input type=\"submit\" value=\"OK\"/>\n" +
+                        "<body>\n");
+                out.println("<form method='post' style='width: 400px; position: relative; top: 70px; left: 8%;'><fieldset>");
+                out.println("<legend>Rekisteröityminen</legend>");
+                out.println("<table>");
+                out.println("<tr>");
+                out.println("<td style='width: 120px'><label for='tunnus'>Käyttäjänimi</legend></td>");
+                out.println("<td><input type='text' name='tunnus' focus></td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<td style='width: 120px'><label for='salasana'>Salasana</legend></td>");
+                out.println("<td><input type='password' name='salasana'></td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<td><input type='submit' value='Rekisteröi'></td>");
+                out.println("</tr>");
+                out.println("</table>");
+                out.println("</fieldset></form>"+
                         "</form>\n" +
                         "</body>\n" +
                         "</html>");
