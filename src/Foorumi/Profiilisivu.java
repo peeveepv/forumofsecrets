@@ -1,11 +1,13 @@
 package Foorumi;
 
 import javax.annotation.Resource;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,12 +26,35 @@ public class Profiilisivu extends HttpServlet{
 
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
+        String apuNick = req.getParameter("nimimerkki");
+        String apuKuvaus = req.getParameter("kuvaus");
+        String sql = "UPDATE henkilo SET nimimerkki =?, kuvaus=? WHERE kayttajanimi=?;";
+        try {
+            Connection con = ds.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, apuNick);
+            ps.setString(2,apuKuvaus);
+            ps.setString(3,kayttajanimi);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        doGet(req,res);
     }
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 //        ResultSet rs = null;
 
+        HttpSession istunto = req.getSession(false);
+        if (istunto.getAttribute("kayttajanimi") == null){
+            RequestDispatcher rd = req.getRequestDispatcher(
+                    "/login");
+            rd.forward(req, res);
+        }
+
         try (Connection con = ds.getConnection()){
             String apuNimi = "testi";
+            apuNimi = (String) istunto.getAttribute("kayttajanimi");
             String haeTiedot = "SELECT * from henkilo where kayttajanimi=?";
             PreparedStatement ps = con.prepareStatement(haeTiedot);
             ps.setString(1,apuNimi);
@@ -61,8 +86,5 @@ public class Profiilisivu extends HttpServlet{
         }
 
     }
-//    private void haeTiedot(Connection con, ResultSet rs) throws SQLException {
-//
-//        }
     }
 

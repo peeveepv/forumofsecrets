@@ -28,7 +28,7 @@ public class Kayttaja extends HttpServlet{
                         "<body>\n" +
                         "<form method=\"post\">\n" +
                         "<input type=\"text\" name=\"tunnus\"> Käyttäjätunnus</input><br>\n" +
-                        " <input type=\"text\" name=\"salasana\"> Salasana</input><br>\n" +
+                        " <input type=\"password\" name=\"salasana\"> Salasana</input><br>\n" +
                         " <input type=\"submit\" value=\"OK\"/>\n" +
                         "</form>\n" +
                         "</body>\n" +
@@ -62,6 +62,7 @@ public class Kayttaja extends HttpServlet{
             out.println("<title>Rekisteröityminen</title>");
             out.println("</head>");
             out.println("<body><p>" +onnistuiko+ "</p>");
+            out.println("<p>Back to the <a href='index.jsp'>index</a></p>");
             out.println("</body>");
             out.println("</html>");
         } catch (SQLException e) {

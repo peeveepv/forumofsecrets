@@ -57,11 +57,13 @@
     <nav>
 
         <span></span>
-        <span style="font-size: 120%"><strong>Forum of Secrets</strong></span>
+        <span style="font-size: 120%"><a href="index.jsp"><strong>Forum of Secrets</strong></a></span>
+        <span></span>
+
+        <a href="index.jsp">Pääsivu</a>
         <span></span>
 
         <a href="/KeskustelujaViestitServlet">Keskustelujen lista</a>
-        <a href="/NaytaKeskustelu">Yksittäisen keskustelun sivu</a>
         <span></span>
 
         <%
@@ -98,6 +100,11 @@
         <p><a href="KeskustelujaViestitServlet">Keskusteluihin</a></p>
 
         <p>Testaa yhteyttä, häytä kaikki viestit: <a href="NaytaKeskustelu">Yhteys-servlet</a></p>
+
+        <h3>Linkit:</h3>
+        <ul>
+            <li><a href="http://localhost:8080/hakukone">Hakukone</a></li>
+        </ul>
 
     </div>
 
