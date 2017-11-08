@@ -30,56 +30,180 @@ public class HakuServlet extends HttpServlet {
         String haettava = (String) request.getParameter("haettava");
 
 
-        StringBuilder palauta = new StringBuilder();
+        StringBuilder palauta1 = new StringBuilder();
+        StringBuilder palauta2 = new StringBuilder();
+        StringBuilder palauta3 = new StringBuilder();
+        StringBuilder palauta4 = new StringBuilder();
+        StringBuilder palauta5 = new StringBuilder();
+        StringBuilder palauta6 = new StringBuilder();
 
         try {
+
+            //            ***********************************************************************************************
 
             String sql1 = "select keskusteluid, nimi from keskustelu where nimi like ?";
             PreparedStatement kyselyLause1 = con.prepareStatement(sql1);
             kyselyLause1.setString(1, haettava);
             ResultSet kyselynTulos1 = kyselyLause1.executeQuery();
 
-//            String sql2 = "select kuvaus from keskustelu";
-//
-//            String sql3 = "select kirjoittaja from viesti";
-//            String sql4 = "select otsikko from viesti";
-//            String sql5 = "select viesti from viesti";
-//            String sql6 = "select vastaus from viesti";
-
             while (kyselynTulos1.next()) {
                 String testi = kyselynTulos1.getString("nimi");
                 int testi2 = kyselynTulos1.getInt("keskusteluid");
 
                 if (haettava.contains(testi)) {
-                    palauta.append("<p>");
+                    palauta1.append("<p>");
 // Tee palautus URL --> joka hakee keskustelu/keskusteluID
-                    palauta.append("<a href='LOREM_IPSUS' target=_blank>");
-                    palauta.append(testi);
-                    palauta.append("</a>");
-                    palauta.append("</p>");
-
+                    palauta1.append("<a href='LOREM_IPSUS' target=_blank>");
+                    palauta1.append("Hakusana esiintyy keskustelun nimessä");
+                    palauta1.append("</a>");
+                    palauta1.append("</p>");
                 }
             }
+
+//            ***********************************************************************************************
+
+            String sql2 = "select keskusteluid, kuvaus from keskustelu where kuvaus like ?";
+            PreparedStatement kyselyLause2 = con.prepareStatement(sql2);
+            kyselyLause2.setString(1, haettava);
+            ResultSet kyselynTulos2 = kyselyLause2.executeQuery();
+
+            while (kyselynTulos2.next()) {
+                String tulosTeksti = kyselynTulos2.getString("kuvaus");
+                int tulosID = kyselynTulos2.getInt("keskusteluid");
+
+                if (haettava.contains(tulosTeksti)) {
+                    palauta2.append("<p>");
+// Tee palautus URL --> joka hakee keskustelu/keskusteluID
+                    palauta2.append("<a href='LOREM_IPSUS' target=_blank>");
+                    palauta2.append("Hakusana esiintyy keskustelun kuvauksessa");
+                    palauta2.append("</a>");
+                    palauta2.append("</p>");
+                }
+            }
+
+
+//            ***********************************************************************************************
+
+            String sql3 = "select keskusteluid, kirjoittaja from viesti where kirjoittaja like ?";
+            PreparedStatement kyselyLause3 = con.prepareStatement(sql2);
+            kyselyLause3.setString(1, haettava);
+            ResultSet kyselynTulos3 = kyselyLause3.executeQuery();
+
+            while (kyselynTulos3.next()) {
+                String tulosTeksti = kyselynTulos3.getString("kirjoittaja");
+                int tulosID = kyselynTulos3.getInt("keskusteluid");
+
+                if (haettava.contains(tulosTeksti)) {
+                    palauta3.append("<p>");
+// Tee palautus URL --> joka hakee keskustelu/keskusteluID
+                    palauta3.append("<a href='LOREM_IPSUS' target=_blank>");
+                    palauta3.append("Hakusana esiintyy kirjoittajan nimimerkissä");
+                    palauta3.append("</a>");
+                    palauta3.append("</p>");
+                }
+            }
+
+
+//            ***********************************************************************************************
+
+            String sql4 = "select keskusteluid, otsikko from viesti where otsikko like ?";
+            PreparedStatement kyselyLause4 = con.prepareStatement(sql2);
+            kyselyLause3.setString(1, haettava);
+            ResultSet kyselynTulos4 = kyselyLause4.executeQuery();
+
+            while (kyselynTulos4.next()) {
+                String tulosTeksti = kyselynTulos4.getString("otsikko");
+                int tulosID = kyselynTulos4.getInt("keskusteluid");
+
+                if (haettava.contains(tulosTeksti)) {
+                    palauta4.append("<p>");
+// Tee palautus URL --> joka hakee keskustelu/keskusteluID
+                    palauta4.append("<a href='LOREM_IPSUS' target=_blank>");
+                    palauta4.append("Hakusana esiintyy viestin otsikossa");
+                    palauta4.append("</a>");
+                    palauta4.append("</p>");
+                }
+            }
+
+//            ***********************************************************************************************
+
+            String sql5 = "select keskusteluid, viesti from viesti where viesti like ?";
+            PreparedStatement kyselyLause5 = con.prepareStatement(sql2);
+            kyselyLause5.setString(1, haettava);
+            ResultSet kyselynTulos5 = kyselyLause5.executeQuery();
+
+            while (kyselynTulos5.next()) {
+                String tulosTeksti = kyselynTulos5.getString("viesti");
+                int tulosID = kyselynTulos5.getInt("keskusteluid");
+
+                if (haettava.contains(tulosTeksti)) {
+                    palauta5.append("<p>");
+// Tee palautus URL --> joka hakee keskustelu/keskusteluID
+                    palauta5.append("<a href='LOREM_IPSUS' target=_blank>");
+                    palauta5.append("Hakusana esiintyy viestin leipätekstissä");
+                    palauta5.append("</a>");
+                    palauta5.append("</p>");
+                }
+            }
+
+            //            ***********************************************************************************************
+
+
+            String sql6 = "select keskusteluid, vastaus from viesti where vastaus like ?";
+            PreparedStatement kyselyLause6 = con.prepareStatement(sql2);
+            kyselyLause5.setString(1, haettava);
+            ResultSet kyselynTulos6 = kyselyLause5.executeQuery();
+
+            while (kyselynTulos6.next()) {
+                String tulosTeksti = kyselynTulos6.getString("vastaus");
+                int tulosID = kyselynTulos6.getInt("keskusteluid");
+
+                if (haettava.contains(tulosTeksti)) {
+                    palauta6.append("<p>");
+// Tee palautus URL --> joka hakee keskustelu/keskusteluID
+                    palauta6.append("<a href='LOREM_IPSUS' target=_blank>");
+                    palauta6.append("Hakusana esiintyy viestiketjun vastauksessa");
+                    palauta6.append("</a>");
+                    palauta6.append("</p>");
+                }
+            }
+
+            //            ***********************************************************************************************
+
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+
         response.setContentType("text/html");
 
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Haun tulos</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println(palauta.toString());
-            out.println("</body>");
-            out.println("</html>");
-        }
+       try(
+    PrintWriter out = response.getWriter())
+
+    {
+
+        out.println("<html>");
+        out.println("<head>");
+        out.println("<title>Haun tulos</title>");
+        out.println("</head>");
+        out.println("<body>");
+        out.println(palauta1.toString());
+        out.println("<br/>");
+        out.println(palauta2.toString());
+        out.println("<br/>");
+        out.println(palauta3.toString());
+        out.println("<br/>");
+        out.println(palauta4.toString());
+        out.println("<br/>");
+        out.println(palauta5.toString());
+        out.println("<br/>");
+        out.println(palauta6.toString());
+        out.println("</body>");
+        out.println("</html>");
     }
 
-
+}
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -107,6 +231,4 @@ public class HakuServlet extends HttpServlet {
         }
     }
 }
-
-
 
