@@ -4,9 +4,11 @@
 
 <head>
 
-    <title>Kotisivu</title>
+    <title>Forum of Secrets - Home</title>
 
     <style>
+
+        body {margin-left: 0px;}
 
         #content {
             position: relative;
