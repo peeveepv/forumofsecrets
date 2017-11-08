@@ -4,5 +4,5 @@
     <Resource name="jdbc/Foorumi" auth="Container" type="javax.sql.DataSource"
               maxTotal="100" maxIdle="30" maxWaitMillis="10000"
               username="forumuser" password="readwrite" driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://localhost:3306/Foorumi/?SSL=false"/>
+              url="jdbc:mysql://localhost:3306/Foorumi?useSSL=false"/>
 </Context>

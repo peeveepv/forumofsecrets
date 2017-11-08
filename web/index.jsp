@@ -57,42 +57,47 @@
     <nav>
 
         <span></span>
-        <span style="font-size: 120%"><strong>KISSAFOORUMI</strong></span>
+        <span style="font-size: 120%"><strong>Forum of Secrets</strong></span>
         <span></span>
 
         <a href="/KeskustelujaViestitServlet">Keskustelujen lista</a>
         <a href="/NaytaKeskustelu">Yksittäisen keskustelun sivu</a>
         <span></span>
 
-        <a href="/Login">Kirjautuminen</a>
-        <a href="Kayttaja.jsp">Rekisteröityminen</a>
-        <a href="/Profiili">Profiili</a>
-        <a href="/Logout">Uloskirjautuminen</a>
+        <%
+            if (session == null
+                    || session.getAttribute("kayttajanimi") == null
+                    || "anonymous".equals(session.getAttribute("kayttajanimi"))) {
+
+                out.println("<a href='/Login'>Kirjautuminen</a>");
+                out.println("<a href='/Kayttaja'>Rekisteröityminen</a>");
+
+            } else {
+
+                out.println("<span><i>Tällä hetkellä kirjautuneena:</i><span>");
+                out.println("<span>" + session.getAttribute("kayttajanimi") + "</span>");
+                out.println("<span></span>");
+
+                out.println("<a href='/Profiili'>Profiili</a>");
+                out.println("<a href='/Logout'>Uloskirjautuminen</a>");
+
+            }
+        %>
+
         <span></span>
 
-        <a href="/Etsi">Etsi viestejä</a>
+        <a href="/Hakukone">Etsi viestejä</a>
         <span></span>
 
     </nav>
 
     <div id="content">
 
+        <h1>Index sisältöä...</h1>
+
         <p><a href="KeskustelujaViestitServlet">Keskusteluihin</a></p>
 
         <p>Testaa yhteyttä, häytä kaikki viestit: <a href="NaytaKeskustelu">Yhteys-servlet</a></p>
-
-        <h3>Linkit:</h3>
-        <ul>
-            <li><a href="KeskustelujaViestitServlet">Keskustelujen lista</a></li>
-            <li><a href="NaytaKeskustelu">Yksittäisen keskustelun sivu</a></li>
-            <li><a href="http://localhost:8080/hakukone">Hakukone</a></li>
-            <li><a href="Login">Kirjautuminen</a></li>
-            <li><a href="Kayttaja.jsp">Rekisteröityminen</a></li>
-            <li><a href="Profiili">Profiili</a></li>
-            <li><a href="Logout">Uloskirjautuminen</a></li>
-            <li></li>
-            <li><a href="Etsi">Etsi</a></li>
-        </ul>
 
     </div>
 
