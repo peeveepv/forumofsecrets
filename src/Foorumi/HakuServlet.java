@@ -47,14 +47,14 @@ public class HakuServlet extends HttpServlet {
             ResultSet kyselynTulos1 = kyselyLause1.executeQuery();
 
             while (kyselynTulos1.next()) {
-                String testi = kyselynTulos1.getString("nimi");
-                int testi2 = kyselynTulos1.getInt("keskusteluid");
+                String tulosTeksti1 = kyselynTulos1.getString("nimi");
+                int tulosID1 = kyselynTulos1.getInt("keskusteluid");
 
-                if (haettava.contains(testi)) {
+                if (haettava.contains(tulosTeksti1)) {
                     palauta1.append("<p>");
 // Tee palautus URL --> joka hakee keskustelu/keskusteluID
                     palauta1.append("<a href='LOREM_IPSUS' target=_blank>");
-                    palauta1.append("Hakusana esiintyy keskustelun nimessä");
+                    palauta1.append("Hakusana esiintyy keskustelun nimessä (otsikkona siis ainakin tässä linkissä)");
                     palauta1.append("</a>");
                     palauta1.append("</p>");
                 }
@@ -68,14 +68,14 @@ public class HakuServlet extends HttpServlet {
             ResultSet kyselynTulos2 = kyselyLause2.executeQuery();
 
             while (kyselynTulos2.next()) {
-                String tulosTeksti = kyselynTulos2.getString("kuvaus");
-                int tulosID = kyselynTulos2.getInt("keskusteluid");
+                String tulosTeksti2 = kyselynTulos2.getString("kuvaus");
+                int tulosID2 = kyselynTulos2.getInt("keskusteluid");
 
-                if (haettava.contains(tulosTeksti)) {
+                if (haettava.contains(tulosTeksti2)) {
                     palauta2.append("<p>");
 // Tee palautus URL --> joka hakee keskustelu/keskusteluID
                     palauta2.append("<a href='LOREM_IPSUS' target=_blank>");
-                    palauta2.append("Hakusana esiintyy keskustelun kuvauksessa");
+                    palauta2.append("Hakusana esiintyy keskustelun kuvauksessa (ainakin tässä linkissä)");
                     palauta2.append("</a>");
                     palauta2.append("</p>");
                 }
@@ -85,19 +85,19 @@ public class HakuServlet extends HttpServlet {
 //            ***********************************************************************************************
 
             String sql3 = "select keskusteluid, kirjoittaja from viesti where kirjoittaja like ?";
-            PreparedStatement kyselyLause3 = con.prepareStatement(sql2);
+            PreparedStatement kyselyLause3 = con.prepareStatement(sql3);
             kyselyLause3.setString(1, haettava);
             ResultSet kyselynTulos3 = kyselyLause3.executeQuery();
 
             while (kyselynTulos3.next()) {
-                String tulosTeksti = kyselynTulos3.getString("kirjoittaja");
-                int tulosID = kyselynTulos3.getInt("keskusteluid");
+                String tulosTeksti3 = kyselynTulos3.getString("kirjoittaja");
+                int tulosID3 = kyselynTulos3.getInt("keskusteluid");
 
-                if (haettava.contains(tulosTeksti)) {
+                if (haettava.contains(tulosTeksti3)) {
                     palauta3.append("<p>");
 // Tee palautus URL --> joka hakee keskustelu/keskusteluID
                     palauta3.append("<a href='LOREM_IPSUS' target=_blank>");
-                    palauta3.append("Hakusana esiintyy kirjoittajan nimimerkissä");
+                    palauta3.append("Hakusana esiintyy kirjoittajan nimimerkissä (ainakin tässä linkissä)");
                     palauta3.append("</a>");
                     palauta3.append("</p>");
                 }
@@ -107,19 +107,19 @@ public class HakuServlet extends HttpServlet {
 //            ***********************************************************************************************
 
             String sql4 = "select keskusteluid, otsikko from viesti where otsikko like ?";
-            PreparedStatement kyselyLause4 = con.prepareStatement(sql2);
-            kyselyLause3.setString(1, haettava);
+            PreparedStatement kyselyLause4 = con.prepareStatement(sql4);
+            kyselyLause4.setString(1, haettava);
             ResultSet kyselynTulos4 = kyselyLause4.executeQuery();
 
             while (kyselynTulos4.next()) {
-                String tulosTeksti = kyselynTulos4.getString("otsikko");
-                int tulosID = kyselynTulos4.getInt("keskusteluid");
+                String tulosTeksti4 = kyselynTulos4.getString("otsikko");
+                int tulosID4 = kyselynTulos4.getInt("keskusteluid");
 
-                if (haettava.contains(tulosTeksti)) {
+                if (haettava.contains(tulosTeksti4)) {
                     palauta4.append("<p>");
 // Tee palautus URL --> joka hakee keskustelu/keskusteluID
                     palauta4.append("<a href='LOREM_IPSUS' target=_blank>");
-                    palauta4.append("Hakusana esiintyy viestin otsikossa");
+                    palauta4.append("Hakusana esiintyy viestin otsikossa (ainakin tässä linkissä)");
                     palauta4.append("</a>");
                     palauta4.append("</p>");
                 }
@@ -128,19 +128,19 @@ public class HakuServlet extends HttpServlet {
 //            ***********************************************************************************************
 
             String sql5 = "select keskusteluid, viesti from viesti where viesti like ?";
-            PreparedStatement kyselyLause5 = con.prepareStatement(sql2);
-            kyselyLause5.setString(1, haettava);
+            PreparedStatement kyselyLause5 = con.prepareStatement(sql5);
+            kyselyLause5.setString(1, "%"+haettava+"%");
             ResultSet kyselynTulos5 = kyselyLause5.executeQuery();
 
             while (kyselynTulos5.next()) {
-                String tulosTeksti = kyselynTulos5.getString("viesti");
-                int tulosID = kyselynTulos5.getInt("keskusteluid");
+                String tulosTeksti5 = kyselynTulos5.getString("viesti");
+                int tulosID5 = kyselynTulos5.getInt("keskusteluid");
 
-                if (haettava.contains(tulosTeksti)) {
+                if (haettava.contains(tulosTeksti5)) {
                     palauta5.append("<p>");
 // Tee palautus URL --> joka hakee keskustelu/keskusteluID
                     palauta5.append("<a href='LOREM_IPSUS' target=_blank>");
-                    palauta5.append("Hakusana esiintyy viestin leipätekstissä");
+                    palauta5.append("Hakusana esiintyy viestin leipätekstissä (ainakin tässä linkissä)");
                     palauta5.append("</a>");
                     palauta5.append("</p>");
                 }
@@ -150,19 +150,19 @@ public class HakuServlet extends HttpServlet {
 
 
             String sql6 = "select keskusteluid, vastaus from viesti where vastaus like ?";
-            PreparedStatement kyselyLause6 = con.prepareStatement(sql2);
-            kyselyLause5.setString(1, haettava);
+            PreparedStatement kyselyLause6 = con.prepareStatement(sql6);
+            kyselyLause6.setString(1, haettava);
             ResultSet kyselynTulos6 = kyselyLause5.executeQuery();
 
             while (kyselynTulos6.next()) {
-                String tulosTeksti = kyselynTulos6.getString("vastaus");
-                int tulosID = kyselynTulos6.getInt("keskusteluid");
+                String tulosTeksti6 = kyselynTulos6.getString("vastaus");
+                int tulosID6 = kyselynTulos6.getInt("keskusteluid");
 
-                if (haettava.contains(tulosTeksti)) {
+                if (haettava.contains(tulosTeksti6)) {
                     palauta6.append("<p>");
 // Tee palautus URL --> joka hakee keskustelu/keskusteluID
                     palauta6.append("<a href='LOREM_IPSUS' target=_blank>");
-                    palauta6.append("Hakusana esiintyy viestiketjun vastauksessa");
+                    palauta6.append("Hakusana esiintyy viestiketjun vastauksessa (ainakin tässä linkissä)");
                     palauta6.append("</a>");
                     palauta6.append("</p>");
                 }
