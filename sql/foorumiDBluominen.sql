@@ -33,7 +33,7 @@ CREATE TABLE `henkilo` (
 );
 
 INSERT INTO `henkilo` VALUES(
-1, 'root', 'admin', 'Mestari', 'Pääylläpitäjä', 'admin');
+1, 'root', 'admin', 'super', 'Pääylläpitäjä', 'admin');
 
 INSERT INTO `henkilo` VALUES(
 2, 'anonymous', '', 'Anonyymi', 'Anonyymi käyttäjä, ei kirjautunut', NULL);
