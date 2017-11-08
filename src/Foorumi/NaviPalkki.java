@@ -10,17 +10,21 @@ public class NaviPalkki {
 
     //HUOM!! Metodin lisäksi tulee luoda 1 </div> tägi ennen koko sivun sulkemista!
     public static void luoNaviPalkki(HttpServletRequest request, HttpServletResponse response, String title) throws IOException {
+
         PrintWriter out = response.getWriter();
-//Tämä tulostaa keskustelualustan pohjan
+
+        // Tulostaa HTML-koodit Contentin alkuun asti
         response.setContentType("text/html");
+
         HttpSession session = request.getSession(false);
+
         out.println("<html>");
         out.println("<head>");
 
         out.println("<title>"+title+"</title>");
 
         out.println(
-                "<style> td {word-break: break-all; } " +
+                "<style> body {margin-left: 0px;} td {word-break: break-all; } " +
                         "#content {position: relative; left: 260px; width: 80%;} " +
                         "#content {position: relative; left: 260px; width: 80%;} " +
                         "nav {position: fixed; top: 0; width: 240px; height: 100%; font-family: Georgia; " +
