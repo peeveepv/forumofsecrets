@@ -192,7 +192,9 @@ public class NaytaKeskustelu extends HttpServlet {
 
                 out.println("</table>");
 
-                out.println("<hr style='width: 40%; left: 50px;'>");
+                out.println("<br>");
+                out.println("<hr>");
+                out.println("<br>");
 
                 int kirjoittajaID = 2; //Tähän tulee .getSession Metodi
 
