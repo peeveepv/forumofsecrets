@@ -17,7 +17,28 @@ public class Kayttaja extends HttpServlet{
     DataSource ds;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response){
+        try (PrintWriter out = response.getWriter()) {
 
+            try (Connection con = ds.getConnection()) {
+                response.setContentType("text/html");
+                out.println("<html>\n" +
+                        "<head>\n" +
+                        "<title>Rekisteröityminen</title>\n" +
+                        "</head>\n" +
+                        "<body>\n" +
+                        "<form method=\"post\">\n" +
+                        "<input type=\"text\" name=\"tunnus\"> Käyttäjätunnus</input><br>\n" +
+                        " <input type=\"text\" name=\"salasana\"> Salasana</input><br>\n" +
+                        " <input type=\"submit\" value=\"OK\"/>\n" +
+                        "</form>\n" +
+                        "</body>\n" +
+                        "</html>");
+            } catch (SQLException e){
+                out.println(e.getMessage());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
