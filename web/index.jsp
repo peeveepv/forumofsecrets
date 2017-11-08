@@ -85,7 +85,7 @@
         <ul>
             <li><a href="KeskustelujaViestitServlet">Keskustelujen lista</a></li>
             <li><a href="NaytaKeskustelu">Yksittäisen keskustelun sivu</a></li>
-            <li></li>
+            <li><a href="http://localhost:8080/hakukone">Hakukone</a></li>
             <li><a href="Login">Kirjautuminen</a></li>
             <li><a href="/Kayttaja">Rekisteröityminen</a></li>
             <li><a href="Profiili">Profiili</a></li>
