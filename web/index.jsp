@@ -1,4 +1,4 @@
-<%-- Created by IntelliJ IDEA. --%>
+<%-- Created by we the people --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 
@@ -9,14 +9,16 @@
     <style>
 
         #content {
-            display: inline;
+            position: relative;
+            left: 260px;
             width: 80%;
         }
 
         nav {
             position: fixed;
             top: 0;
-            width: 15%;
+            width: 240px;
+            height: 100%;
             font-family: Georgia;
             background-color: #333;
             float: left;
@@ -54,6 +56,7 @@
 
     <nav>
 
+        <span></span>
         <span style="font-size: 120%"><strong>KISSAFOORUMI</strong></span>
         <span></span>
 
