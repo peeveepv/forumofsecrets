@@ -109,72 +109,7 @@ public class NaytaKeskustelu extends HttpServlet {
                     );
                 }
 
-                //Tämä tulostaa keskustelualustan pohjan
-                res.setContentType("text/html");
-
-                out.println("<html>");
-                out.println("<head>");
-
-                out.println("<title>Kaikki viestit</title>");
-
-                out.println(
-                    "<style> td {word-break: break-all; } " +
-                            "#content {position: relative; left: 260px; width: 80%;} " +
-                            "#content {position: relative; left: 260px; width: 80%;} " +
-                            "nav {position: fixed; top: 0; width: 240px; height: 100%; font-family: Georgia; " +
-                            "background-color: #333; float: left; clear: left; display: inline; } " +
-                            "nav a, nav span {display: block; padding: 14px 16px; color: antiquewhite; text-shadow: none; " +
-                            "text-decoration: none;} .active {background-color: dimgrey;} " +
-                            "nav a:active, nav a:visited {color: antiquewhite; text-shadow: none;} " +
-                            "nav a:hover {background-color: #111;} " +
-                    "</style>"
-                );
-
-                out.println("</head>");
-
-                out.println("<body>");
-
-                out.println(
-                    "<nav> " +
-                            "<span></span>" +
-                            "<span style='font-size: 120%'><a href='index.jsp'><strong>Forum of Secrets</strong></a></span>" +
-                            "<span></span>" +
-                            "<a href='/KeskustelujaViestitServlet'>Keskustelut</a>" +
-                            "<span></span>"
-                );
-
-                if (session == null
-                        || session.getAttribute("kayttajanimi") == null
-                        || "anonymous".equals(session.getAttribute("kayttajanimi"))) {
-
-                    out.println("<a href='/Login'>Kirjautuminen</a>");
-                    out.println("<a href='/Kayttaja'>Rekisteröityminen</a>");
-
-                } else {
-
-                    out.println("<span style='font-size: 80%'><i>Tällä hetkellä kirjautuneena:</i>");
-
-                    if (session.getAttribute("nimimerkki") == null) {
-                        out.println(session.getAttribute("kayttajanimi"));
-                    } else {
-                        out.println(session.getAttribute("nimimerkki"));
-                    }
-
-                    out.println("</span>");
-
-                    out.println("<a href='/Profiili'>Profiili</a>");
-                    out.println("<a href='/Logout'>Uloskirjautuminen</a>");
-
-                }
-
-                out.println(
-                    "<span></span>" +
-                            "<a href='/Hakukone'>Etsi viestejä</a>" +
-                            "<span></span>" +
-                    "</nav>" +
-                    "" +
-                    "<div id='content'>"
-                );
+                NaviPalkki.luoNaviPalkki(req, res, "Viestit");
 
                 out.println("<h1>Keskustelu:<br> " + keskustelunimi + "</h1>");
                 out.println("<h3>Kuvaus: <i>" + keskustelukuvaus + "</i></h3>");
@@ -197,8 +132,9 @@ public class NaytaKeskustelu extends HttpServlet {
                 out.println("<br>");
                 out.println("<hr>");
                 out.println("<br>");
-
-                int kirjoittajaID = (Integer)(session.getAttribute("hloid"));
+                int kirjoittajaID = 2;
+                if(session.getAttribute("hloid")!= null)
+                kirjoittajaID = (Integer)(session.getAttribute("hloid"));
                 //String kirjoittajaI = (String) session.getAttribute("hloid");
                 //out.print(kirjoittajaID);
                 ///out.print(kirjoittajaI);
@@ -206,8 +142,8 @@ public class NaytaKeskustelu extends HttpServlet {
                 out.println("<form method='post' id=1>");
                 out.println("<input type=submit  value='Lisää uusi viesti'> <p></p>");
                 out.println("<input type=text name='otsikko' value='otsikko'><br>");
-                out.println("<input type=text name='kirjoittaja' value=" +kirjoittajaID + ">");
-                out.println("<input type=text name='keskusteluid' value=" + keskusteluid + ">");
+                out.println("<input type=hidden name='kirjoittaja' value=" +kirjoittajaID + ">");
+                out.println("<input type=hidden name='keskusteluid' value=" + keskusteluid + ">");
                 out.println("</form>");
                 out.println("<textarea form=1 name='viesti' value='viesti' row=5 column=10></textarea>");
 
