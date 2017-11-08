@@ -29,7 +29,6 @@ public class HakuServlet extends HttpServlet {
 
         String haettava = (String) request.getParameter("haettava");
 
-
         StringBuilder palauta1 = new StringBuilder();
         StringBuilder palauta2 = new StringBuilder();
         StringBuilder palauta3 = new StringBuilder();
