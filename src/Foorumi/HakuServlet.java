@@ -42,14 +42,17 @@ public class HakuServlet extends HttpServlet {
 
             String sql1 = "select keskusteluid, nimi from keskustelu where nimi like ?";
             PreparedStatement kyselyLause1 = con.prepareStatement(sql1);
-            kyselyLause1.setString(1, "%" + haettava + "%");
+StringBuilder apu1 = new StringBuilder();
+            apu1.append(haettava);
+            apu1.append("%");
+kyselyLause1.setString(1, apu1.toString());
             ResultSet kyselynTulos1 = kyselyLause1.executeQuery();
 
             while (kyselynTulos1.next()) {
                 String tulosTeksti1 = kyselynTulos1.getString("nimi");
                 int tulosID1 = kyselynTulos1.getInt("keskusteluid");
 
-                if (haettava.contains(tulosTeksti1)) {
+                if (tulosTeksti1.equalsIgnoreCase(haettava)) {
                     palauta1.append("<p>");
 
 //      Tee palautus URL --> joka näyttää haetun keskustelun ruudulle tulostettavaksi
@@ -77,7 +80,7 @@ public class HakuServlet extends HttpServlet {
                 String tulosTeksti2 = kyselynTulos2.getString("kuvaus");
                 int tulosID2 = kyselynTulos2.getInt("keskusteluid");
 
-                if (haettava.contains(tulosTeksti2)) {
+                if (tulosTeksti2.equalsIgnoreCase(haettava)) {
                     palauta2.append("<p>");
 // Tee palautus URL --> joka hakee keskustelu/keskusteluID
                     palauta2.append("<a href='/NaytaKeskustelu?KeskusteluId=");
@@ -102,7 +105,7 @@ public class HakuServlet extends HttpServlet {
                 String tulosTeksti3 = kyselynTulos3.getString("kirjoittaja");
                 int tulosID3 = kyselynTulos3.getInt("keskusteluid");
 
-                if (haettava.contains(tulosTeksti3)) {
+                if (tulosTeksti3.equalsIgnoreCase(haettava)) {
                     palauta3.append("<p>");
 // Tee palautus URL --> joka hakee keskustelu/keskusteluID
                     palauta3.append("<a href='/NaytaKeskustelu?KeskusteluId=");
@@ -127,7 +130,7 @@ public class HakuServlet extends HttpServlet {
                 String tulosTeksti4 = kyselynTulos4.getString("otsikko");
                 int tulosID4 = kyselynTulos4.getInt("keskusteluid");
 
-                if (haettava.contains(tulosTeksti4)) {
+                if (tulosTeksti4.equalsIgnoreCase(haettava)) {
                     palauta4.append("<p>");
 // Tee palautus URL --> joka hakee keskustelu/keskusteluID
                     palauta4.append("<a href='/NaytaKeskustelu?KeskusteluId=");
@@ -151,7 +154,7 @@ public class HakuServlet extends HttpServlet {
                 String tulosTeksti5 = kyselynTulos5.getString("viesti");
                 int tulosID5 = kyselynTulos5.getInt("keskusteluid");
 
-                if (haettava.contains(tulosTeksti5)) {
+                if (tulosTeksti5.equalsIgnoreCase(haettava)) {
                     palauta5.append("<p>");
 // Tee palautus URL --> joka hakee keskustelu/keskusteluID
                     palauta5.append("<a href='/NaytaKeskustelu?KeskusteluId=");
@@ -176,7 +179,7 @@ public class HakuServlet extends HttpServlet {
                 String tulosTeksti6 = kyselynTulos6.getString("vastaus");
                 int tulosID6 = kyselynTulos6.getInt("keskusteluid");
 
-                if (haettava.contains(tulosTeksti6)) {
+                if (tulosTeksti6.equalsIgnoreCase(haettava)) {
                     palauta6.append("<p>");
 // Tee palautus URL --> joka hakee keskustelu/keskusteluID
                     palauta6.append("<a href='/NaytaKeskustelu?KeskusteluId=");
