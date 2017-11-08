@@ -18,46 +18,51 @@ import java.sql.SQLException;
 public class Profiilisivu extends HttpServlet{
     @Resource(name = "jdbc/Foorumi")
     DataSource ds;
+    String kayttajanimi ="";
+    String nimimerkki = "";
+    String kuvaus ="";
 
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
-        doGet(req, res);
     }
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        ResultSet rs = null;
-        try {
-            Connection con = ds.getConnection();
-            haeTiedot(con, rs);
-            try (PrintWriter out = res.getWriter()) {
-                String nimi = rs.getString("kayttajanimi");
-                res.setContentType("text/html");
-                out.println("<html>" +
+//        ResultSet rs = null;
+
+        try (Connection con = ds.getConnection()){
+            String apuNimi = "testi";
+            String haeTiedot = "SELECT * from henkilo where kayttajanimi=?";
+            PreparedStatement ps = con.prepareStatement(haeTiedot);
+            ps.setString(1,apuNimi);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                kayttajanimi = rs.getString("kayttajanimi");
+                nimimerkki = rs.getString("nimimerkki");
+                kuvaus = rs.getString("kuvaus");
+            }
+            PrintWriter out = res.getWriter();
+//            String nimi = rs.getString("kayttajanimi");
+            res.setContentType("text/html");
+            out.println("<html>" +
                         "<head>" +
                         "<title>Profiilisivu</title>" +
                         "</head>" +
-                        "<p>" + nimi + "</p>" +
+                        "<h2> Profiilin tiedot </h2>" +
+                        "<form method=\"post\">" +
+                        "<p>Käyttäjänimi: " + kayttajanimi +
+                        "<br>Nimimerkki: " + "<input type=\"text\" name=\"nimimerkki\" value=" + nimimerkki + "></input>" +
+                        "<br>Kuvaus: " + "<input type=\"text\" name=\"kuvaus\" value=" + kuvaus + "></input>" +
+                        "<br><input type=\"submit\" value=\"Päivitä\"/>" +
                         "<body>" +
                         "</body>" +
                         "</html>");
-            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
     }
-    private void haeTiedot(Connection con, ResultSet rs){
-    String kayttajannimi = "testi";
-    String haeTiedot = "SELECT * from henkilo where 'kayttajanimi'= ?";
-        PreparedStatement ps = null;
-        try {
-            ps = con.prepareStatement(haeTiedot);
-            ps.setString(1,kayttajannimi);
-            rs = ps.executeQuery();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        }
+//    private void haeTiedot(Connection con, ResultSet rs) throws SQLException {
+//
+//        }
     }
 
