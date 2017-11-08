@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 
-@WebServlet(name = "Foorumi/Kayttaja", urlPatterns = {"/Foorumi/Kayttaja"})
+@WebServlet(name = "Kayttaja", urlPatterns = {"/Kayttaja"})
 public class Kayttaja extends HttpServlet{
     @Resource(name = "jdbc/Foorumi")
     DataSource ds;

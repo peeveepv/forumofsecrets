@@ -1,5 +1,6 @@
 package Foorumi;
 
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -71,7 +72,15 @@ public class NaytaKeskustelu extends HttpServlet {
 
             try (Connection con = ds.getConnection()) {
 
-                int keskusteluid = Integer.parseInt(req.getParameter("KeskusteluId"));
+                HttpSession session = req.getSession(false);
+
+                int keskusteluid;
+
+                if (req.getParameter("keskusteluid") != null) {
+                    keskusteluid = Integer.parseInt(req.getParameter("KeskusteluId"));
+                } else {
+                    keskusteluid = 1;
+                }
 
                 String sql = "SELECT * FROM viesti WHERE keskusteluid = " + keskusteluid + " ORDER BY kirjoitettu ASC;";
                 PreparedStatement ps = con.prepareStatement(sql);
@@ -102,29 +111,91 @@ public class NaytaKeskustelu extends HttpServlet {
 
                 //Tämä tulostaa keskustelualustan pohjan
                 res.setContentType("text/html");
+
                 out.println("<html>");
                 out.println("<head>");
-                out.println("<title>Kaikki viestit</title>");
-                out.println("<style>");
-                out.println("p { word-break: break-all }");
-                out.println("</style>");
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1>Keskustelu:<br> " + keskustelunimi + "</h1>");
-                out.println("<h3><i> Keskustelun kuvaus: " + keskustelukuvaus + "</i></h3>");
 
-                //Tämä tulostaa viestit tietokannasta haetusta resultseti
-                while (rsviestit.next()) {
-                    out.println("<p style=wraparound> Otsikko: "
-                            + rsviestit.getString("otsikko")
-                            + " <br>"
-                            + "Kirjoittaja: " + kirjoittajat.get(rsviestit.getInt("kirjoittaja")+"<br>")
-                            + "<br>"
-                            + "Viesti: " + rsviestit.getString("viesti")
-                            + "</p>");
+                out.println("<title>Kaikki viestit</title>");
+
+                out.println(
+                    "<style> p {word-break: break-all;} " +
+                            "#content {position: relative; left: 260px; width: 80%;} " +
+                            "nav {position: fixed; top: 0; width: 240px; height: 100%; font-family: Georgia; " +
+                            "background-color: #333; float: left; clear: left; display: inline; } " +
+                            "nav a, nav span {display: block; padding: 14px 16px; color: antiquewhite; text-shadow: none; " +
+                            "text-decoration: none;} .active {background-color: dimgrey;} " +
+                            "nav a:active, nav a:visited {color: antiquewhite; text-shadow: none;} " +
+                            "nav a:hover {background-color: #111;} " +
+                    "</style>"
+                );
+
+                out.println("</head>");
+
+                out.println("<body>");
+
+
+                out.println(
+                    "<nav> " +
+                            "<span></span>" +
+                            "<span style='font-size: 120%'><strong>Forum of Secrets</strong></span>" +
+                            "<span></span>" +
+                            "<a href='/KeskustelujaViestitServlet'>Keskustelujen lista</a>" +
+                            "<a href='/NaytaKeskustelu'>Yksittäisen keskustelun sivu</a>" +
+                            "<span></span>"
+                );
+
+                if (session == null
+                        || session.getAttribute("kayttajanimi") == null
+                        || "anonymous".equals(session.getAttribute("kayttajanimi"))) {
+
+                    out.println("<a href='/Login'>Kirjautuminen</a>");
+                    out.println("<a href='/Kayttaja'>Rekisteröityminen</a>");
+
+                } else {
+
+                    out.println("<span><i>Tällä hetkellä kirjautuneena:</i><span>");
+                    out.println("<span>" + session.getAttribute("kayttajanimi") + "</span>");
+                    out.println("<span></span>");
+
+                    out.println("<a href='/Profiili'>Profiili</a>");
+                    out.println("<a href='/Logout'>Uloskirjautuminen</a>");
+
                 }
 
+                out.println(
+                    "<span></span>" +
+                            "<a href='/Hakukone'>Etsi viestejä</a>" +
+                            "<span></span>" +
+                    "</nav>" +
+                    "" +
+                    "<div id='content'>"
+                );
+
+                out.println("<h1>Keskustelu:<br> " + keskustelunimi + "</h1>");
+                out.println("<h3>Kuvaus: <i>" + keskustelukuvaus + "</i></h3>");
+
+                out.println("<table>");
+
+                //Tämä tulostaa viestit tulosjoukosta rsviestit
+                while (rsviestit.next()) {
+                    out.println("<tr>");
+                        out.println("<td style='width: 80px'>Otsikko:</td><td style=wraparound>" + rsviestit.getString("otsikko") + "</td>");
+                    out.println("</tr>");
+                    out.println("<tr>");
+                        out.println("<td style='width: 80px'>Kirjoittaja:</td><td style=wraparound>" + kirjoittajat.get(rsviestit.getInt("kirjoittaja")) + "</td>");
+                    out.println("</tr>");
+                    out.println("<tr>");
+                        out.println("<td style='width: 80px'>Viesti:</td><td style=wraparound>" + rsviestit.getString("viesti") + "</td>");
+                    out.println("</tr>");
+                    out.println("<br>");
+                }
+
+                out.println("</table>");
+
+                out.println("<hr style='width: 40%; left: 50px;'>");
+
                 int kirjoittajaID = 2; //Tähän tulee .getSession Metodi
+
                 //Tässä on lomake uuden viestin luomiseen
                 out.println("<form method='post' id=1>");
                 out.println("<input type=submit  value='Lisää uusi viesti'> </br>");
@@ -135,6 +206,9 @@ public class NaytaKeskustelu extends HttpServlet {
                 out.println("<textarea form=1 name='viesti' value='viesti' row=5 column=10></textarea>");
 
                 out.println("<p>Back to the <a href='index.jsp'>index</a></p>");
+
+                out.println("</div>");
+
                 out.println("</body>");
                 out.println("</html>");
 

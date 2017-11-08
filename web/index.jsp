@@ -70,7 +70,7 @@
                     || "anonymous".equals(session.getAttribute("kayttajanimi"))) {
 
                 out.println("<a href='/Login'>Kirjautuminen</a>");
-                out.println("<a href='Kayttaja.jsp'>Rekisteröityminen</a>");
+                out.println("<a href='/Kayttaja'>Rekisteröityminen</a>");
 
             } else {
 
@@ -92,6 +92,8 @@
     </nav>
 
     <div id="content">
+
+        <h1>Index sisältöä...</h1>
 
         <p><a href="KeskustelujaViestitServlet">Keskusteluihin</a></p>
 
