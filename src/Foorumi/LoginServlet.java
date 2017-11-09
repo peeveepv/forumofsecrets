@@ -42,9 +42,13 @@ public class LoginServlet extends HttpServlet {
 
 //                Henkilo hlo = null;
 
+                boolean rsempty = true;
+
                 while (rs.next()) {
 
                     if (req.getParameter("password").equals(rs.getString("salasana"))) {
+
+                        rsempty = false;
 
                         HttpSession session = req.getSession(true);
 
@@ -65,21 +69,27 @@ public class LoginServlet extends HttpServlet {
 
                         res.setContentType("text/html");
 
-                        NaviPalkki.luoNaviPalkki(req, res, "Kirjaudu Sisään");
+                        NaviPalkki.luoNaviPalkki(req, res, "Kirjautuminen");
+
                         out.println("<br>");
                         out.println("<br>");
                         out.println("<br>");
-                        out.println("<h3 style='text-align: center;'>Kirjautuminen onnistui, jatka <a href='index.jsp'>kotisivulle</a> tai <a href='/KeskustelujaViestitServlet'>keskusteluihin</a></h3>");
+                        out.println("<h3 style='text-align: center; color: antiquewhite;'>Kirjautuminen onnistui, jatka <a href='index.jsp'>kotisivulle</a> tai <a href='/KeskustelujaViestitServlet'>keskusteluihin</a></h3>");
 
                         out.println("</div>");
 
                         out.println("</body>");
                         out.println("</html>");
 
-                    } else {
-                        req.setAttribute("loginfailed", "failed");
-                        doGet(req, res);
                     }
+
+                }
+
+                if (rsempty) {
+
+                    req.setAttribute("loginfailed", "failed");
+                    tulostaKirjautuminen(req, res);
+
                 }
 
             } catch (
@@ -93,32 +103,38 @@ public class LoginServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
+        tulostaKirjautuminen(req, res);
+
+    }
+
+    private void tulostaKirjautuminen(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+
         try (PrintWriter out = res.getWriter()) {
 
-            HttpSession session = req.getSession(false);
-
             // tulostaa navipalkin
-            NaviPalkki.luoNaviPalkki(req, res, "Viestit");
+            NaviPalkki.luoNaviPalkki(req, res, "Kirjautuminen");
 
-            out.println("<form method='post' style='width: 400px; position: relative; top: 70px; left: 8%;'><fieldset>");
+            out.println("<form method='post' style='width: 400px; position: relative;" +
+                    "top: 70px; left: 8%;'>" +
+                    "<fieldset>");
 
             out.println("<legend>Kirjautuminen</legend>");
 
             out.println("<table>");
-                out.println("<tr>");
-                    out.println("<td style='width: 120px'><label for='username'>Käyttäjänimi</legend></td>");
-                    out.println("<td><input type='text' name='username' focus></td>");
-                out.println("</tr>");
-                out.println("<tr>");
-                    out.println("<td style='width: 120px'><label for='password'>Salasana</legend></td>");
-                    out.println("<td><input type='password' name='password'></td>");
-                out.println("</tr>");
-                out.println("<tr>");
-                    out.println("<td><input type='submit' value='Kirjaudu'></td>");
-                out.println("</tr>");
+            out.println("<tr>");
+            out.println("<td style='width: 120px'><label for='username'>Käyttäjänimi</legend></td>");
+            out.println("<td><input type='text' name='username' focus></td>");
+            out.println("</tr>");
+            out.println("<tr>");
+            out.println("<td style='width: 120px'><label for='password'>Salasana</legend></td>");
+            out.println("<td><input type='password' name='password'></td>");
+            out.println("</tr>");
+            out.println("<tr>");
+            out.println("<td><input type='submit' value='Kirjaudu'></td>");
+            out.println("</tr>");
             out.println("</table>");
 
-            if ("failed".equals((String) req.getAttribute("loginfailed"))) {
+            if ("failed".equals((String)req.getAttribute("loginfailed"))) {
                 out.println("<span style='color: red; font-weight: bold;'>   Tunnus tai salasana oli väärin, yritä uudestaan!</span>");
             }
 
@@ -130,6 +146,5 @@ public class LoginServlet extends HttpServlet {
             out.println("</html>");
 
         }
-
     }
 }
