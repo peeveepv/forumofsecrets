@@ -8,7 +8,14 @@
 
     <style>
 
-        body {margin-left: 0px;}
+        body {
+            margin-left: 0px;
+            background: url("img/candle_secret.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-color: #333;
+        }
 
         #content {
             position: relative;
@@ -100,9 +107,7 @@
 
     <div id="content">
 
-        <h1>Index sisältöä...</h1>
-
-
+        <!-- mahdollista index-sisältöä -->
 
     </div>
 

@@ -175,6 +175,12 @@ StringBuilder apu4 = new StringBuilder("%" + haettava + "%");
 
             ResultSet kyselynTulos5 = kyselyLause5.executeQuery();
 
+            palauta5.append("<p>");
+            palauta5.append("<fieldset>");
+            palauta5.append("<legend>Yksittäisten viestien leipäteksteissä</legend>");
+
+            int index5 = 1;
+
             while (kyselynTulos5.next()) {
                 String tulosTeksti5 = kyselynTulos5.getString("viesti");
                 int tulosID5 = kyselynTulos5.getInt("keskusteluid");
@@ -184,11 +190,14 @@ StringBuilder apu4 = new StringBuilder("%" + haettava + "%");
                     palauta5.append(tulosID5);
                     palauta5.append("'>");
 
-                    palauta5.append("Hakusana esiintyy viestin leipätekstissä (ainakin tässä linkissä)");
+                    palauta5.append(index5);
+                    palauta5.append(". hakutulos");
                     palauta5.append("</a>");
                     palauta5.append("</p>");
-
+                    index5++;
             }
+            palauta5.append("</fieldset>");
+
 
             //            ***********************************************************************************************
 
@@ -200,6 +209,12 @@ StringBuilder apu6 = new StringBuilder("%" + haettava + "%");
 
             ResultSet kyselynTulos6 = kyselyLause5.executeQuery();
 
+            palauta6.append("<p>");
+            palauta6.append("<fieldset>");
+            palauta6.append("<legend>Yksittäisen keskustelusäikeen vastauksissa</legend>");
+
+            int index6 = 1;
+
             while (kyselynTulos6.next()) {
                 String tulosTeksti6 = kyselynTulos6.getString("vastaus");
                 int tulosID6 = kyselynTulos6.getInt("keskusteluid");
@@ -209,11 +224,13 @@ StringBuilder apu6 = new StringBuilder("%" + haettava + "%");
                     palauta6.append(tulosID6);
                     palauta6.append("'>");
 
-                    palauta6.append("Hakusana esiintyy viestiketjun vastauksessa (ainakin tässä linkissä)");
+                    palauta6.append(index6);
+                    palauta6.append(". hakutulos");
                     palauta6.append("</a>");
                     palauta6.append("</p>");
-
+                index6++;
             }
+            palauta6.append("</fieldset>");
 
             //            ***********************************************************************************************
 

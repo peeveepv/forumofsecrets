@@ -20,31 +20,36 @@ public class Kayttaja extends HttpServlet{
         try (PrintWriter out = response.getWriter()) {
 
             try (Connection con = ds.getConnection()) {
-                response.setContentType("text/html");
-                out.println("<html>\n" +
-                        "<head>\n" +
-                        "<title>Rekisteröityminen</title>\n" +
-                        "</head>\n" +
-                        "<body>\n");
-                out.println("<form method='post' style='width: 400px; position: relative; top: 70px; left: 8%;'><fieldset>");
+
+
+                NaviPalkki.luoNaviPalkki(request, response, "Rekisteröityminen");
+
+                out.println("<form method='post' style='width: 400px; position: relative;" +
+                        "top: 70px; left: 8%;'>" +
+                        "<fieldset>");
+
                 out.println("<legend>Rekisteröityminen</legend>");
+
                 out.println("<table>");
-                out.println("<tr>");
-                out.println("<td style='width: 120px'><label for='tunnus'>Käyttäjänimi</legend></td>");
-                out.println("<td><input type='text' name='tunnus' focus></td>");
-                out.println("</tr>");
-                out.println("<tr>");
-                out.println("<td style='width: 120px'><label for='salasana'>Salasana</legend></td>");
-                out.println("<td><input type='password' name='salasana'></td>");
-                out.println("</tr>");
-                out.println("<tr>");
-                out.println("<td><input type='submit' value='Rekisteröi'></td>");
-                out.println("</tr>");
+                    out.println("<tr>");
+                       out.println("<td style='width: 120px'><label for='tunnus'>Käyttäjänimi</legend></td>");
+                       out.println("<td><input type='text' name='tunnus' focus></td>");
+                    out.println("</tr>");
+                    out.println("<tr>");
+                       out.println("<td style='width: 120px'><label for='salasana'>Salasana</legend></td>");
+                       out.println("<td><input type='password' name='salasana'></td>");
+                    out.println("</tr>");
+                    out.println("<tr>");
+                       out.println("<td><input type='submit' value='Rekisteröi'></td>");
+                    out.println("</tr>");
                 out.println("</table>");
-                out.println("</fieldset></form>"+
-                        "</form>\n" +
-                        "</body>\n" +
+
+                out.println("</fieldset>"+
+                        "</form>" +
+                        "</div>" +
+                        "</body>" +
                         "</html>");
+
             } catch (SQLException e){
                 out.println(e.getMessage());
             }
@@ -68,15 +73,16 @@ public class Kayttaja extends HttpServlet{
                 onnistuiko = "Rekisteröityminen onnistui!";
             }
             //Tulostetaan sivulle miten kävi.
-            response.setContentType("text/html");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Rekisteröityminen</title>");
-            out.println("</head>");
-            out.println("<body><p>" +onnistuiko+ "</p>");
+
+            NaviPalkki.luoNaviPalkki(request, response, "Rekisteröityminen");
+
+            out.println("<p>" +onnistuiko+ "</p>");
             out.println("<p>Back to the <a href='index.jsp'>index</a></p>");
+
+            out.println("</div>");
             out.println("</body>");
             out.println("</html>");
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
