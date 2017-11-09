@@ -59,6 +59,7 @@ public class NaviPalkki {
                        "text-decoration: none;} .active {background-color: dimgrey;} " +
                     "nav a:active, nav a:visited {color: antiquewhite; text-shadow: none;} " +
                     "nav a:hover {background-color: #111;} " +
+                    "table a {text-decoration: none;} " +
                 "</style>"
         );
 
