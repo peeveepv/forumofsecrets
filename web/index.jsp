@@ -8,6 +8,8 @@
 
     <style>
 
+        /* taustan ja content-divin tyylittelyt */
+
         body {
             margin-left: 0px;
             background: url("img/candle_secret.jpg");
@@ -22,6 +24,8 @@
             left: 260px;
             width: 80%;
         }
+
+        /* navipalkin tyylittelyt */
 
         nav {
             position: fixed;
@@ -63,6 +67,8 @@
 <body>
 <div>
 
+    <!-- navipalkki -->
+
     <nav>
 
         <span></span>
@@ -71,6 +77,9 @@
 
         <a href="/KeskustelujaViestitServlet">Keskustelut</a>
         <span></span>
+
+        <!-- jos ei ole sessiota, tulostetaan anonyymi käyttäjänimi sekä linkit kirjautumiseen ja rekisteröitymiseen -->
+        <!-- jos on sessio, tulostetaan nimimerkki/nimi sekä linkit profiilin tarkasteluun ja uloskirjautumiseen -->
 
         <%
             if (session == null
