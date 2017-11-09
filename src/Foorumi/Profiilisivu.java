@@ -17,12 +17,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @WebServlet(name="Profiilisivu", urlPatterns = {"/Profiili"})
-public class Profiilisivu extends HttpServlet{
+public class Profiilisivu extends HttpServlet {
     @Resource(name = "jdbc/Foorumi")
     DataSource ds;
-    String kayttajanimi ="";
+    String kayttajanimi = "";
     String nimimerkki = "";
-    String kuvaus ="";
+    String kuvaus = "";
 
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
@@ -35,8 +35,8 @@ public class Profiilisivu extends HttpServlet{
             Connection con = ds.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, apuNick);
-            ps.setString(2,apuKuvaus);
-            ps.setString(3,kayttajanimi);
+            ps.setString(2, apuKuvaus);
+            ps.setString(3, kayttajanimi);
             ps.executeUpdate();
             HttpSession istunto = req.getSession(false);
 
@@ -47,15 +47,16 @@ public class Profiilisivu extends HttpServlet{
             e.printStackTrace();
         }
         //Tulostetaan sama sivu uusilla tiedoilla.
-        doGet(req,res);
+        doGet(req, res);
     }
+
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
         HttpSession istunto = req.getSession(false);
         String istuntoId;
 
         //Ohjataan kirjautumissivulle mikäli istuntoa ei ole.
-        if (istunto.getAttribute("hloid") == null){
+        if (istunto.getAttribute("hloid") == null) {
             RequestDispatcher rd = req.getRequestDispatcher(
                     "/Login");
             rd.forward(req, res);
@@ -66,96 +67,94 @@ public class Profiilisivu extends HttpServlet{
         istuntoId = istunto.getAttribute("hloid").toString();
 
         //Mikäli sivulle ei tulla parametrin kanssa, asetetaan katsottavaksi profiiliksi oma
-        if (req.getParameter("hloid") == null){
+        if (req.getParameter("hloid") == null) {
             paramId = istuntoId;
         }
-
-        try (Connection con = ds.getConnection()){
+        try (Connection con = ds.getConnection()) {
 
             String haeTiedot = "SELECT * from henkilo where hloid=?";
             PreparedStatement ps = con.prepareStatement(haeTiedot);
-            ps.setString(1,paramId);
+            ps.setString(1, paramId);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 kayttajanimi = rs.getString("kayttajanimi");
                 nimimerkki = rs.getString("nimimerkki");
                 kuvaus = rs.getString("kuvaus");
-            }
-
-            NaviPalkki.luoNaviPalkki(req,res,"Profiilisivu");
-
-            //Tulostetaan sivu sen perusteella onko oikeus muokata vai ei
-            try (PrintWriter out = res.getWriter()) {
-                if (istuntoId.equals(paramId)) {
-                    out.println("<form method='post' style='width: 400px; position: relative; top: 70px; left: 8%;'><fieldset>");
-                    out.println("<legend>Profiilin tiedot</legend>");
-                    out.println(
-                            "<table>" +
-                                "<tr>" +
-                                    "<td style='width: 120px'>" +
-                                        "<label for='kayttajanimi'>Käyttäjänimi: </label>" +
-                                    "</td>" +
-                                    "<td>" + kayttajanimi + "</td>" +
-                                "</tr>" +
-                                "<tr>" +
-                                    "<td style='width: 120px'>" +
-                                        "<label for='nimimerkki'>Nimimerkki: </label>" +
-                                    "</td>"+
-                                    "<td>" +
-                                    "<input type='text' name='nimimerkki' focus value='" + nimimerkki + "'>" +
-                                    "</td>" +
-                                "</tr>"+
-                                "<tr>" +
-                                    "<td style='width: 120px'>" +
-                                        "<label for='kuvaus'>Kuvaus: </label>" +
-                                    "</td>"+
-                                    "<td>" +
-                                        "<input type='text' name='kuvaus' value='" + kuvaus + "'>" +
-                                    "</td>" +
-                                "</tr>" +
-                                "<tr>" +
-                                    "<td>" +
-                                        "<input type='submit' value='Päivitä'>" +
-                                    "</td>" +
-                                "</tr>" +
-                            "</table>" +
-                        "</fieldset>" +
-                        "</form>"+
-                        "</div>" +
-                    "</body>" +
-                    "</html>");
-                } else {
-                    out.println(
-            "<form style='width: 400px; position: relative; top: 70px; left: 8%;'>" +
-                    "<fieldset>" +
-                        "<legend> Profiilin tiedot </legend>" +
-                            "<table>" +
-                                "<tr>" +
-                                    "<td style='width: 120px'>" +
-                                        "<label for='kayttajanimi'>Käyttäjänimi: </label></td><td>" + kayttajanimi +
-                                    "</td>" +
-                    "           </tr>" +
-                                "<tr>" +
-                                    "<td style='width: 120px'>" +
-                                        "<label for='nimimerkki'>Nimimerkki: </label></td><td>" + nimimerkki +
-                                    "</td>" +
-                                "</tr>" +
-                                "<tr>" +
-                                    "<td style='width: 120px'>" +
-                                        "<label for='kuvaus'>Kuvaus: </label>" +
-                                    "</td>" +
-                                    "<td>" + kuvaus + "</td>" +
-                                "</tr>" +
-                            "</table>" +
-                    "</fieldset></div>" +
-                    "</body>" +
-                    "</html>");
-                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        NaviPalkki.luoNaviPalkki(req, res, "Profiilisivu");
+
+            //Tulostetaan sivu sen perusteella onko oikeus muokata vai ei
+            if (istuntoId.equals(paramId)) {
+                tulostaLomake(res);
+            } else{
+                tulostaTiedot(res);
+            }
+        }
+
+
+
+    private void tulostaLomake(HttpServletResponse res) {
+        try (PrintWriter out = res.getWriter()) {
+            out.println("<form method='post' style='width: 400px; position: relative; top: 70px; left: 8%;'><fieldset>");
+            out.println("<legend>Profiilin tiedot</legend>");
+            out.println("<table>" +
+                    "<tr>" +
+                    "<td style='width: 120px'><label for='kayttajanimi'>Käyttäjänimi: </label></td>" +
+                    "<td>" + kayttajanimi + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td style='width: 120px'><label for='nimimerkki'>Nimimerkki: </label></td>" +
+                    "<td><input type='text' name='nimimerkki' focus value='" + nimimerkki + "'></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td style='width: 120px'><label for='kuvaus'>Kuvaus: </label></td>" +
+                    "<td><input type='text' name='kuvaus' value='" + kuvaus + "'></td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td><input type='submit' value='Päivitä'></td>" +
+                    "</tr>" +
+                    "</table>" +
+                    "</fieldset>" +
+                    "</form>" +
+                    "</div>" +
+                    "</body>" +
+                    "</html>");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void tulostaTiedot(HttpServletResponse res){
+        try (PrintWriter out = res.getWriter()) {
+            out.println(
+                "<form style='width: 400px; position: relative; top: 70px; left: 8%;'>" +
+                    "<fieldset>" +
+                        "<legend> Profiilin tiedot </legend>" +
+                            "<table>" +
+                            "<tr>" +
+                            "<td style='width: 120px'><label for='kayttajanimi'>Käyttäjänimi: </label></td>" +
+                            "<td>" + kayttajanimi + "</td>" +
+                            "</tr>" +
+                            "<tr>" +
+                            "<td style='width: 120px'><label for='nimimerkki'>Nimimerkki: </label></td>" +
+                            "<td>" + nimimerkki + "</td>" +
+                            "</tr>" +
+                            "<tr>" +
+                            "<td style='width: 120px'>" + "<label for='kuvaus'>Kuvaus: </label></td>" +
+                            "<td>" + kuvaus +
+                            "</td>" +
+                            "</tr>" +
+                            "</table>" +
+                            "</fieldset>" +
+                            "</div>" +
+                            "</body>" +
+                            "</html>");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
