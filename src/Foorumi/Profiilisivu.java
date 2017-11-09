@@ -82,9 +82,11 @@ public class Profiilisivu extends HttpServlet {
                 nimimerkki = rs.getString("nimimerkki");
                 kuvaus = rs.getString("kuvaus");
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-            NaviPalkki.luoNaviPalkki(req, res, "Profiilisivu");
+        NaviPalkki.luoNaviPalkki(req, res, "Profiilisivu");
 
             //Tulostetaan sivu sen perusteella onko oikeus muokata vai ei
             if (istuntoId.equals(paramId)) {
@@ -93,7 +95,7 @@ public class Profiilisivu extends HttpServlet {
                 tulostaTiedot(res);
             }
         }
-    }
+
 
 
     private void tulostaLomake(HttpServletResponse res) {
