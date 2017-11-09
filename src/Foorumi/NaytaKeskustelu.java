@@ -14,8 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @WebServlet(name = "NaytaKeskustelu", urlPatterns = {"/NaytaKeskustelu"})
 public class NaytaKeskustelu extends HttpServlet {
@@ -29,25 +28,55 @@ public class NaytaKeskustelu extends HttpServlet {
         res.setContentType("text/html");
         PrintWriter out = null;
         Connection con = null;
-        String sql = "INSERT INTO viesti (otsikko, viesti, kirjoittaja ,keskusteluid) VALUES (?, ?, ?, ?)";
-        String keskustelunNimi = req.getParameter("otsikko");
-        String keskustelukuvaus = req.getParameter("viesti");
-        int kirjoittaja = Integer.parseInt(req.getParameter("kirjoittaja"));
-        int keskusteluid = Integer.parseInt(req.getParameter("keskusteluid"));
+        Enumeration nimet = req.getParameterNames();
+        List<String> lista = new ArrayList<>();
+        while(nimet.hasMoreElements()){
+            lista.add((String)nimet.nextElement());
+        }
 
         boolean moi = false;
-        try {
-            con = ds.getConnection();
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setString(1,keskustelunNimi);
-            stmt.setString(2,keskustelukuvaus);
-            stmt.setInt(3,kirjoittaja);
-            stmt.setInt(4,keskusteluid);
-            stmt.executeUpdate();
-            moi = true;
-        } catch (SQLException e) {
-            e.printStackTrace();
 
+        if(lista.contains("vastaus")){
+            String sql = "INSERT INTO viesti (otsikko, viesti, kirjoittaja ,keskusteluid, vastaus) VALUES (vastaus ,?, ?, ?, ?)";
+
+            String viesti = req.getParameter("vastaus");
+            int kirjoittaja = Integer.parseInt(req.getParameter("kirjoittaja"));
+            int keskusteluid = Integer.parseInt(req.getParameter("keskusteluid"));
+            int vastaus = Integer.parseInt(req.getParameter("viestiID"));
+            try {
+                con = ds.getConnection();
+                PreparedStatement stmt = con.prepareStatement(sql);
+                stmt.setString(1, viesti);
+                stmt.setInt(2, kirjoittaja);
+                stmt.setInt(3, keskusteluid);
+                stmt.setInt(4, vastaus);
+                stmt.executeUpdate();
+                moi = true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+
+            }
+        }
+        else {
+            String sql = "INSERT INTO viesti (otsikko, viesti, kirjoittaja ,keskusteluid) VALUES (?, ?, ?, ?)";
+            String keskustelunNimi = req.getParameter("otsikko");
+            String keskustelukuvaus = req.getParameter("viesti");
+            int kirjoittaja = Integer.parseInt(req.getParameter("kirjoittaja"));
+            int keskusteluid = Integer.parseInt(req.getParameter("keskusteluid"));
+
+            try {
+                con = ds.getConnection();
+                PreparedStatement stmt = con.prepareStatement(sql);
+                stmt.setString(1, keskustelunNimi);
+                stmt.setString(2, keskustelukuvaus);
+                stmt.setInt(3, kirjoittaja);
+                stmt.setInt(4, keskusteluid);
+                stmt.executeUpdate();
+                moi = true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+
+            }
         }
         //Jos update onnistuu, niin palataan takaisin doGet-metodiin, siellä näkyy lisätty viesti
         if(moi)
@@ -62,6 +91,7 @@ public class NaytaKeskustelu extends HttpServlet {
         HttpSession session = req.getSession(false);
 
         ResultSet rsviestit = null;
+        ResultSet rsvastaukset = null;
         ResultSet rskeskustelu = null;
         ResultSet rshenkilot = null;
 
@@ -83,6 +113,7 @@ public class NaytaKeskustelu extends HttpServlet {
                 String sql = "SELECT * FROM viesti WHERE keskusteluid = " + keskusteluid + " ORDER BY kirjoitettu ASC;";
                 PreparedStatement ps = con.prepareStatement(sql);
 
+                //haetaan kaksi identtistä
                 rsviestit = ps.executeQuery();
 
                 sql = "SELECT * FROM keskustelu WHERE keskusteluid = " + keskusteluid + ";";
@@ -108,33 +139,65 @@ public class NaytaKeskustelu extends HttpServlet {
                             rshenkilot.getString("nimimerkki")
                     );
                 }
+                int kirjoittajaID = 2;
+                if(session.getAttribute("hloid")!= null)
+                    kirjoittajaID = (Integer)(session.getAttribute("hloid"));
+
 
                 NaviPalkki.luoNaviPalkki(req, res, "Viestit");
 
+
                 out.println("<h1>Keskustelu:<br> " + keskustelunimi + "</h1>");
                 out.println("<h3>Kuvaus: <i>" + keskustelukuvaus + "</i></h3>");
-
-                out.println("<table style='border: 1px solid black'>");
-
                 //Tämä tulostaa viestit tulosjoukosta rsviestit
-                while (rsviestit.next()) {
-                    out.println("<tr>");
-                    out.println("<td style='width: 200px'>"+ kirjoittajat.get(rsviestit.getInt("kirjoittaja")) +
-                            "</td><td style='rowspan: 2'; >"+ rsviestit.getString("viesti") + "</td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<td>"+ rsviestit.getString("otsikko") + "</td><td></td>");
-                    out.println("</tr>");
+
+                List<Viestit> lista = new ArrayList<>();
+                while(rsviestit.next()) {
+                    Viestit olio = new Viestit(rsviestit.getInt("id"),
+                            rsviestit.getInt("kirjoittaja"),
+                            rsviestit.getInt("keskusteluid"),
+                            rsviestit.getString("otsikko"),
+                            rsviestit.getString("viesti"),
+                            rsviestit.getInt("vastaus"),
+                            rsviestit.getDate("kirjoitettu"));
+                    lista.add(olio);
                 }
+                out.println("<table border: 1px solid black>");
+
+
+                for (int i = 0; i <lista.size() ; i++) {
+                    int vastausid = lista.get(i).getVastaus();
+                    if (vastausid == 0) {
+                        out.println("<tr>");
+                        out.println("<td style='width: 200px'> Kirjoittaja: <br>" + kirjoittajat.get(lista.get(i).getKirjoittaja()) +
+                                "</td><td style='width: 200px'> Otsikko: <br>" + lista.get(i).getOtsikko() +
+                                "</td><td style='width: 400px';>" + lista.get(i).getViesti() + "</td><td>");
+
+                        out.println("<form method='post' id=2>");
+                        out.println("<input type=submit  value='Vastaa'>");
+                        out.println("<input type=text name='vastaus' value='vastaus'><br>");
+                        out.println("<input type=hidden name='kirjoittaja' value=" + kirjoittajaID + ">");
+                        out.println("<input type=hidden name='keskusteluid' value=" + keskusteluid + ">");
+                        out.println("<input type=hidden name='viestiID' value=" + lista.get(i).getId() + ">");
+                        out.println("</form>");
+                        if("admin".equals((String)session.getAttribute("rooli"))){
+                            out.println("<br><button><a href='index.jsp'>Poista</a></button>");
+                        }
+                        out.println("</td></tr>");
+                        for (int j = 0; j < lista.size(); j++) {
+                            if (lista.get(j).getVastaus() == lista.get(i).getId()) {
+                                out.println("<tr><td></td><td>Vastauksia</td><td><i style='color:grey'>" + lista.get(i).getViesti() + "</i><br>" + lista.get(j).getViesti() + "</td><td></td></tr>");
+                            }
+                        }
+                    }
+                }
+
 
                 out.println("</table>");
 
                 out.println("<br>");
                 out.println("<hr>");
                 out.println("<br>");
-                int kirjoittajaID = 2;
-                if(session.getAttribute("hloid")!= null)
-                kirjoittajaID = (Integer)(session.getAttribute("hloid"));
                 //String kirjoittajaI = (String) session.getAttribute("hloid");
                 //out.print(kirjoittajaID);
                 ///out.print(kirjoittajaI);
