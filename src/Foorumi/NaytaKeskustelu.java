@@ -183,8 +183,8 @@ public class NaytaKeskustelu extends HttpServlet {
                     int vastausid = lista.get(i).getVastaus();
                     if (vastausid == 0) {
                         out.println("<tr>");
-                        out.println("<td style='width: 200px'> Kirjoittaja: <br>" + kirjoittajat.get(lista.get(i).getKirjoittaja()) +
-                                "</td><td style='width: 200px'> Otsikko: <br>" + lista.get(i).getOtsikko() +
+                        out.println("<td style='width: 200px'> Otsikko: <br>" + lista.get(i).getOtsikko() +
+                                "</td><td style='width: 200px'> Kirjoittaja: <br>" + kirjoittajat.get(lista.get(i).getKirjoittaja()) +
                                 "</td><td style='width: 400px';>" + lista.get(i).getViesti() + "</td><td>");
 
                         out.println("<form method='post' id=2>");
@@ -201,7 +201,7 @@ public class NaytaKeskustelu extends HttpServlet {
                         out.println("</td></tr>");
                         for (int j = 0; j < lista.size(); j++) {
                             if (lista.get(j).getVastaus() == lista.get(i).getId()) {
-                                out.println("<tr><td></td><td>Vastauksia</td><td><i style='color:grey'>" + lista.get(i).getViesti() + "</i><br>" + lista.get(j).getViesti() + "</td><td></td></tr>");
+                                out.println("<tr><td></td><td>"+kirjoittajat.get(lista.get(j).getKirjoittaja())+"</td><td><i style='color:grey'>" + lista.get(i).getViesti() + "</i><br>" + lista.get(j).getViesti() + "</td><td></td></tr>");
                             }
                         }
                     }

@@ -20,6 +20,9 @@ public class KeskustelujaViestitServlet extends HttpServlet {
     @Resource(name = "jdbc/Foorumi")
     DataSource ds;
 
+    @Resource(name = "jdbc/FoorumiDELETE")
+    DataSource dsAdmin;
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         response.setContentType("text/html");
 
@@ -69,18 +72,24 @@ public class KeskustelujaViestitServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        HttpSession session = request.getSession(false);
         List<KeskusteluOlio> lista = Keskustelu.haeKaikkiKeskustelut(con);
 
         try {
             out = response.getWriter();
 
             out.print("<h2>Keskustelut</h2>");
-            out.print("<ul>");
+            out.print("<table>");
+            out.print("<tr><td>Keskustelu</td><td>Keskustelualueen kuvaus: </td></tr>");
 
             for (KeskusteluOlio olio: lista) {
-                out.print("<li> <a href=NaytaKeskustelu?KeskusteluId="+olio.getKeskusteluId()+ ">"
-                        +olio.getNimi() +" </a><br> Keskustelualueen kuvaus: "  + olio.getKuvaus()+ "</li>");
+                out.print("<tr><td> <a href=NaytaKeskustelu?KeskusteluId="+olio.getKeskusteluId()+ ">"
+                        +olio.getNimi() +"</a> </td><td>"  + olio.getKuvaus()+ "</td>");
+                if("admin".equals((String)session.getAttribute("rooli"))){
+                    out.println("<td><form method=post><input type=submit value=poista>" +
+                            "<input type=hidden name=poista value= poista></form></td>");
+                }
+                out.print("</tr>");
             }
             out.print("</ul>");
         } catch (IOException e) {
