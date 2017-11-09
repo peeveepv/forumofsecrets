@@ -27,7 +27,7 @@ public class NaviPalkki {
                 "body {margin-left: 0px;}");
 
         // "secret" background ja form background muille kuin Keskusteluille ja Viesteille
-        if ("Viestit".equals(title) || "Keskustelut".equals(title)) {
+        if ("Viestit".equals(title) || "Keskustelut".equals(title) || "Haun tulos".equals(title)){
         } else {
             out.println(
                     "form {background-color: white;} " +

@@ -23,7 +23,8 @@ public class NaytaKeskustelu extends HttpServlet {
     // import javax.sql.DataSource;
     @Resource(name = "jdbc/Foorumi")
     DataSource ds;
-
+    @Resource(name = "jdbc/FoorumiDELETE")
+    DataSource dsAdmin;
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         res.setContentType("text/html");
         PrintWriter out = null;
@@ -55,6 +56,19 @@ public class NaytaKeskustelu extends HttpServlet {
             } catch (SQLException e) {
                 e.printStackTrace();
 
+            }
+        }else if(lista.contains("poista")){
+            String sql = "DELETE from viesti where id = ?";
+            int id = Integer.parseInt(req.getParameter("poista")); //Palauttaa poistettavan viestin ID:n
+
+            try {
+                con = dsAdmin.getConnection();
+                PreparedStatement stmt = con.prepareStatement(sql);
+                stmt.setInt(1, id);
+                stmt.executeUpdate();
+                moi = true;
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
         else {
@@ -169,8 +183,8 @@ public class NaytaKeskustelu extends HttpServlet {
                     int vastausid = lista.get(i).getVastaus();
                     if (vastausid == 0) {
                         out.println("<tr>");
-                        out.println("<td style='width: 200px'> Kirjoittaja: <br>" + kirjoittajat.get(lista.get(i).getKirjoittaja()) +
-                                "</td><td style='width: 200px'> Otsikko: <br>" + lista.get(i).getOtsikko() +
+                        out.println("<td style='width: 200px'> Otsikko: <br>" + lista.get(i).getOtsikko() +
+                                "</td><td style='width: 200px'> Kirjoittaja: <br>" + kirjoittajat.get(lista.get(i).getKirjoittaja()) +
                                 "</td><td style='width: 400px';>" + lista.get(i).getViesti() + "</td><td>");
 
                         out.println("<form method='post' id=2>");
@@ -181,12 +195,13 @@ public class NaytaKeskustelu extends HttpServlet {
                         out.println("<input type=hidden name='viestiID' value=" + lista.get(i).getId() + ">");
                         out.println("</form>");
                         if("admin".equals((String)session.getAttribute("rooli"))){
-                            out.println("<br><button><a href='index.jsp'>Poista</a></button>");
+                            out.println("<br><form method=post><input type=submit value=poista>" +
+                                    "<input type=hidden name=poista value= "+lista.get(i).getId() +"></form>");
                         }
                         out.println("</td></tr>");
                         for (int j = 0; j < lista.size(); j++) {
                             if (lista.get(j).getVastaus() == lista.get(i).getId()) {
-                                out.println("<tr><td></td><td>Vastauksia</td><td><i style='color:grey'>" + lista.get(i).getViesti() + "</i><br>" + lista.get(j).getViesti() + "</td><td></td></tr>");
+                                out.println("<tr><td></td><td>"+kirjoittajat.get(lista.get(j).getKirjoittaja())+"</td><td><i style='color:grey'>" + lista.get(i).getViesti() + "</i><br>" + lista.get(j).getViesti() + "</td><td></td></tr>");
                             }
                         }
                     }
