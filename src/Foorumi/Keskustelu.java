@@ -9,7 +9,7 @@ import java.util.List;
 public class Keskustelu {
     public static List<KeskusteluOlio> haeKaikkiKeskustelut(Connection con) {
         List<KeskusteluOlio> lista = new ArrayList<KeskusteluOlio>();
-        String sql = "Select * from keskustelu";
+        String sql = "Select * from keskustelu order by keskusteluid DESC";
         ResultSet rs = null;
         try {
             PreparedStatement stmt = con.prepareStatement(sql);
