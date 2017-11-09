@@ -46,19 +46,27 @@ StringBuilder apu1 = new StringBuilder("%" + haettava + "%");
             kyselyLause1.setString(1, apu1.toString());
             ResultSet kyselynTulos1 = kyselyLause1.executeQuery();
 
+            palauta1.append("<p>");
+            palauta1.append("<fieldset>");
+            palauta1.append("<legend>Keskustelujen otsikot</legend>");
+
+            int index1 = 1;
+
             while (kyselynTulos1.next()) {
                 String tulosTeksti1 = kyselynTulos1.getString("nimi");
                 int tulosID1 = kyselynTulos1.getInt("keskusteluid");
 
-                    palauta1.append("<p>");
                     palauta1.append("<a href='/NaytaKeskustelu?KeskusteluId=");
                     palauta1.append(tulosID1);
                     palauta1.append("'>");
-                    palauta1.append("Hakusana esiintyy keskustelun nimessä (otsikkona siis ainakin tässä linkissä)");
+                    palauta1.append(index1);
+                    palauta1.append(". hakutulos");
                     palauta1.append("</a>");
+                    palauta1.append("<br/>");
                     palauta1.append("</p>");
-
+                    index1++;
             }
+            palauta1.append("</fieldset>");
 
 //            ***********************************************************************************************
 
@@ -69,6 +77,12 @@ StringBuilder apu2 = new StringBuilder("%" + haettava + "%");
 
             ResultSet kyselynTulos2 = kyselyLause2.executeQuery();
 
+            palauta2.append("<p>");
+            palauta2.append("<fieldset>");
+            palauta2.append("<legend>Keskustelujen kuvaukset</legend>");
+
+            int index2 = 1;
+
             while (kyselynTulos2.next()) {
                 String tulosTeksti2 = kyselynTulos2.getString("kuvaus");
                 int tulosID2 = kyselynTulos2.getInt("keskusteluid");
@@ -78,12 +92,13 @@ StringBuilder apu2 = new StringBuilder("%" + haettava + "%");
                     palauta2.append(tulosID2);
                     palauta2.append("'>");
 
-                    palauta2.append("Hakusana esiintyy keskustelun kuvauksessa (ainakin tässä linkissä)");
-                    palauta2.append("</a>");
+                    palauta2.append(index2);
+                    palauta2.append(". hakutulos");
                     palauta2.append("</p>");
-
+                    palauta2.append("</a>");
+                    index2++;
             }
-
+            palauta2.append("</fieldset>");
 
 //            ***********************************************************************************************
 
@@ -93,6 +108,12 @@ StringBuilder apu3 = new StringBuilder("%" + haettava + "%");
             kyselyLause3.setString(1, apu3.toString());
 
             ResultSet kyselynTulos3 = kyselyLause3.executeQuery();
+
+            palauta3.append("<p>");
+            palauta3.append("<fieldset>");
+            palauta3.append("<legend>Kirjoittajien nimimerkit</legend>");
+
+            int index3 = 1;
 
             while (kyselynTulos3.next()) {
                 String tulosTeksti3 = kyselynTulos3.getString("kirjoittaja");
@@ -104,12 +125,14 @@ StringBuilder apu3 = new StringBuilder("%" + haettava + "%");
                     palauta3.append(tulosID3);
                     palauta3.append("'>");
 
-                    palauta3.append("Hakusana esiintyy kirjoittajan nimimerkissä (ainakin tässä linkissä)");
+                    palauta3.append(index3);
+                    palauta3.append(". hakutulos");
                     palauta3.append("</a>");
                     palauta3.append("</p>");
-
+                    index3++;
             }
 
+            palauta3.append("</fieldset>");
 
 //            ***********************************************************************************************
 
@@ -120,6 +143,12 @@ StringBuilder apu4 = new StringBuilder("%" + haettava + "%");
 
             ResultSet kyselynTulos4 = kyselyLause4.executeQuery();
 
+            palauta4.append("<p>");
+            palauta4.append("<fieldset>");
+            palauta4.append("<legend>Yksittäisten viestien otsikot</legend>");
+
+            int index4 = 1;
+
             while (kyselynTulos4.next()) {
                 String tulosTeksti4 = kyselynTulos4.getString("otsikko");
                 int tulosID4 = kyselynTulos4.getInt("keskusteluid");
@@ -129,11 +158,13 @@ StringBuilder apu4 = new StringBuilder("%" + haettava + "%");
                     palauta4.append(tulosID4);
                     palauta4.append("'>");
 
-                    palauta4.append("Hakusana esiintyy viestin otsikossa (ainakin tässä linkissä)");
+                    palauta4.append(index4);
+                    palauta4.append(". hakutulos");
                     palauta4.append("</a>");
-                    palauta4.append("</p>");
-
+                index4++;
+                        palauta4.append("</p>");
             }
+            palauta4.append("</fieldset>");
 
 //            ***********************************************************************************************
 
@@ -202,6 +233,7 @@ StringBuilder apu6 = new StringBuilder("%" + haettava + "%");
         out.println("<html>");
         NaviPalkki.luoNaviPalkki(request, response, "Haun tulos");
         out.println("<body>");
+        out.println("<h1>Haettava esiinty seuraavilla alueilla</h1>");
         out.println(palauta1.toString());
         out.println("<br/>");
         out.println(palauta2.toString());
