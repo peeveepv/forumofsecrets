@@ -18,18 +18,15 @@ public class Kayttaja extends HttpServlet{
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response){
         try (PrintWriter out = response.getWriter()) {
-
             try (Connection con = ds.getConnection()) {
-
 
                 NaviPalkki.luoNaviPalkki(request, response, "Rekisteröityminen");
 
+                // Tulostaa hienon rekisteröitymislomakkeen
                 out.println("<form method='post' style='width: 400px; position: relative;" +
                         "top: 70px; left: 8%;'>" +
                         "<fieldset>");
-
                 out.println("<legend>Rekisteröityminen</legend>");
-
                 out.println("<table>");
                     out.println("<tr>");
                        out.println("<td style='width: 120px'><label for='tunnus'>Käyttäjänimi</legend></td>");
@@ -43,7 +40,6 @@ public class Kayttaja extends HttpServlet{
                        out.println("<td><input type='submit' value='Rekisteröi'></td>");
                     out.println("</tr>");
                 out.println("</table>");
-
                 out.println("</fieldset>"+
                         "</form>" +
                         "</div>" +
@@ -65,32 +61,22 @@ public class Kayttaja extends HttpServlet{
             String tunnus = "";
             String salasana = "";
 
-            tunnus = request.getParameter("tunnus");
-            salasana = request.getParameter("salasana");
+            tunnus = request.getParameter("tunnus"); //Hakee lomakkeelta tunnuksen
+            salasana = request.getParameter("salasana"); // Hakee lomakkeelta salasanan
             String onnistuiko = "Tunnus varattu!"; // Vaihtuu mikäli rekisteröinti onnistuu.
 
             if (luoKäyttäjä(con, tunnus, salasana)) {
                 onnistuiko = "Rekisteröityminen onnistui, jatka <a href='index.jsp'>kotisivulle</a> tai <a href='/KeskustelujaViestitServlet'>keskusteluihin</a>";
             }
-            //Tulostetaan sivulle miten kävi.
 
             NaviPalkki.luoNaviPalkki(request, response, "Rekisteröityminen");
 
-            out.println("<br>");
-            out.println("<br>");
-            out.println("<br>");
+            //Tulostetaan sivulle miten kävi.
+            out.println("<br><br><br>");
             out.println("<h3 style='text-align: center; color: antiquewhite;'>"+ onnistuiko + "</h3>");
-
             out.println("</div>");
-
             out.println("</body>");
             out.println("</html>");
-//            out.println("<p>" +onnistuiko+ "</p>");
-//            out.println("<p>Back to the <a href='index.jsp'>index</a></p>");
-//
-//            out.println("</div>");
-//            out.println("</body>");
-//            out.println("</html>");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -101,6 +87,7 @@ public class Kayttaja extends HttpServlet{
 
     //ÄLÄ ANNA TYHJIÄ ARVOJA!!, tässä niitä ei ainakaan vielä tarkisteta
     public static boolean luoKäyttäjä(Connection con, String tunnus, String salasana){
+        //Tsekataan onko tunnus varattu
         try {
             String haku = "SELECT kayttajanimi FROM henkilo WHERE kayttajanimi=?";
             PreparedStatement pees = con.prepareStatement(haku);
@@ -114,12 +101,13 @@ public class Kayttaja extends HttpServlet{
                     break;
                 }
             }
+            // Luodaan uusi jollei tunnusta löydy.
             if (onkoVarattu == 0){
                     String lisäys = "INSERT INTO henkilo (kayttajanimi, salasana, rooli) values (?, ?, ?)";
                     PreparedStatement ps = con.prepareStatement(lisäys);
                     ps.setString(1, tunnus);
                     ps.setString(2, salasana);
-                    ps.setString(3, "2");
+                    ps.setString(3, "2"); //lisätään rooliksi 'rekisteroitynyt'
                     ps.executeUpdate();
                     return true;
                 }
