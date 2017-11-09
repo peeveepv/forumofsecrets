@@ -119,11 +119,11 @@ public class Kayttaja extends HttpServlet{
         out.println("<table>");
         out.println("<tr>");
         out.println("<td style='width: 120px'><label for='tunnus'>Käyttäjänimi</legend></td>");
-        out.println("<td><input type='text' maxlength=16  name='tunnus' focus required></td>");
+        out.println("<td><input type='text' maxlength=16  name='tunnus' focus required pattern='.*\\S+.*' title='Ei whitespace-merkkejä.'></td>");
         out.println("</tr>");
         out.println("<tr>");
         out.println("<td style='width: 120px'><label for='salasana'>Salasana</legend></td>");
-        out.println("<td><input type='password' maxlength=16 name='salasana' required></td>");
+        out.println("<td><input type='password' maxlength=16 name='salasana' required pattern='.*\\S+.*' title='Ei whitespace-merkkejä.'></td>");
         out.println("</tr>");
         out.println("<tr>");
         out.println("<td><input type='submit' value='Rekisteröi'></td>");
