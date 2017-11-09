@@ -129,8 +129,17 @@ public class HakuServlet extends HttpServlet {
             }
             palauta1.append("</fieldset>");
 
-//            ***********************************************************************************************
 
+            // Suoritetaan ylläkuvattu toiminto erillisessä metodissa sillä poikkeuksella,
+            // että jokaisessa metodissa on eri kohde tietokannassa siltä osin mistä haetaan
+            // (esim. keskustelun kuvaus tai viestin sisätö tms.)
+            palauta2 = suoritaKysely2(con, haettava);
+//            suoritaKysely3(con, haettava);
+//            suoritaKysely4(con, haettava);
+//            suoritaKysely5(con, haettava);
+//            suoritaKysely6(con, haettava);
+
+/*
             String sql2 = "select keskusteluid, kuvaus from keskustelu where kuvaus like ?";
             PreparedStatement kyselyLause2 = con.prepareStatement(sql2);
             StringBuilder apu2 = new StringBuilder("%" + haettava + "%");
@@ -159,6 +168,7 @@ public class HakuServlet extends HttpServlet {
                 index2++;
             }
             palauta2.append("</fieldset>");
+*/
 
 //            ***********************************************************************************************
 
@@ -323,5 +333,47 @@ public class HakuServlet extends HttpServlet {
             out.println("</html>");
         }
     }
+
+
+    private StringBuilder suoritaKysely2(Connection con, String haettava) {
+        StringBuilder palauta2 = new StringBuilder();
+
+        try {
+            String sql2 = "select keskusteluid, kuvaus from keskustelu where kuvaus like ?";
+            PreparedStatement kyselyLause2 = con.prepareStatement(sql2);
+            StringBuilder apu2 = new StringBuilder("%" + haettava + "%");
+            kyselyLause2.setString(1, apu2.toString());
+
+            ResultSet kyselynTulos2 = kyselyLause2.executeQuery();
+
+            palauta2.append("<p>");
+            palauta2.append("<fieldset>");
+            palauta2.append("<legend>Keskustelujen kuvaukset</legend>");
+
+            int index2 = 1;
+
+            while (kyselynTulos2.next()) {
+                int tulosID2 = kyselynTulos2.getInt("keskusteluid");
+
+                palauta2.append("<p>");
+                palauta2.append("<a href='/NaytaKeskustelu?KeskusteluId=");
+                palauta2.append(tulosID2);
+                palauta2.append("'>");
+
+                palauta2.append(index2);
+                palauta2.append(". hakutulos");
+                palauta2.append("</p>");
+                palauta2.append("</a>");
+                index2++;
+            }
+            palauta2.append("</fieldset>");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return palauta2;
+    }
+
+
 }
 
