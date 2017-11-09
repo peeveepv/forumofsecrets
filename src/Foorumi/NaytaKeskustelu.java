@@ -23,8 +23,10 @@ public class NaytaKeskustelu extends HttpServlet {
     // import javax.sql.DataSource;
     @Resource(name = "jdbc/Foorumi")
     DataSource ds;
+
     @Resource(name = "jdbc/FoorumiDELETE")
     DataSource dsAdmin;
+
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         res.setContentType("text/html");
         PrintWriter out = null;
@@ -183,8 +185,8 @@ public class NaytaKeskustelu extends HttpServlet {
                     int vastausid = lista.get(i).getVastaus();
                     if (vastausid == 0) {
                         out.println("<tr>");
-                        out.println("<td style='width: 200px'> Kirjoittaja: <br>" + kirjoittajat.get(lista.get(i).getKirjoittaja()) +
-                                "</td><td style='width: 200px'> Otsikko: <br>" + lista.get(i).getOtsikko() +
+                        out.println("<td style='width: 200px'> Otsikko: <br>" + lista.get(i).getOtsikko() +
+                                "</td><td style='width: 200px'> Kirjoittaja: <br>" + kirjoittajat.get(lista.get(i).getKirjoittaja()) +
                                 "</td><td style='width: 400px';>" + lista.get(i).getViesti() + "</td><td>");
 
                         out.println("<form method='post' id=2>");
@@ -201,14 +203,13 @@ public class NaytaKeskustelu extends HttpServlet {
                         out.println("</td></tr>");
                         for (int j = 0; j < lista.size(); j++) {
                             if (lista.get(j).getVastaus() == lista.get(i).getId()) {
-                                out.println("<tr><td></td><td>Vastauksia</td><td><i style='color:grey'>" + lista.get(i).getViesti() + "</i><br>" + lista.get(j).getViesti() + "</td><td></td></tr>");
+                                out.println("<tr><td></td><td>"+kirjoittajat.get(lista.get(j).getKirjoittaja())+"</td><td><i style='color:grey'>" + lista.get(i).getViesti() + "</i><br>" + lista.get(j).getViesti() + "</td><td></td></tr>");
                             }
                         }
                     }
                 }
-
-
                 out.println("</table>");
+
 
                 out.println("<br>");
                 out.println("<hr>");
@@ -217,15 +218,38 @@ public class NaytaKeskustelu extends HttpServlet {
                 //out.print(kirjoittajaID);
                 ///out.print(kirjoittajaI);
                 //Tässä on lomake uuden viestin luomiseen
-                out.println("<form method='post' id=1>");
-                out.println("<input type=submit  value='Lisää uusi viesti'> <p></p>");
-                out.println("<input type=text name='otsikko' value='otsikko'><br>");
+//                out.println("<form method='post' id=1>");
+//                out.println("<input type=submit  value='Lisää uusi viesti'> <p></p>");
+//                out.println("<input type=text name='otsikko' value='otsikko'><br>");
+//                out.println("<input type=hidden name='kirjoittaja' value=" +kirjoittajaID + ">");
+//                out.println("<input type=hidden name='keskusteluid' value=" + keskusteluid + ">");
+//                out.println("</form>");
+//                out.println("<textarea form=1 name='viesti' value='viesti' row=5 column=10></textarea>");
+
+
+                out.println("<form method='post' id=1 style='width: 400px;" +
+                        "top: 70px; left: 8%;'>" +
+                        "<fieldset>");
+                out.println("<legend>Lisää viesti</legend>");
+
+                out.println("<table>");
+
+
+                out.println("<tr><td><input type=submit  value='Lisää uusi viesti'> </td></tr>");
+                out.println("<tr>");
+                out.println("<td style='width: 120px'><label for='nimi'>Aihe</legend></td>");
+                out.println("<td><input type=text name='otsikko' value='otsikko'></td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                out.println("<td style='width: 120px'><label for='kuvaus'>Viesti</legend></td>");
+                out.println("<td><textarea form=1 name='viesti' value='viesti' row=5 column=10></textarea></td>");
+                out.println("</tr>");
+
                 out.println("<input type=hidden name='kirjoittaja' value=" +kirjoittajaID + ">");
                 out.println("<input type=hidden name='keskusteluid' value=" + keskusteluid + ">");
-                out.println("</form>");
-                out.println("<textarea form=1 name='viesti' value='viesti' row=5 column=10></textarea>");
+                out.println("</table>");
 
-                out.println("<p>Back to the <a href='index.jsp'>index</a></p>");
+                out.println("</fieldset></form>");
 
                 out.println("</div>");
 
