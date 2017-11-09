@@ -118,7 +118,7 @@ public class NaytaKeskustelu extends HttpServlet {
         if(moi)
             doGet(req, res);
         else
-            out.println("<h2>update ei toiminut</h2>");
+            out.println("<h2>Hups.. tapahtui virhe! Käänny Jaken puoleen</h2>");
     }
 
 
@@ -255,10 +255,9 @@ public class NaytaKeskustelu extends HttpServlet {
                         for (int j = 0; j < lista.size(); j++) {
                             if (lista.get(j).getVastaus() == lista.get(i).getId()) {
                                 out.println("<tr><td></td><td>" +
-                                        "<a href='/Profiili?hloid=" +  lista.get(i).getKirjoittaja() + "'>"
-                                        + kirjoittajat.get(lista.get(i).getKirjoittaja()) + "</a>" +
-                                        "</td><td><i style='color:grey'>" + lista.get(i).getViesti() +
-                                        "</i><br>" + lista.get(j).getViesti() + "</td><td></td></tr>");
+                                        "<a href='/Profiili?hloid=" +  lista.get(j).getKirjoittaja() + "'>"
+                                        + kirjoittajat.get(lista.get(j).getKirjoittaja()) + "</a>" +
+                                        "</td><td>" + lista.get(j).getViesti() + "</td><td></td></tr>");
                             }
                         }
                     }
@@ -295,11 +294,11 @@ public class NaytaKeskustelu extends HttpServlet {
                         out.println("<tr><td><input type=submit  value='Lisää uusi viesti'> </td></tr>");
                         out.println("<tr>");
                             out.println("<td style='width: 120px'><label for='nimi'>Aihe</legend></td>");
-                            out.println("<td><input type=text name='otsikko' placeholder='otsikko'></td>");
+                            out.println("<td><input type=text maxlength='255' name='otsikko' placeholder='otsikko'></td>");
                         out.println("</tr>");
                         out.println("<tr>");
                             out.println("<td style='width: 120px'><label for='kuvaus'>Viesti</legend></td>");
-                            out.println("<td><textarea form=1 name='viesti' placeholder='viesti' row=5 column=10></textarea></td>");
+                            out.println("<td><textarea maxlength='255' form=1 name='viesti' placeholder='viesti' row=5 column=10></textarea></td>");
                         out.println("</tr>");
 
                         out.println("<input type=hidden name='kirjoittaja' value=" +kirjoittajaID + ">");
