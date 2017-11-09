@@ -36,6 +36,9 @@ public class Profiilisivu extends HttpServlet{
             ps.setString(2,apuKuvaus);
             ps.setString(3,kayttajanimi);
             ps.executeUpdate();
+            HttpSession istunto = req.getSession(false);
+            istunto.setAttribute("nimimerkki", apuNick);
+            istunto.setAttribute("kuvaus", apuKuvaus);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -93,7 +96,8 @@ public class Profiilisivu extends HttpServlet{
                             "</html>");
                 } else {
                     out.println(
-                            "<fieldset><legend> Profiilin tiedot </legend><table>" +
+                            "<form style='width: 400px; position: relative; top: 70px; left: 8%;'>" +
+                                    "<fieldset><legend> Profiilin tiedot </legend><table>" +
                                     "<tr><td style='width: 120px'>" +
                                     "<label for='kayttajanimi'>Käyttäjänimi: </label></td><td>" + kayttajanimi + "</td></tr>" +
                                     "<tr><td style='width: 120px'>" +

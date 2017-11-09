@@ -76,12 +76,21 @@ public class Kayttaja extends HttpServlet{
 
             NaviPalkki.luoNaviPalkki(request, response, "Rekisteröityminen");
 
-            out.println("<p>" +onnistuiko+ "</p>");
-            out.println("<p>Back to the <a href='index.jsp'>index</a></p>");
+            out.println("<br>");
+            out.println("<br>");
+            out.println("<br>");
+            out.println("<h3 style='text-align: center; color: antiquewhite;'>"+ onnistuiko + ", jatka <a href='index.jsp'>kotisivulle</a> tai <a href='/KeskustelujaViestitServlet'>keskusteluihin</a></h3>");
 
             out.println("</div>");
+
             out.println("</body>");
             out.println("</html>");
+//            out.println("<p>" +onnistuiko+ "</p>");
+//            out.println("<p>Back to the <a href='index.jsp'>index</a></p>");
+//
+//            out.println("</div>");
+//            out.println("</body>");
+//            out.println("</html>");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -106,10 +115,11 @@ public class Kayttaja extends HttpServlet{
                 }
             }
             if (onkoVarattu == 0){
-                    String lisäys = "INSERT INTO henkilo (kayttajanimi, salasana) values (?, ?)";
+                    String lisäys = "INSERT INTO henkilo (kayttajanimi, salasana, rooli) values (?, ?, ?)";
                     PreparedStatement ps = con.prepareStatement(lisäys);
                     ps.setString(1, tunnus);
                     ps.setString(2, salasana);
+                    ps.setString(3, "2");
                     ps.executeUpdate();
                     return true;
                 }
