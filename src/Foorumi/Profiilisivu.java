@@ -86,7 +86,6 @@ public class Profiilisivu extends HttpServlet {
         }
 
         NaviPalkki.luoNaviPalkki(req, res, "Profiilisivu");
-
             //Tulostetaan sivu sen perusteella onko oikeus muokata vai ei
             if (istuntoId.equals(paramId)) {
                 tulostaLomake(res);
@@ -95,24 +94,23 @@ public class Profiilisivu extends HttpServlet {
             }
         }
 
-
-
     private void tulostaLomake(HttpServletResponse res) {
         try (PrintWriter out = res.getWriter()) {
-            out.println("<form method='post' style='width: 400px; position: relative; top: 70px; left: 8%;'><fieldset>");
+            out.println("<form method='post' id=1 style='width: 480px; position: relative; top: 70px; left: 8%;'><fieldset>");
             out.println("<legend>Profiilin tiedot</legend>");
             out.println("<table>" +
                     "<tr>" +
-                    "<td style='width: 120px'><label for='kayttajanimi'>Käyttäjänimi: </label></td>" +
+                    "<td style='width: 220px'><label for='kayttajanimi'>Käyttäjänimi: </label></td>" +
                     "<td>" + kayttajanimi + "</td>" +
                     "</tr>" +
                     "<tr>" +
-                    "<td style='width: 120px'><label for='nimimerkki'>Nimimerkki: </label></td>" +
-                    "<td><input type='text' name='nimimerkki' focus value='" + nimimerkki + "'></td>" +
+                    "<td style='width: 220px'><label for='nimimerkki'>Nimimerkki (max 20 merkkiä): </label></td>" +
+                    "<td><input type='text' name='nimimerkki' maxlength=20 focus value='" + nimimerkki + "'></td>" +
                     "</tr>" +
                     "<tr>" +
-                    "<td style='width: 120px'><label for='kuvaus'>Kuvaus: </label></td>" +
-                    "<td><input type='text' name='kuvaus' value='" + kuvaus + "'></td>" +
+                    "<td style='width: 220px'><label for='kuvaus'>Kuvaus (max 200 merkkiä): </label></td>" +
+                    "<td><textarea maxlength='200' form=1 name='kuvaus' row=10 column=30>" + kuvaus + "</textarea></td>" +
+//                    "<td><input type='text' name='kuvaus' maxlength=200 value='" + kuvaus + "'></td>" +
                     "</tr>" +
                     "<tr>" +
                     "<td><input type='submit' value='Päivitä'></td>" +
@@ -127,6 +125,7 @@ public class Profiilisivu extends HttpServlet {
             e.printStackTrace();
         }
     }
+
     private void tulostaTiedot(HttpServletResponse res){
         try (PrintWriter out = res.getWriter()) {
             out.println(

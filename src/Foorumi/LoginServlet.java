@@ -90,11 +90,27 @@ public class LoginServlet extends HttpServlet {
                         // tulosta kirjautumisen onnistumisen sivu (navipalkki ja ilmoitus)
                         NaviPalkki.luoNaviPalkki(req, res, "Kirjautuminen");
 
-                        out.println("<br>");
-                        out.println("<br>");
-                        out.println("<br>");
+                        out.println("<form method='post' style='width: 400px; position: relative;" +
+                                "top: 70px; left: 8%;'>" +
+                                "<fieldset>");
 
-                        out.println("<h3 style='position: relative; left: 8%; color: antiquewhite;'>Kirjautuminen onnistui, jatka <a href='index.jsp'>kotisivulle</a> tai <a href='/KeskustelujaViestitServlet'>keskusteluihin</a></h3>");
+                        out.println("<legend>Kirjautuminen</legend>");
+
+                        out.println("<table>");
+                            out.println("<tr>");
+                                out.println("<td colspan='3'><h3>Kirjautuminen onnistui!</h3></td>");
+                            out.println("</tr>");
+                            out.println("<tr>");
+                                out.println("<td colspan='3'>siirry</td>");
+                            out.println("</tr>");
+                            out.println("<tr>");
+                                out.println("<td><a href='index.jsp'>kotisivulle</a>, </td>");
+                                out.println("<td><a href='/KeskustelujaViestitServlet'>keskusteluihin</a></td>");
+                                out.println("<td> tai <a href='/Profiili'>profiiliin</a></td>");
+                            out.println("</tr>");
+                        out.println("</table>");
+
+                        out.println("</fieldset></form>");
 
                         out.println("</div>");
 
@@ -141,12 +157,12 @@ public class LoginServlet extends HttpServlet {
 
             out.println("<table>");
                 out.println("<tr>");
-                    out.println("<td style='width: 120px'><label for='username'>Käyttäjänimi</legend></td>");
-                    out.println("<td><input type='text' name='username' focus></td>");
+                    out.println("<td style='width: 120px'><label for='username'>Käyttäjänimi</lable></td>");
+                    out.println("<td><input type='text' name='username' maxlength='16' autofocus></td>");
                 out.println("</tr>");
                 out.println("<tr>");
-                    out.println("<td style='width: 120px'><label for='password'>Salasana</legend></td>");
-                    out.println("<td><input type='password' name='password'></td>");
+                    out.println("<td style='width: 120px'><label for='password'>Salasana</lable></td>");
+                    out.println("<td><input type='password' name='password' maxlength='16'></td>");
                 out.println("</tr>");
                 out.println("<tr>");
                     out.println("<td><input type='submit' value='Kirjaudu'></td>");
