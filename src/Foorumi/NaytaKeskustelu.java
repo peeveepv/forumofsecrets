@@ -204,7 +204,7 @@ public class NaytaKeskustelu extends HttpServlet {
                     kirjoittajaID = (Integer)(session.getAttribute("hloid"));
 
                 // tulostetaan HTML-sivun alkuosa (<html>, <head> tyyleineen, <body> sekä avaava content-<div>
-                NaviPalkki.luoNaviPalkki(req, res, "Viestit");
+                NaviPalkki.luoNaviPalkki(req, res, "Keskustelu");
 
                 // tulostetaan kyseisen keskustelun nimi ja kuvaus
                 out.println("<h2><br>Keskustelu:<br> " + keskustelunimi + "</h2>");
