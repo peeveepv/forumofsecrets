@@ -74,7 +74,7 @@ public class LoginServlet extends HttpServlet {
                         out.println("<br>");
                         out.println("<br>");
                         out.println("<br>");
-                        out.println("<h3 style='text-align: center; color: antiquewhite;'>Kirjautuminen onnistui, jatka <a href='index.jsp'>kotisivulle</a> tai <a href='/KeskustelujaViestitServlet'>keskusteluihin</a></h3>");
+                        out.println("<h3 style='position: relative; left: 8%; color: antiquewhite;'>Kirjautuminen onnistui, jatka <a href='index.jsp'>kotisivulle</a> tai <a href='/KeskustelujaViestitServlet'>keskusteluihin</a></h3>");
 
                         out.println("</div>");
 
@@ -121,17 +121,17 @@ public class LoginServlet extends HttpServlet {
             out.println("<legend>Kirjautuminen</legend>");
 
             out.println("<table>");
-            out.println("<tr>");
-            out.println("<td style='width: 120px'><label for='username'>Käyttäjänimi</legend></td>");
-            out.println("<td><input type='text' name='username' focus></td>");
-            out.println("</tr>");
-            out.println("<tr>");
-            out.println("<td style='width: 120px'><label for='password'>Salasana</legend></td>");
-            out.println("<td><input type='password' name='password'></td>");
-            out.println("</tr>");
-            out.println("<tr>");
-            out.println("<td><input type='submit' value='Kirjaudu'></td>");
-            out.println("</tr>");
+                out.println("<tr>");
+                    out.println("<td style='width: 120px'><label for='username'>Käyttäjänimi</legend></td>");
+                    out.println("<td><input type='text' name='username' focus></td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                    out.println("<td style='width: 120px'><label for='password'>Salasana</legend></td>");
+                    out.println("<td><input type='password' name='password'></td>");
+                out.println("</tr>");
+                out.println("<tr>");
+                    out.println("<td><input type='submit' value='Kirjaudu'></td>");
+                out.println("</tr>");
             out.println("</table>");
 
             if ("failed".equals((String)req.getAttribute("loginfailed"))) {
