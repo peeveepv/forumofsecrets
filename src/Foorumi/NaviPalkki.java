@@ -36,7 +36,7 @@ public class NaviPalkki {
                 "body {margin-left: 0px;}");
 
         // tumma "secret" background oletuksena ja form background; käyttöön muille kuin määritellyille sivuille (titleille)
-        if ("Viestit".equals(title) || "Keskustelut".equals(title) || "Haun tulos".equals(title)){
+        if ("Keskustelu".equals(title) || "Keskustelut".equals(title) || "Haun tulos".equals(title) || "Viesti".equals(title)){
         } else {
             out.println(
                     "form {background-color: white;} " +
