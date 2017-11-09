@@ -54,7 +54,7 @@ public class NaytaViesti extends HttpServlet {
                 }
 
                 // haetaan viesti, jonka id on annettu parametrina
-                String sql = "SELECT * FROM viesti WHERE id = " + viestiId + ",";
+                String sql = "SELECT * FROM viesti WHERE id = " + viestiId + ";";
                 PreparedStatement ps = con.prepareStatement(sql);
 
                 //haetaan tulosjoukko rsviesti
@@ -71,6 +71,17 @@ public class NaytaViesti extends HttpServlet {
                             rsviesti.getInt("vastaus"),
                             rsviesti.getDate("kirjoitettu")
                     );
+                }
+
+                // haetaan vastaukset, joissa vastaus on annettu viestiId
+                sql = "SELECT * FROM viesti WHERE vastaus = " + viestiId + ";";
+                ps = con.prepareStatement(sql);
+
+                //haetaan tulosjoukko rsvastaukset
+                rsvastaukset = ps.executeQuery();
+
+                if (viesti.getKeskusteluid() != 0) {
+                    keskusteluId = viesti.getKeskusteluid();
                 }
 
                 sql = "SELECT * FROM keskustelu WHERE keskusteluId = " + keskusteluId + ";";
@@ -105,20 +116,23 @@ public class NaytaViesti extends HttpServlet {
                 // tulostetaan HTML-sivun alkuosa (<html>, <head> tyyleineen, <body> sekä avaava content-<div>
                 NaviPalkki.luoNaviPalkki(req, res, "Viesti");
 
-                // tulostetaan kyseisen keskustelun nimi ja kuvaus
-                out.println("<h2><br>Viesti:<br> " + viesti.getOtsikko() + "</h2>");
-                out.println("<h3>Viestiteksti: <i>" + viesti.getViesti() + "</i></h3>");
+                // tulostetaan kyseisen keskustelun nimi ja kuvaus (nimi vain jos ei ole vastaus)
+                out.println("<br><br>");
+                if (viesti.getVastaus() == 0) {
+                    out.println("<br><h2><i>Viestin otsikko:</i> " + viesti.getOtsikko() + "</h2>");
+                }
+                out.println("<h3><i>Viestin teksti:</i> " + viesti.getViesti() + "</h3>");
 
                 // tulostetaan viestin isäntäviesti ja keskustelu linkkeinä, jos kyseessä on vastaus
                 if (viesti.getVastaus() != 0) {
 
                     out.println(
                             "<br><h3>Viesti on vastaus toiseen " +
-                                    "<a href='/NaytaViesti?id=" + viesti.getVastaus() + "'>viestiin</a></h3>" +
-                                    "<br>keskustelussa <a href='/NaytaKeskustelu?KeskusteluId=" + viesti.getKeskusteluid() +
-                                    "'>" + keskustelunimi + "</a>.");
+                                    "<a href='/NaytaViesti?id=" + viesti.getVastaus() + "'>viestiin</a>" +
+                                    " keskustelussa <a href='/NaytaKeskustelu?KeskusteluId=" + viesti.getKeskusteluid() +
+                                    "'>" + keskustelunimi + "</a>.</h3>");
 
-                    // muuten tulostetaan kyseisen viestin vastaukset
+                // muuten tulostetaan kyseisen viestin vastaukset
                 } else {
 
                     // alustetaan lista vastauksien Viestit-olioita varten
@@ -141,6 +155,15 @@ public class NaytaViesti extends HttpServlet {
                             vastaukset.add(olio);
                         }
                     }
+
+                    out.println(
+                            "<br><h3>Viesti on osa keskustelua " +
+                                    "<a href='/NaytaKeskustelu?KeskusteluId=" + viesti.getKeskusteluid() + "'>" +
+                                    keskustelunimi + "</a>.</h3>");
+
+                    out.println(
+                            "<br><h3>Vastaukset viestiin:</h3>"
+                    );
 
                     // avataan taulukko vastausten esittämiseen
                     out.println("<table border: 1px solid black>");
@@ -173,6 +196,7 @@ public class NaytaViesti extends HttpServlet {
                 }
             } catch (SQLException e) {
                 out.println(e.getMessage());
+                e.printStackTrace(out);
             }
         }
     }
