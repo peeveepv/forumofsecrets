@@ -8,25 +8,34 @@ import java.io.PrintWriter;
 
 public class NaviPalkki {
 
-    //HUOM!! Metodin lisäksi tulee luoda 1 </div> tägi ennen koko sivun sulkemista!
+    // tulostaa kutsuvalle Servletille html-koodin, joka sisältää
+        // response.setContentType("text/html");
+        // <head> -osion tyylittelyineen taustaa varten
+        // navipalkin tulostettavan sivun vasempaan reunaan
+        // avaavat <html>, <body> sekä <div> -tagit
+    //HUOM!! Metodin lisäksi tulee luoda 1 </div> tägi ennen kutsuvan Servletin sivun sulkemista!
+
     public static void luoNaviPalkki(HttpServletRequest request, HttpServletResponse response, String title) throws IOException {
 
         PrintWriter out = response.getWriter();
 
-        // Tulostaa HTML-koodit Contentin alkuun asti
+        // contentType
         response.setContentType("text/html");
 
+        // haetaan mahdollinen sessio käyttäjän nimen/nimimerkin raportointia varten navipalkissa
         HttpSession session = request.getSession(false);
 
         out.println("<html>");
         out.println("<head>");
 
+        // tulostetaan otsikoksi metodille annettu sivun title
         out.println("<title>"+title+"</title>");
 
+        // varmistaa, että navipalkin vasemmalle puolelle ei jää 3px marginia (oletus)
         out.println("<style>" +
                 "body {margin-left: 0px;}");
 
-        // "secret" background ja form background muille kuin Keskusteluille ja Viesteille
+        // tumma "secret" background oletuksena ja form background; käyttöön muille kuin määritellyille sivuille (titleille)
         if ("Viestit".equals(title) || "Keskustelut".equals(title) || "Haun tulos".equals(title)){
         } else {
             out.println(
@@ -39,6 +48,7 @@ public class NaviPalkki {
             );
         }
 
+        // navipalkki ja content-div positio + tyylittely
         out.println(
                     "td {word-break: break-all; }" +
                     "#content {position: relative; left: 260px; width: 80%;} " +
@@ -56,6 +66,7 @@ public class NaviPalkki {
 
         out.println("<body>");
 
+        // navipalkin tulostaminen
         out.println(
                 "<nav> " +
                         "<span></span>" +
@@ -65,6 +76,7 @@ public class NaviPalkki {
                         "<span></span>"
         );
 
+        // jos ei sessiota, tulostetaan kirjautumisen ja rekisteröitymisen linkit
         if (session == null
                 || session.getAttribute("kayttajanimi") == null
                 || "anonymous".equals(session.getAttribute("kayttajanimi"))) {
@@ -72,6 +84,7 @@ public class NaviPalkki {
             out.println("<a href='/Login'>Kirjautuminen</a>");
             out.println("<a href='/Kayttaja'>Rekisteröityminen</a>");
 
+        // jos sessio, tulostetaan nimimerkki/nimi käyttäjältä sekä linkit profiilisivustolle ja uloskirjautumiseen
         } else {
 
             out.println("<span style='font-size: 80%'><i>Tällä hetkellä kirjautuneena:</i>");
@@ -89,6 +102,7 @@ public class NaviPalkki {
 
         }
 
+        // hakukone-linkki navipalkkiin, navin sulkeminen ja content-divin avaaminen
         out.println(
                 "<span></span>" +
                         "<a href='/Hakukone'>Etsi viestejä</a>" +
