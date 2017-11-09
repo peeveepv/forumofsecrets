@@ -52,8 +52,6 @@ public class HakuServlet extends HttpServlet {
     }
 
 
-
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Connection con = null;
@@ -172,7 +170,6 @@ public class HakuServlet extends HttpServlet {
     }
 
 
-
     // ***********************************************************************************************
 
 
@@ -223,7 +220,10 @@ public class HakuServlet extends HttpServlet {
         StringBuilder palauta3 = new StringBuilder();
 
         try {
-            String sql3 = "select keskusteluid, kirjoittaja, nimimerkki from viesti, henkilo where nimimerkki like ?";
+
+            // Selvitetään ensin haettavan kirjoittajan nimimerkin yksilöllinen ID
+            String sql3 = "select hloid from henkilo where nimimerkki like ?";
+
             PreparedStatement kyselyLause3 = con.prepareStatement(sql3);
             StringBuilder apu3 = new StringBuilder("%" + haettava + "%");
             kyselyLause3.setString(1, apu3.toString());
@@ -236,21 +236,37 @@ public class HakuServlet extends HttpServlet {
 
             int index3 = 1;
 
+            // Haetaan yksilöllisellä kirjoittajan nimimerkki ID:llä kaikki viestit,
+            // joissa ko. ID esiintyy kirjoittajana
             while (kyselynTulos3.next()) {
-                int tulosID3 = kyselynTulos3.getInt("keskusteluid");
+                int hloID = kyselynTulos3.getInt("hloid");
 
-                palauta3.append("<p>");
+                String hloIDtekstina = "" + hloID;
 
-                palauta3.append("<a href='/NaytaKeskustelu?KeskusteluId=");
-                palauta3.append(tulosID3);
-                palauta3.append("'>");
+                String sql3b = "select keskusteluid from viesti where kirjoittaja like ?";
 
-                palauta3.append(index3);
-                palauta3.append(". hakutulos");
-                palauta3.append("</a>");
-                palauta3.append("</p>");
-                index3++;
+                PreparedStatement kyselyLause3b = con.prepareStatement(sql3b);
+                kyselyLause3b.setString(1, hloIDtekstina);
+
+                ResultSet kyselynTulos3b = kyselyLause3b.executeQuery();
+
+                while (kyselynTulos3b.next()) {
+                    int tulosID3 = kyselynTulos3b.getInt("keskusteluid");
+
+                    palauta3.append("<p>");
+
+                    palauta3.append("<a href='/NaytaKeskustelu?KeskusteluId=");
+                    palauta3.append(tulosID3);
+                    palauta3.append("'>");
+
+                    palauta3.append(index3);
+                    palauta3.append(". hakutulos");
+                    palauta3.append("</a>");
+                    palauta3.append("</p>");
+                    index3++;
+                }
             }
+
             palauta3.append("</fieldset>");
         } catch (SQLException e) {
             e.printStackTrace();
