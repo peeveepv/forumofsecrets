@@ -70,7 +70,6 @@ public class Profiilisivu extends HttpServlet {
         if (req.getParameter("hloid") == null) {
             paramId = istuntoId;
         }
-
         try (Connection con = ds.getConnection()) {
 
             String haeTiedot = "SELECT * from henkilo where hloid=?";
