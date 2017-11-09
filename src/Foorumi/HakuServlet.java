@@ -296,10 +296,10 @@ public class HakuServlet extends HttpServlet {
             int index4 = 1;
 
             while (kyselynTulos4.next()) {
-                int tulosID4 = kyselynTulos4.getInt("keskusteluid");
+                int tulosID4 = kyselynTulos4.getInt("id");
 
                 palauta4.append("<p>");
-                palauta4.append("<a href='/NaytaKeskustelu?KeskusteluId=");
+                palauta4.append("<a href='/NaytaViesti?id=");
                 palauta4.append(tulosID4);
                 palauta4.append("'>");
 
@@ -338,10 +338,10 @@ public class HakuServlet extends HttpServlet {
             int index5 = 1;
 
             while (kyselynTulos5.next()) {
-                int tulosID5 = kyselynTulos5.getInt("keskusteluid");
+                int tulosID5 = kyselynTulos5.getInt("id");
 
                 palauta5.append("<p>");
-                palauta5.append("<a href='/NaytaKeskustelu?KeskusteluId=");
+                palauta5.append("<a href='/NaytaViesti?id=");
                 palauta5.append(tulosID5);
                 palauta5.append("'>");
 
@@ -381,10 +381,10 @@ public class HakuServlet extends HttpServlet {
             int index6 = 1;
 
             while (kyselynTulos6.next()) {
-                int tulosID6 = kyselynTulos6.getInt("keskusteluid");
+                int tulosID6 = kyselynTulos6.getInt("id");
 
                 palauta6.append("<p>");
-                palauta6.append("<a href='/NaytaKeskustelu?KeskusteluId=");
+                palauta6.append("<a href='/NaytaViesti?id=");
                 palauta6.append(tulosID6);
                 palauta6.append("'>");
 
