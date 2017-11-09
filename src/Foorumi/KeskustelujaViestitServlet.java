@@ -84,7 +84,7 @@ public class KeskustelujaViestitServlet extends HttpServlet {
 
             for (KeskusteluOlio olio: lista) {
                 out.print("<tr><td> <a href=NaytaKeskustelu?KeskusteluId="+olio.getKeskusteluId()+ ">"
-                        +olio.getNimi() +"</td><td> </a></td><td>"  + olio.getKuvaus()+ "</td>");
+                        +olio.getNimi() +"</a> </td><td>"  + olio.getKuvaus()+ "</td>");
                 if("admin".equals((String)session.getAttribute("rooli"))){
                     out.println("<td><form method=post><input type=submit value=poista>" +
                             "<input type=hidden name=poista value= poista></form></td>");
