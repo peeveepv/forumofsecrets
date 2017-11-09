@@ -92,7 +92,7 @@ public class KeskustelujaViestitServlet extends HttpServlet {
         response.setContentType("text/html");
         NaviPalkki.luoNaviPalkki(request, response, "Keskustelut");
 
-        out.print("<h2>Keskustelut</h2>");
+        out.print("<h2><br>Keskustelut</h2>");
 
         out.println("<form method='post' style='width: 400px;" +
                 "top: 70px; left: 8%;'>" +
