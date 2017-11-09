@@ -23,17 +23,33 @@ public class NaviPalkki {
 
         out.println("<title>"+title+"</title>");
 
+        out.println("<style>" +
+                "body {margin-left: 0px;}");
+
+        // "secret" background ja form background muille kuin Keskusteluille ja Viesteille
+        if ("Viestit".equals(title) || "Keskustelut".equals(title)) {
+        } else {
+            out.println(
+                    "form {background-color: white;} " +
+                    "body {background: url('img/candle_secret.jpg');" +
+                            "background-position: center;" +
+                            "background-repeat: no-repeat;" +
+                            "background-size: contain;" +
+                            "background-color: #333;}"
+            );
+        }
+
         out.println(
-                "<style> body {margin-left: 0px;} td {word-break: break-all; } " +
-                        "#content {position: relative; left: 260px; width: 80%;} " +
-                        "#content {position: relative; left: 260px; width: 80%;} " +
-                        "nav {position: fixed; top: 0; width: 240px; height: 100%; font-family: Georgia; " +
+                    "td {word-break: break-all; }" +
+                    "#content {position: relative; left: 260px; width: 80%;} " +
+                    "#content {position: relative; left: 260px; width: 80%;} " +
+                    "nav {position: fixed; top: 0; width: 240px; height: 100%; font-family: Georgia; " +
                         "background-color: #333; float: left; clear: left; display: inline; } " +
-                        "nav a, nav span {display: block; padding: 14px 16px; color: antiquewhite; text-shadow: none; " +
-                        "text-decoration: none;} .active {background-color: dimgrey;} " +
-                        "nav a:active, nav a:visited {color: antiquewhite; text-shadow: none;} " +
-                        "nav a:hover {background-color: #111;} " +
-                        "</style>"
+                    "nav a, nav span {display: block; padding: 14px 16px; color: antiquewhite; text-shadow: none; " +
+                       "text-decoration: none;} .active {background-color: dimgrey;} " +
+                    "nav a:active, nav a:visited {color: antiquewhite; text-shadow: none;} " +
+                    "nav a:hover {background-color: #111;} " +
+                "</style>"
         );
 
         out.println("</head>");
