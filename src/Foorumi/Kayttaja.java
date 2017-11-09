@@ -19,33 +19,8 @@ public class Kayttaja extends HttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response){
         try (PrintWriter out = response.getWriter()) {
             try (Connection con = ds.getConnection()) {
-
                 NaviPalkki.luoNaviPalkki(request, response, "Rekisteröityminen");
-
-                // Tulostaa hienon rekisteröitymislomakkeen
-                out.println("<form method='post' style='width: 400px; position: relative;" +
-                        "top: 70px; left: 8%;'>" +
-                        "<fieldset>");
-                out.println("<legend>Rekisteröityminen</legend>");
-                out.println("<table>");
-                    out.println("<tr>");
-                       out.println("<td style='width: 120px'><label for='tunnus'>Käyttäjänimi</legend></td>");
-                       out.println("<td><input type='text' maxlength=16 name='tunnus' focus></td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                       out.println("<td style='width: 120px'><label for='salasana'>Salasana</legend></td>");
-                       out.println("<td><input type='password' maxlength=16 name='salasana'></td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                       out.println("<td><input type='submit' value='Rekisteröi'></td>");
-                    out.println("</tr>");
-                out.println("</table>");
-                out.println("</fieldset>"+
-                        "</form>" +
-                        "</div>" +
-                        "</body>" +
-                        "</html>");
-
+                tulostaLomake(out);
             } catch (SQLException e){
                 out.println(e.getMessage());
             }
@@ -66,17 +41,12 @@ public class Kayttaja extends HttpServlet{
             String onnistuiko = "Tunnus varattu!"; // Vaihtuu mikäli rekisteröinti onnistuu.
 
             if (luoKäyttäjä(con, tunnus, salasana)) {
-                onnistuiko = "Rekisteröityminen onnistui, jatka <a href='index.jsp'>kotisivulle</a> tai <a href='/KeskustelujaViestitServlet'>keskusteluihin</a>";
+                onnistuiko = "Rekisteröityminen onnistui!";
             }
-
             NaviPalkki.luoNaviPalkki(request, response, "Rekisteröityminen");
 
-            //Tulostetaan sivulle miten kävi.
-            out.println("<br><br><br>");
-            out.println("<h3 style='text-align: center; color: antiquewhite;'>"+ onnistuiko + "</h3>");
-            out.println("</div>");
-            out.println("</body>");
-            out.println("</html>");
+            // Tulostetaan miten kävi
+            tulostaOnnistuiko(out,onnistuiko);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -86,7 +56,7 @@ public class Kayttaja extends HttpServlet{
     }
 
     //ÄLÄ ANNA TYHJIÄ ARVOJA!!, tässä niitä ei ainakaan vielä tarkisteta
-    public static boolean luoKäyttäjä(Connection con, String tunnus, String salasana){
+    private boolean luoKäyttäjä(Connection con, String tunnus, String salasana){
         //Tsekataan onko tunnus varattu
         try {
             String haku = "SELECT kayttajanimi FROM henkilo WHERE kayttajanimi=?";
@@ -114,5 +84,56 @@ public class Kayttaja extends HttpServlet{
         } catch (SQLException e) {
             e.printStackTrace();
         } return false;
+    }
+
+    private void tulostaOnnistuiko(PrintWriter out, String onnistuiko){
+            out.println("<form method='post' style='width: 400px; position: relative;" +
+                    "top: 70px; left: 8%;'>" +
+                    "<fieldset>");
+            out.println("<legend>Rekisteröityminen</legend>");
+            out.println("<table>");
+            out.println("<tr>");
+            out.println("<td colspan='3'><h3>" + onnistuiko + "</h3></td>");
+            out.println("</tr>");
+            out.println("<tr>");
+            out.println("<td colspan='3'>siirry</td>");
+            out.println("</tr>");
+            out.println("<tr>");
+            out.println("<td><a href='index.jsp'>kotisivulle</a>, </td>");
+            out.println("<td><a href='/KeskustelujaViestitServlet'>keskusteluihin</a></td>");
+            out.println("<td> tai <a href='/Profiili'>profiiliin</a></td>");
+            out.println("</tr>");
+            out.println("</table>");
+            out.println("</fieldset></form>");
+            out.println("</div>");
+            out.println("</body>");
+            out.println("</html>");
+    }
+
+    private void tulostaLomake(PrintWriter out){
+        // Tulostaa hienon rekisteröitymislomakkeen
+        out.println("<form method='post' style='width: 400px; position: relative;" +
+                "top: 70px; left: 8%;'>" +
+                "<fieldset>");
+        out.println("<legend>Rekisteröityminen</legend>");
+        out.println("<table>");
+        out.println("<tr>");
+        out.println("<td style='width: 120px'><label for='tunnus'>Käyttäjänimi</legend></td>");
+        out.println("<td><input type='text' maxlength=16  name='tunnus' focus required></td>");
+        out.println("</tr>");
+        out.println("<tr>");
+        out.println("<td style='width: 120px'><label for='salasana'>Salasana</legend></td>");
+        out.println("<td><input type='password' maxlength=16 name='salasana' required></td>");
+        out.println("</tr>");
+        out.println("<tr>");
+        out.println("<td><input type='submit' value='Rekisteröi'></td>");
+        out.println("</tr>");
+        out.println("</table>");
+        out.println("</fieldset>"+
+                "</form>" +
+                "</div>" +
+                "</body>" +
+                "</html>");
+
     }
 }

@@ -110,7 +110,6 @@ public class Profiilisivu extends HttpServlet {
                     "<tr>" +
                     "<td style='width: 220px'><label for='kuvaus'>Kuvaus (max 200 merkkiä): </label></td>" +
                     "<td><textarea maxlength='200' form=1 name='kuvaus' row=10 column=30>" + kuvaus + "</textarea></td>" +
-//                    "<td><input type='text' name='kuvaus' maxlength=200 value='" + kuvaus + "'></td>" +
                     "</tr>" +
                     "<tr>" +
                     "<td><input type='submit' value='Päivitä'></td>" +
