@@ -71,7 +71,7 @@ public class Profiilisivu extends HttpServlet {
             paramId = istuntoId;
         }
         try (Connection con = ds.getConnection()) {
-
+            // Hakee tiedot hloid:n perusteella
             String haeTiedot = "SELECT * from henkilo where hloid=?";
             PreparedStatement ps = con.prepareStatement(haeTiedot);
             ps.setString(1, paramId);
