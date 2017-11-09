@@ -161,9 +161,11 @@ public class NaytaViesti extends HttpServlet {
                                     "<a href='/NaytaKeskustelu?KeskusteluId=" + viesti.getKeskusteluid() + "'>" +
                                     keskustelunimi + "</a>.</h3>");
 
-                    out.println(
-                            "<br><h3>Vastaukset viestiin:</h3>"
-                    );
+                    if (vastaukset.size() > 0) {
+                        out.println(
+                                "<br><h3>Vastaukset viestiin:</h3>"
+                        );
+                    }
 
                     // avataan taulukko vastausten esittämiseen
                     out.println("<table border: 1px solid black>");

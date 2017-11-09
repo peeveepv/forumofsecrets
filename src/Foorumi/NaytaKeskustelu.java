@@ -264,7 +264,7 @@ public class NaytaKeskustelu extends HttpServlet {
                         // käydään läpi kyseisen viestin mahdolliset vastaukset listalta ja tulostetaan ne
                         for (int j = 0; j < lista.size(); j++) {
                             if (lista.get(j).getVastaus() == lista.get(i).getId()) {
-                                out.println("<tr><td></td><td>" +
+                                out.println("<tr><td><br></td></tr><tr><td></td><td>" +
                                         "<a href='/Profiili?hloid=" +  lista.get(j).getKirjoittaja() + "'>"
                                         + kirjoittajat.get(lista.get(j).getKirjoittaja()) + "</a>" +
                                         "</td><td>" + lista.get(j).getViesti() + "</td><td></td></tr>");
@@ -308,7 +308,7 @@ public class NaytaKeskustelu extends HttpServlet {
                         out.println("</tr>");
                         out.println("<tr>");
                             out.println("<td style='width: 120px'><label for='kuvaus'>Viesti</legend></td>");
-                            out.println("<td><textarea maxlength='254' form=1 name='viesti' placeholder='viesti' row=5 column=10></textarea></td>");
+                            out.println("<td><textarea maxlength='400' form=1 name='viesti' placeholder='viesti' row=5 column=10></textarea></td>");
                         out.println("</tr>");
 
                         out.println("<input type=hidden name='kirjoittaja' value=" +kirjoittajaID + ">");
