@@ -74,7 +74,7 @@ public class LoginServlet extends HttpServlet {
                         out.println("<br>");
                         out.println("<br>");
                         out.println("<br>");
-                        out.println("<h3 style='text-align: center; color: antiquewhite;'>Kirjautuminen onnistui, jatka <a href='index.jsp'>kotisivulle</a> tai <a href='/KeskustelujaViestitServlet'>keskusteluihin</a></h3>");
+                        out.println("<h3 style='position: relative; left: 8%; color: antiquewhite;'>Kirjautuminen onnistui, jatka <a href='index.jsp'>kotisivulle</a> tai <a href='/KeskustelujaViestitServlet'>keskusteluihin</a></h3>");
 
                         out.println("</div>");
 
