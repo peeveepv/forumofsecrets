@@ -223,7 +223,7 @@ public class HakuServlet extends HttpServlet {
         StringBuilder palauta3 = new StringBuilder();
 
         try {
-            String sql3 = "select keskusteluid, kirjoittaja from viesti where kirjoittaja like ?";
+            String sql3 = "select keskusteluid, kirjoittaja, nimimerkki from viesti, henkilo where nimimerkki like ?";
             PreparedStatement kyselyLause3 = con.prepareStatement(sql3);
             StringBuilder apu3 = new StringBuilder("%" + haettava + "%");
             kyselyLause3.setString(1, apu3.toString());
