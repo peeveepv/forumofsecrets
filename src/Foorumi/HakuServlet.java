@@ -17,6 +17,41 @@ public class HakuServlet extends HttpServlet {
     @Resource(name = "jdbc/Foorumi")
     DataSource ds;
 
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        response.setContentType("text/html");
+
+        try (PrintWriter out = response.getWriter()) {
+            NaviPalkki.luoNaviPalkki(request, response, "Foorumin hakusivu");
+
+            // Koska Form-tagista puuttuu "action"-määre, niin toiminto kutsuu tätä samaa servlettiä,
+            // eli itseänsä, täältä doGet:istä --> doPost:iin
+            out.println("<form method='post' style='width: 400px; position: relative;" +
+                    "top: 70px; left: 8%;'>" +
+                    "<fieldset>");
+
+            // Luodaan hakulomake
+            out.println("<legend>Viestien hakeminen</legend>");
+            out.println("<table>");
+            out.println("<tr>");
+            out.println("<td style='width: 140px'><label for='haettava'>Kirjoita etsittävä</legend></td>");
+            out.println("<td><input type='text' name='haettava' autofocus></td>");
+            out.println("<td style='width: 10px'></td>");
+            out.println("<td><span> </span><input type='submit' value='Hae'></td>");
+            out.println("</tr>");
+            out.println("</table>");
+
+            out.println("</fieldset></form>");
+
+            out.println("</div>");
+
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Connection con = null;
@@ -221,7 +256,7 @@ public class HakuServlet extends HttpServlet {
             palauta5.append("</fieldset>");
 
 
-            //            ***********************************************************************************************
+//            ***********************************************************************************************
 
 
             String sql6 = "select keskusteluid, vastaus from viesti where vastaus like ?";
@@ -253,7 +288,7 @@ public class HakuServlet extends HttpServlet {
             }
             palauta6.append("</fieldset>");
 
-            //            ***********************************************************************************************
+//            ***********************************************************************************************
 
 
         } catch (SQLException e) {
@@ -268,6 +303,8 @@ public class HakuServlet extends HttpServlet {
 
         {
 
+            // Muodostetaan käyttäjälle näytettävä hakutulossivu hyödyntämällä
+            // aiemmin luotuja apuvälineitä, jotka sisältävät jo itsessään suoraan HTML-ohjausmerkkejä
             NaviPalkki.luoNaviPalkki(request, response, "Haun tulos");
             out.println("<h1>Haettava esiinty seuraavilla alueilla</h1>");
             out.println(palauta1.toString());
@@ -282,41 +319,6 @@ public class HakuServlet extends HttpServlet {
             out.println("<br/>");
             out.println(palauta6.toString());
             out.println("</div>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-
-    }
-
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        response.setContentType("text/html");
-
-        try (PrintWriter out = response.getWriter()) {
-            NaviPalkki.luoNaviPalkki(request, response, "Foorumin hakusivu");
-
-            // Koska Form-tagista puuttuu "action"-määre, niin toiminto kutsuu tätä samaa servlettiä,
-            // eli itseänsä, täältä doGet:istä --> doPost:iin
-            out.println("<form method='post' style='width: 400px; position: relative;" +
-                    "top: 70px; left: 8%;'>" +
-                    "<fieldset>");
-
-            // Luodaan hakulomake
-            out.println("<legend>Viestien hakeminen</legend>");
-            out.println("<table>");
-            out.println("<tr>");
-            out.println("<td style='width: 140px'><label for='haettava'>Kirjoita etsittävä</legend></td>");
-            out.println("<td><input type='text' name='haettava' autofocus></td>");
-            out.println("<td style='width: 10px'></td>");
-            out.println("<td><span> </span><input type='submit' value='Hae'></td>");
-            out.println("</tr>");
-            out.println("</table>");
-
-            out.println("</fieldset></form>");
-
-            out.println("</div>");
-
             out.println("</body>");
             out.println("</html>");
         }
