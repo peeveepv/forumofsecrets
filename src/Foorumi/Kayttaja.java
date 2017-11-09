@@ -70,7 +70,7 @@ public class Kayttaja extends HttpServlet{
             String onnistuiko = "Tunnus varattu!"; // Vaihtuu mikäli rekisteröinti onnistuu.
 
             if (luoKäyttäjä(con, tunnus, salasana)) {
-                onnistuiko = "Rekisteröityminen onnistui!";
+                onnistuiko = "Rekisteröityminen onnistui, jatka <a href='index.jsp'>kotisivulle</a> tai <a href='/KeskustelujaViestitServlet'>keskusteluihin</a>";
             }
             //Tulostetaan sivulle miten kävi.
 
@@ -79,7 +79,7 @@ public class Kayttaja extends HttpServlet{
             out.println("<br>");
             out.println("<br>");
             out.println("<br>");
-            out.println("<h3 style='text-align: center; color: antiquewhite;'>"+ onnistuiko + ", jatka <a href='index.jsp'>kotisivulle</a> tai <a href='/KeskustelujaViestitServlet'>keskusteluihin</a></h3>");
+            out.println("<h3 style='text-align: center; color: antiquewhite;'>"+ onnistuiko + "</h3>");
 
             out.println("</div>");
 
