@@ -120,7 +120,6 @@ public class NaytaKeskustelu extends HttpServlet {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
             }
         }
 
