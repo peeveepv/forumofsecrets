@@ -102,11 +102,11 @@ public class KeskustelujaViestitServlet extends HttpServlet {
         out.println("<table>");
         out.println("<tr>");
         out.println("<td style='width: 120px'><label for='nimi'>Aihe</legend></td>");
-        out.println("<td><input type=text name=nimi placeholder=nimi focus></td>");
+        out.println("<td><input maxlength='30' type=text name=nimi placeholder=nimi focus></td>");
         out.println("</tr>");
         out.println("<tr>");
         out.println("<td style='width: 120px'><label for='kuvaus'>Aiheen kuvaus</legend></td>");
-        out.println("<td><input type=text name=kuvaus placeholder=kuvaus></td>");
+        out.println("<td><input maxlength='100' type=text name=kuvaus placeholder=kuvaus></td>");
         out.println("</tr>");
         out.println("<tr>");
         out.println("<td><input type='submit' value='Uusi keskustelu'></td>");
