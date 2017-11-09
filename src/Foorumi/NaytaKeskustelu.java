@@ -42,76 +42,86 @@ public class NaytaKeskustelu extends HttpServlet {
         List<String> lista = new ArrayList<>();
 
         // läpikäydään parametrit
-        while(nimet.hasMoreElements()){
-            lista.add((String)nimet.nextElement());
+        while (nimet.hasMoreElements()) {
+            lista.add((String) nimet.nextElement());
         }
 
         boolean moi = false;
 
-        // jos parametrinä oli "vastaus", lisätään pyydetty viesti uutena vastauksena
-        if(lista.contains("vastaus")){
-            String sql = "INSERT INTO viesti (otsikko, viesti, kirjoittaja ,keskusteluid, vastaus) VALUES (vastaus ,?, ?, ?, ?)";
-
-            String viesti = req.getParameter("vastaus");
-            int kirjoittaja = Integer.parseInt(req.getParameter("kirjoittaja"));
-            int keskusteluid = Integer.parseInt(req.getParameter("keskusteluid"));
-            int vastaus = Integer.parseInt(req.getParameter("viestiID"));
-
-            try {
-
-                con = ds.getConnection();
-                PreparedStatement stmt = con.prepareStatement(sql);
-                stmt.setString(1, viesti);
-                stmt.setInt(2, kirjoittaja);
-                stmt.setInt(3, keskusteluid);
-                stmt.setInt(4, vastaus);
-                stmt.executeUpdate();
+        //Jos parametri on tyhjä String, viestiä ei lisätä
+        while(moi==false) {
+            if ("".equals(req.getParameter("vastaus")) || "".equals(req.getParameter("viesti")) || "".equals(req.getParameter("otsikko"))) {
                 moi = true;
-
-            } catch (SQLException e) {
-                e.printStackTrace();
+                break;
             }
 
-        // jos parametrinä oli "poista", poistetaan pyydetty viesti
-        }else if(lista.contains("poista")){
+            // jos parametrinä oli "vastaus", lisätään pyydetty viesti uutena vastauksena
+            if (lista.contains("vastaus")) {
+                String sql = "INSERT INTO viesti (otsikko, viesti, kirjoittaja ,keskusteluid, vastaus) VALUES (vastaus ,?, ?, ?, ?)";
 
-            String sql = "DELETE from viesti where id = ?";
-            int id = Integer.parseInt(req.getParameter("poista")); //Palauttaa poistettavan viestin ID:n
+                String viesti = req.getParameter("vastaus");
+                int kirjoittaja = Integer.parseInt(req.getParameter("kirjoittaja"));
+                int keskusteluid = Integer.parseInt(req.getParameter("keskusteluid"));
+                int vastaus = Integer.parseInt(req.getParameter("viestiID"));
 
-            try {
-                con = dsAdmin.getConnection();
-                PreparedStatement stmt = con.prepareStatement(sql);
-                stmt.setInt(1, id);
-                stmt.executeUpdate();
-                moi = true;
-            } catch (SQLException e) {
-                e.printStackTrace();
+                try {
+
+                    con = ds.getConnection();
+                    PreparedStatement stmt = con.prepareStatement(sql);
+                    stmt.setString(1, viesti);
+                    stmt.setInt(2, kirjoittaja);
+                    stmt.setInt(3, keskusteluid);
+                    stmt.setInt(4, vastaus);
+                    stmt.executeUpdate();
+                    moi = true;
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
 
-        // jos ei poistamisen tai vastauksen parametriä, kyseessä on viestin lisääminen, jolloin lisätään pyydetty uusi viesti
-        } else {
 
-            String sql = "INSERT INTO viesti (otsikko, viesti, kirjoittaja ,keskusteluid) VALUES (?, ?, ?, ?)";
-            String keskustelunNimi = req.getParameter("otsikko");
-            String keskustelukuvaus = req.getParameter("viesti");
-            int kirjoittaja = Integer.parseInt(req.getParameter("kirjoittaja"));
-            int keskusteluid = Integer.parseInt(req.getParameter("keskusteluid"));
+            // jos parametrinä oli "poista", poistetaan pyydetty viesti
+            else if (lista.contains("poista")) {
 
-            try {
+                String sql = "DELETE from viesti where id = ?";
+                int id = Integer.parseInt(req.getParameter("poista")); //Palauttaa poistettavan viestin ID:n
 
-                con = ds.getConnection();
-                PreparedStatement stmt = con.prepareStatement(sql);
-                stmt.setString(1, keskustelunNimi);
-                stmt.setString(2, keskustelukuvaus);
-                stmt.setInt(3, kirjoittaja);
-                stmt.setInt(4, keskusteluid);
-                stmt.executeUpdate();
-                moi = true;
-
-            } catch (SQLException e) {
-                e.printStackTrace();
+                try {
+                    con = dsAdmin.getConnection();
+                    PreparedStatement stmt = con.prepareStatement(sql);
+                    stmt.setInt(1, id);
+                    stmt.executeUpdate();
+                    moi = true;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
 
+            // jos ei poistamisen tai vastauksen parametriä, kyseessä on viestin lisääminen, jolloin lisätään pyydetty uusi viesti
+            else {
+
+                String sql = "INSERT INTO viesti (otsikko, viesti, kirjoittaja ,keskusteluid) VALUES (?, ?, ?, ?)";
+                String keskustelunNimi = req.getParameter("otsikko");
+                String keskustelukuvaus = req.getParameter("viesti");
+                int kirjoittaja = Integer.parseInt(req.getParameter("kirjoittaja"));
+                int keskusteluid = Integer.parseInt(req.getParameter("keskusteluid"));
+
+                try {
+
+                    con = ds.getConnection();
+                    PreparedStatement stmt = con.prepareStatement(sql);
+                    stmt.setString(1, keskustelunNimi);
+                    stmt.setString(2, keskustelukuvaus);
+                    stmt.setInt(3, kirjoittaja);
+                    stmt.setInt(4, keskusteluid);
+                    stmt.executeUpdate();
+                    moi = true;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            }
         }
 
         //Jos update onnistuu, niin palataan takaisin doGet-metodiin, siellä näkyy lisätty viesti / vastaus
@@ -226,6 +236,7 @@ public class NaytaKeskustelu extends HttpServlet {
                     // jos viesti ei ole vastaus (vastausid = default(0)), niin tulostetaan viestinä
                     if (vastausid == 0) {
 
+                        out.println("<tr><td colspan='4'><hr></td><td></td><td></td><td></td></tr>");
                         out.println("<tr>");
                         out.println("<td style='width: 200px'> Otsikko: <br>" + lista.get(i).getOtsikko() +
                                 "</td><td style='width: 200px'> Kirjoittaja: <br>"
@@ -237,7 +248,7 @@ public class NaytaKeskustelu extends HttpServlet {
                         // (ja sen kirjoittajaksi nykyinen käyttäjä tai anonymous)
                         out.println("<form method='post' id=2>");
                         out.println("<input type=submit  value='Vastaa'>");
-                        out.println("<input type=text name='vastaus' placeholder='vastaus'><br>");
+                        out.println("<input type=text maxlength='254' name='vastaus' placeholder='vastaus'><br>");
                         out.println("<input type=hidden name='kirjoittaja' value=" + kirjoittajaID + ">");
                         out.println("<input type=hidden name='keskusteluid' value=" + keskusteluid + ">");
                         out.println("<input type=hidden name='viestiID' value=" + lista.get(i).getId() + ">");
@@ -294,11 +305,11 @@ public class NaytaKeskustelu extends HttpServlet {
                         out.println("<tr><td><input type=submit  value='Lisää uusi viesti'> </td></tr>");
                         out.println("<tr>");
                             out.println("<td style='width: 120px'><label for='nimi'>Aihe</legend></td>");
-                            out.println("<td><input type=text maxlength='255' name='otsikko' placeholder='otsikko'></td>");
+                            out.println("<td><input type=text maxlength='50' name='otsikko' placeholder='otsikko'></td>");
                         out.println("</tr>");
                         out.println("<tr>");
                             out.println("<td style='width: 120px'><label for='kuvaus'>Viesti</legend></td>");
-                            out.println("<td><textarea maxlength='255' form=1 name='viesti' placeholder='viesti' row=5 column=10></textarea></td>");
+                            out.println("<td><textarea maxlength='254' form=1 name='viesti' placeholder='viesti' row=5 column=10></textarea></td>");
                         out.println("</tr>");
 
                         out.println("<input type=hidden name='kirjoittaja' value=" +kirjoittajaID + ">");
