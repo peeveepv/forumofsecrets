@@ -270,7 +270,7 @@ public class NaytaKeskustelu extends HttpServlet {
                                 out.println("<tr><td><br></td></tr><tr><td></td><td>" +
                                         "<a href='/Profiili?hloid=" +  lista.get(j).getKirjoittaja() + "'>"
                                         + kirjoittajat.get(lista.get(j).getKirjoittaja()) + "</a></td>" +
-                                        "<td>" + lista.get(i).getFormatoituKirjoitettu() + "</td>" +
+                                        "<td>" + lista.get(j).getFormatoituKirjoitettu() + "</td>" +
                                         "<td>" + lista.get(j).getViesti() + "</td><td></td></tr>");
                             }
                         }
