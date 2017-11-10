@@ -1,8 +1,10 @@
 package Foorumi;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 class Viestit {
     private int id;
@@ -78,5 +80,15 @@ class Viestit {
 
     public void setKirjoitettu(Date kirjoitettu) {
         this.kirjoitettu = kirjoitettu;
+    }
+
+    public String getFormatoituKirjoitettu() {
+
+        Locale fi = new Locale("fi", "FI");
+
+        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, fi);
+
+        return df.format(this.kirjoitettu);
+
     }
 }

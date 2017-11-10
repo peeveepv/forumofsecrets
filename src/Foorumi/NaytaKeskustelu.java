@@ -238,36 +238,40 @@ public class NaytaKeskustelu extends HttpServlet {
                         out.println("<tr><td colspan='4'><hr></td><td></td><td></td><td></td></tr>");
                         out.println("<tr>");
                         out.println("<td style='width: 200px'> Otsikko: <br>" + lista.get(i).getOtsikko() +
-                                "</td><td style='width: 200px'> Kirjoittaja: <br>"
+                                "</td><td style='width: 120px'> Kirjoittaja: <br>"
                                 + "<a href='/Profiili?hloid=" +  lista.get(i).getKirjoittaja() + "'>"
-                                + kirjoittajat.get(lista.get(i).getKirjoittaja()) + "</a>" +
-                                "</td><td style='width: 400px';>" + lista.get(i).getViesti() + "</td><td>");
+                                + kirjoittajat.get(lista.get(i).getKirjoittaja()) + "</a></td>" +
+                                "<td style='width: 80px'>Kirjoitettu: <br>" + lista.get(i).getFormatoituKirjoitettu() + "</td>" +
+                                "<td style='width: 400px';>" + lista.get(i).getViesti() + "</td>" +
+                                "<td>");
 
-                        // tulostetaan lomake vastauksen lähettämiseen
-                        // (ja sen kirjoittajaksi nykyinen käyttäjä tai anonymous)
-                        out.println("<form method='post' id=2>");
-                        out.println("<input type=submit  value='Vastaa'>");
-                        out.println("<input type=text maxlength='254' name='vastaus' placeholder='vastaus'><br>");
-                        out.println("<input type=hidden name='kirjoittaja' value=" + kirjoittajaID + ">");
-                        out.println("<input type=hidden name='keskusteluid' value=" + keskusteluid + ">");
-                        out.println("<input type=hidden name='viestiID' value=" + lista.get(i).getId() + ">");
-                        out.println("</form>");
+                                // tulostetaan lomake vastauksen lähettämiseen
+                                // (ja sen kirjoittajaksi nykyinen käyttäjä tai anonymous)
+                                out.println("<form method='post' id=2>");
+                                out.println("<input type=submit  value='Vastaa'>");
+                                out.println("<input type=text maxlength='254' name='vastaus' placeholder='vastaus'><br>");
+                                out.println("<input type=hidden name='kirjoittaja' value=" + kirjoittajaID + ">");
+                                out.println("<input type=hidden name='keskusteluid' value=" + keskusteluid + ">");
+                                out.println("<input type=hidden name='viestiID' value=" + lista.get(i).getId() + ">");
+                                out.println("</form>");
 
-                        // näytetään poistamisen painike viestille, jos käyttäjän rooli on "admin" (istunnosta)
-                        if("admin".equals((String)session.getAttribute("rooli"))){
-                            out.println("<br><form method=post><input type=submit value=poista>" +
-                                    "<input type=hidden name=poista value= "+lista.get(i).getId() +"></form>");
-                        }
+                                // näytetään poistamisen painike viestille, jos käyttäjän rooli on "admin" (istunnosta)
+                                if("admin".equals((String)session.getAttribute("rooli"))){
+                                    out.println("<br><form method=post><input type=submit value=poista>" +
+                                            "<input type=hidden name=poista value= "+lista.get(i).getId() +"></form>");
+                                }
 
-                        out.println("</td></tr>");
+                        out.println("</td>" +
+                                "</tr>");
 
                         // käydään läpi kyseisen viestin mahdolliset vastaukset listalta ja tulostetaan ne
                         for (int j = 0; j < lista.size(); j++) {
                             if (lista.get(j).getVastaus() == lista.get(i).getId()) {
                                 out.println("<tr><td></td><td>" +
                                         "<a href='/Profiili?hloid=" +  lista.get(j).getKirjoittaja() + "'>"
-                                        + kirjoittajat.get(lista.get(j).getKirjoittaja()) + "</a>" +
-                                        "</td><td>" + lista.get(j).getViesti() + "</td><td></td></tr>");
+                                        + kirjoittajat.get(lista.get(j).getKirjoittaja()) + "</a></td>" +
+                                        "<td>" + lista.get(i).getFormatoituKirjoitettu() + "</td>" +
+                                        "<td>" + lista.get(j).getViesti() + "</td><td></td></tr>");
                             }
                         }
                     }

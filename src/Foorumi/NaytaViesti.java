@@ -122,6 +122,7 @@ public class NaytaViesti extends HttpServlet {
                     out.println("<br><h2><i>Viestin otsikko:</i> " + viesti.getOtsikko() + "</h2>");
                 }
                 out.println("<h3><i>Viestin teksti:</i> " + viesti.getViesti() + "</h3>");
+                out.println("<h3><i>Viesti on kirjoitettu:</i> " + viesti.getFormatoituKirjoitettu() + "</h3>");
 
                 // tulostetaan viestin isäntäviesti ja keskustelu linkkeinä, jos kyseessä on vastaus
                 if (viesti.getVastaus() != 0) {
@@ -178,7 +179,6 @@ public class NaytaViesti extends HttpServlet {
                                         "<td colspan='4'><hr></td><td></td><td></td><td></td>" +
                                         "</tr>" +
                                         "<tr>" +
-                                        "<td style='width: 200px'> Otsikko: <br>" + vastaukset.get(i).getOtsikko() + "</td>" +
                                         "<td style='width: 200px'> Kirjoittaja: <br>"
                                         + "<a href='/Profiili?hloid=" + vastaukset.get(i).getKirjoittaja() + "'>"
                                         + kirjoittajat.get(vastaukset.get(i).getKirjoittaja()) + "</a></td>" +
