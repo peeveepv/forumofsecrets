@@ -18,6 +18,7 @@ public class Verifiointi {
 
             kyselynTulos.next();
 
+            // MIKA: Tarkistetaan täsmääkö annettu salasana tietokannassa olevaan salasanaan
             if (sala.equals(kyselynTulos.getString("salasana"))) {
                 tulos = true;
             }

@@ -25,13 +25,13 @@ public class HakuServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             NaviPalkki.luoNaviPalkki(request, response, "Foorumin hakusivu");
 
-            // Koska Form-tagista puuttuu "action"-määre, niin toiminto kutsuu tätä samaa servlettiä,
+            // MIKA: Koska Form-tagista puuttuu "action"-määre, niin toiminto kutsuu tätä samaa servlettiä,
             // eli itseänsä, täältä doGet:istä --> doPost:iin
             out.println("<form method='post' style='width: 400px; position: relative;" +
                     "top: 70px; left: 8%;'>" +
                     "<fieldset>");
 
-            // Luodaan hakulomake
+            // MIKA: Luodaan hakulomake
             out.println("<legend>Viestien hakeminen</legend>");
             out.println("<table>");
             out.println("<tr>");
@@ -61,10 +61,10 @@ public class HakuServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        // Tallennetaan muuttujaan (String-olioon) käyttäjän hakema merkkijono
+        // MIKA: Tallennetaan muuttujaan (String-olioon) käyttäjän hakema merkkijono
         String haettava = (String) request.getParameter("haettava");
 
-        // Luodaan apuväline HTML-sivun ohjausmerkkien (parametrien ja niiden sisältämien tagien) luomiseen
+        // MIKA: Luodaan apuväline HTML-sivun ohjausmerkkien (parametrien ja niiden sisältämien tagien) luomiseen
         // ja hakutuloksen URL muodostamiseen
         StringBuilder palauta1 = new StringBuilder();
         StringBuilder palauta2 = new StringBuilder();
@@ -75,7 +75,7 @@ public class HakuServlet extends HttpServlet {
 
         try {
 
-            // Valmistellaan tietokantaan suoritettavaa kyselylausetta ja ehkäistään
+            // MIKA: Valmistellaan tietokantaan suoritettavaa kyselylausetta ja ehkäistään
             // "SQL-injektiota" käyttäjän antamien parametrien (haettava merkkijono)
             // syöttämisen rajoittamisella / "kierrättämisellä" kiepautuksen "like ?" kautta
             // (muuttujan tyypillä PreparedStatement).
@@ -87,32 +87,33 @@ public class HakuServlet extends HttpServlet {
             String sql1 = "select keskusteluid, nimi from keskustelu where nimi like ?";
             PreparedStatement kyselyLause1 = con.prepareStatement(sql1);
 
-            // Lisätään käyttäjän antamaan hakuehtoon ns. vartalonkatkaisu
+            // MIKA: Lisätään käyttäjän antamaan hakuehtoon ns. vartalonkatkaisu
             StringBuilder apu1 = new StringBuilder("%" + haettava + "%");
 
-            // Muodostetaan varsinainen tietokantaan lähetettävä SQL-kyselylause
+            // MIKA: Muodostetaan varsinainen tietokantaan lähetettävä SQL-kyselylause
             kyselyLause1.setString(1, apu1.toString());
-            // Suoritetaan kysely
+            // MIKA: Suoritetaan kysely
             ResultSet kyselynTulos1 = kyselyLause1.executeQuery();
 
-            // Hyödynnetään luotua apuvälinettä käyttäjälle näytettävään hakutulokseen
+            // MIKA: Hyödynnetään luotua apuvälinettä käyttäjälle näytettävään hakutulokseen
             palauta1.append("<p>");
             palauta1.append("<fieldset>");
             palauta1.append("<legend>Keskustelujen otsikot</legend>");
 
-            // Luodaan löytyneiden hakutuloksien kappalemäärien seuranta
+            // MIKA: Luodaan löytyneiden hakutuloksien kappalemäärien seuranta
             int index1 = 1;
 
-            // Tutkitaan tietokannan palauttamaa vastausta niin kauan kuin vastauksessa on rivejä
+            // MIKA: Tutkitaan tietokannan palauttamaa vastausta niin kauan kuin vastauksessa on rivejä
             while (kyselynTulos1.next()) {
 
-                // String tulosTeksti1 = kyselynTulos1.getString("nimi");
+                // MIKA: String tulosTeksti1 = kyselynTulos1.getString("nimi");
                 // Otetaan löytyneeltä tietokantariviltä halutun sarakkeen arvo talteen jatkohyödyntämistä varten
                 int tulosID1 = kyselynTulos1.getInt("keskusteluid");
 
-                // Hyödynnetään luotua apuvälinettä käyttäjälle näytettävään hakutulokseen
+                // MIKA: Hyödynnetään luotua apuvälinettä käyttäjälle näytettävään hakutulokseen
                 // eli luodaan linkki, jonka avulla käyttäjä voi siirtyä alueelle,
                 // jossa haettava merkkijon esiintyy
+                palauta1.append("<p>");
                 palauta1.append("<a href='/NaytaKeskustelu?KeskusteluId=");
                 palauta1.append(tulosID1);
                 palauta1.append("'>");
@@ -122,12 +123,14 @@ public class HakuServlet extends HttpServlet {
                 palauta1.append("<br/>");
                 palauta1.append("</p>");
 
-                // Kasvatetaan löytyneiden hakutuloksien kappalemäärää
+                // MIKA: Kasvatetaan löytyneiden hakutuloksien kappalemäärää
                 index1++;
             }
             palauta1.append("</fieldset>");
+            palauta1.append("</p>");
 
-            // Suoritetaan ylläkuvattu toiminto erillisessä metodissa sillä poikkeuksella,
+
+            // MIKA: Suoritetaan ylläkuvattu toiminto erillisessä metodissa sillä poikkeuksella,
             // että jokaisessa metodissa on eri kohde tietokannassa siltä osin mistä haetaan
             // (esim. keskustelun kuvaus tai viestin sisätö tms.)
             palauta2 = suoritaKysely2(con, haettava);
@@ -148,7 +151,7 @@ public class HakuServlet extends HttpServlet {
 
         {
 
-            // Muodostetaan käyttäjälle näytettävä hakutulossivu hyödyntämällä
+            // MIKA: Muodostetaan käyttäjälle näytettävä hakutulossivu hyödyntämällä
             // aiemmin luotuja apuvälineitä, jotka sisältävät jo itsessään suoraan HTML-ohjausmerkkejä
             NaviPalkki.luoNaviPalkki(request, response, "Haun tulos");
             out.println("<h1>Haettava esiintyy seuraavilla alueilla</h1>");
@@ -208,6 +211,8 @@ public class HakuServlet extends HttpServlet {
                 index2++;
             }
             palauta2.append("</fieldset>");
+            palauta2.append("</p>");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -224,7 +229,7 @@ public class HakuServlet extends HttpServlet {
 
         try {
 
-            // Selvitetään ensin haettavan kirjoittajan nimimerkin yksilöllinen ID
+            // MIKA: Selvitetään ensin haettavan kirjoittajan nimimerkin yksilöllinen ID
             String sql3 = "select hloid from henkilo where nimimerkki like ?";
 
             PreparedStatement kyselyLause3 = con.prepareStatement(sql3);
@@ -239,7 +244,7 @@ public class HakuServlet extends HttpServlet {
 
             int index3 = 1;
 
-            // Haetaan yksilöllisellä kirjoittajan nimimerkki ID:llä kaikki viestit,
+            // MIKA: Haetaan yksilöllisellä kirjoittajan nimimerkki ID:llä kaikki viestit,
             // joissa ko. ID esiintyy kirjoittajana
             while (kyselynTulos3.next()) {
                 int hloID = kyselynTulos3.getInt("hloid");
@@ -271,6 +276,7 @@ public class HakuServlet extends HttpServlet {
             }
 
             palauta3.append("</fieldset>");
+            palauta3.append("</p>");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -309,9 +315,13 @@ public class HakuServlet extends HttpServlet {
                 palauta4.append(index4);
                 palauta4.append(". hakutulos");
                 palauta4.append("</a>");
+                palauta4.append("</p>");
+
                 index4++;
             }
             palauta4.append("</fieldset>");
+            palauta4.append("</p>");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -355,6 +365,8 @@ public class HakuServlet extends HttpServlet {
                 index5++;
             }
             palauta5.append("</fieldset>");
+            palauta5.append("</p>");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -398,6 +410,8 @@ public class HakuServlet extends HttpServlet {
                 index6++;
             }
             palauta6.append("</fieldset>");
+            palauta6.append("</p>");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
