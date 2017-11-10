@@ -83,7 +83,7 @@ public class NaviPalkki {
                 || "anonymous".equals(session.getAttribute("kayttajanimi"))) {
 
             out.println("<a href='/Login'>Kirjautuminen</a>");
-            out.println("<a href='/Kayttaja'>Rekisteröityminen</a>");
+            out.println("<a href='/Rekisterointi'>Rekisteröityminen</a>");
 
         // jos sessio, tulostetaan nimimerkki/nimi käyttäjältä sekä linkit profiilisivustolle ja uloskirjautumiseen
         } else {

@@ -87,7 +87,7 @@
                     || "anonymous".equals(session.getAttribute("kayttajanimi"))) {
 
                 out.println("<a href='/Login'>Kirjautuminen</a>");
-                out.println("<a href='/Kayttaja'>Rekisteröityminen</a>");
+                out.println("<a href='/Rekisterointi'>Rekisteröityminen</a>");
 
             } else {
 

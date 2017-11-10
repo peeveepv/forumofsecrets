@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 
-@WebServlet(name = "Kayttaja", urlPatterns = {"/Kayttaja"})
-public class Kayttaja extends HttpServlet{
+@WebServlet(name = "Rekisterointi", urlPatterns = {"/Rekisterointi"})
+public class Rekisterointi extends HttpServlet{
     @Resource(name = "jdbc/Foorumi")
     DataSource ds;
 
