@@ -1,0 +1,5 @@
+DIAGRAM:
+
+UML: https://yuml.me/diagram/scruffy/class/draw
+
+[Navipalkki], [index.jsp]-[Navipalkki], [index.jsp]->[HakuServlet], , [index.jsp]->[Rekisteröinti], , [index.jsp]->[KeskustelujaViestitServlet], , [index.jsp]->[LoginServlet], [index.jsp]->[LogoutServlet], [index.jsp]->[Profiilisivu], [index.jsp]->[NaytaKeskustelu], [NaytaKeskustelu]<-[Keskustelu], [NaytaKeskustelu]<-[Viestit],[KeskustelujaViestitServlet]<-[Keskustelu], [KeskustelujaViestitServlet]<-[Navipalkki], [KeskustelujaViestitServlet]<->[Tietokanta], [Viestit]<-[Tietokanta], [LoginServlet]<-[Navipalkki], [LoginServlet]<->[Tietokanta], [LogoutServlet]<-[Navipalkki], [LogoutServlet]<->[Tietokanta], [Profiilisivu]<-[Navipalkki], [Profiilisivu]<->[Tietokanta], [NaytaKeskustelu]<-[Navipalkki], [NaytaKeskustelu]<->[Tietokanta], [Rekisteröinti]<-[Navipalkki], [Rekisteröinti]<->[Tietokanta], [HakuServlet]<-[Navipalkki], , [HakuServlet]<->[Tietokanta], [HakuServlet]<->[NaytaViestit], [NaytaViestit]<->[Tietokanta], [NaytaKeskustelu]<-[NaytaViestit]
