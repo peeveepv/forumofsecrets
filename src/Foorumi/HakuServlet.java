@@ -113,6 +113,7 @@ public class HakuServlet extends HttpServlet {
                 // MIKA: Hyödynnetään luotua apuvälinettä käyttäjälle näytettävään hakutulokseen
                 // eli luodaan linkki, jonka avulla käyttäjä voi siirtyä alueelle,
                 // jossa haettava merkkijon esiintyy
+                palauta1.append("<p>");
                 palauta1.append("<a href='/NaytaKeskustelu?KeskusteluId=");
                 palauta1.append(tulosID1);
                 palauta1.append("'>");
@@ -126,6 +127,8 @@ public class HakuServlet extends HttpServlet {
                 index1++;
             }
             palauta1.append("</fieldset>");
+            palauta1.append("</p>");
+
 
             // MIKA: Suoritetaan ylläkuvattu toiminto erillisessä metodissa sillä poikkeuksella,
             // että jokaisessa metodissa on eri kohde tietokannassa siltä osin mistä haetaan
@@ -208,6 +211,8 @@ public class HakuServlet extends HttpServlet {
                 index2++;
             }
             palauta2.append("</fieldset>");
+            palauta2.append("</p>");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -271,6 +276,7 @@ public class HakuServlet extends HttpServlet {
             }
 
             palauta3.append("</fieldset>");
+            palauta3.append("</p>");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -309,9 +315,13 @@ public class HakuServlet extends HttpServlet {
                 palauta4.append(index4);
                 palauta4.append(". hakutulos");
                 palauta4.append("</a>");
+                palauta4.append("</p>");
+
                 index4++;
             }
             palauta4.append("</fieldset>");
+            palauta4.append("</p>");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -355,6 +365,8 @@ public class HakuServlet extends HttpServlet {
                 index5++;
             }
             palauta5.append("</fieldset>");
+            palauta5.append("</p>");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -398,6 +410,8 @@ public class HakuServlet extends HttpServlet {
                 index6++;
             }
             palauta6.append("</fieldset>");
+            palauta6.append("</p>");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
